@@ -5,6 +5,8 @@
  * Will hopefully contains pictures and links later.
  */
 
+ //We are super cool.
+
 	session_start();
 	session_cache_expire(30);
 ?>
