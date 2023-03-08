@@ -22,8 +22,8 @@
     <?PHP    
         echo("<br><b>"."CVHR Horse Training Management System"."</b> ");
         echo('<br><br>');
-        echo('<a href="' . $path . 'index.php">home</a>');
-        echo(' | <a href="' . $path . 'about.php">about</a>');
+        echo('<a href="index.php">home</a>');
+        echo(' | <a href="about.php">about</a>');
         echo('</br>');
         //echo(' | <a href="' . $path . 'help.php?helpPage=' . $current_page . '" target="_BLANK">help</a>');
         //echo(' | calendars: <a href="' . $path . 'calendar.php?venue=portland'.''.'">Portland, </a>');

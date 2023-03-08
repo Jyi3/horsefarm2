@@ -6,7 +6,7 @@
 
 //Some legacy code stuff that isn't being used.
 session_start();
-session_cache_expire(30);
+
 
 //Include MySQL connection file, horse database functions, and horse class.
 include_once('database/horsedb.php');

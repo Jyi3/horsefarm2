@@ -17,7 +17,8 @@
 
 <div id="content">
     <?PHP
-    include_once('database/dbPersons.php');
+    //include_once('database/dbPersons.php');
+    include_once('database/persondb.php');
     include_once('domain/Person.php');
     if (($_SERVER['PHP_SELF']) == "/logout.php") {
         //prevents infinite loop of logging in to the page which logs you out...
