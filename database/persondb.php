@@ -150,6 +150,40 @@ function retrieve_person($personName) {
     mysqli_close($con);
     return $thePerson;
 }
+
+
+/*
+ * Function name: retrieve_person_by_username($username)
+ * Description: retrieve a person from the database by using their username.
+ * Parameters: 
+ *      $username, the current username of a person in the db.
+ * Return Values:
+ *      $thePerson, a Person object created using the person information from the database.
+ *      false, a person with the name "$personName" doesn't exist.
+ */
+function retrieve_person_by_username($username) {
+
+    //Create a database connection and retrieve a person with matching username.
+    $con=connect();
+    $query = "SELECT * FROM persondb WHERE username='" . $username . "';";
+    $result = mysqli_query($con,$query);
+
+    //If the person does NOT exist in the database,
+    if (mysqli_num_rows($result) != 1) {
+        mysqli_close($con);
+
+        //close the connection and return false.
+        return false;
+    }
+
+    //Otherwise, make a Person object using the query result.
+    $result_row = mysqli_fetch_assoc($result);
+    $thePerson = make_a_person($result_row);
+
+    //Close the connection and return the Person object.
+    mysqli_close($con);
+    return $thePerson;
+}
    
 
 /*
