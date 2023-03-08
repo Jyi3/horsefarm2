@@ -5,8 +5,10 @@
  * modify it under the terms of the GNU General Public License as published by the 
  * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
  */
+
 session_start();
-session_cache_expire(30);
+//session_cache_expire(3000);
+
 ?>
 <html>
     <head>
@@ -25,9 +27,9 @@ session_cache_expire(30);
             <?PHP include('header.php'); ?>
             <div id="content">
                 <?PHP
-                include_once('../domain/Horse.php');
-                include_once('../database/dbinfo.php');
-                include_once('../database/horsedb.php');
+                include_once('domain/Horse.php');
+                include_once('database/dbinfo.php');
+                include_once('database/horsedb.php');
                 //include_once('database/dbPersons.php');
                 //include_once('domain/Person.php');
                 //include_once('database/dbLog.php');
