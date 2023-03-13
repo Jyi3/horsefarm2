@@ -15,14 +15,14 @@ include_once('domain/Horse.php');
 
 
 //Declare global variables.
-$formAction = $_GET["formAction"];
-$horseToAdd;
-$horseToEdit;
-$oldName;
-$oldBreed;
-$oldColor;
-$oldPastureNum;
-$oldColorRank;
+$formAction = $_GET["formAction"];  //correct
+$horseToAdd;       //correct
+$horseToEdit;     //correct
+$oldName;  //EHHHHH
+$oldBreed;  //EHHHHHH
+$oldColor; //EHHHHHH
+$oldPastureNum;  //correct
+$oldColorRank;   //correct
 
 
 /*
