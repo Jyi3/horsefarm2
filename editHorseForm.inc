@@ -16,6 +16,7 @@
         echo('<p>When finished, hit <b>"Add Horse"</b> at the bottom of this page.</p>');
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
+
         echo("<form method='POST' action='/horse/horsefarm2/horseActions.php?formAction=confirmAdd'>");
     }
     else { //$formAction == "editHorse" or "confirmEdit"
@@ -25,6 +26,7 @@
         echo("<p>Please use the dropdown menu to select the horse you want to edit.</p>");
         echo('<p>When finished, hit <b>"Edit ' . $oldName . '"</b> at the bottom of this page.</p>');
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
+
 
         echo("<form method='POST' action='/horse/horsefarm2/horseActions.php?formAction=confirmEdit'>");
     }
