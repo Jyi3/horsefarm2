@@ -394,4 +394,4 @@ function process_form($name, $horse, $action) {
             </div>
         </div>
     </body>
-</html>    
+</html>   
