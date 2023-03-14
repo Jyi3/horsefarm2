@@ -63,6 +63,15 @@ CREATE TABLE horseDB (
   colorRank text
 );
 
+CREATE TABLE archiveHorseDB (
+  horseName varchar(50) primary key NOT NULL,
+  color text,
+  breed text,
+  pastureNum int,
+  colorRank text,
+  dateArchived DATETIME
+);
+
 CREATE TABLE behaviorDB (
   title varchar(100) primary key NOT NULL,
   behaviorLevel text
