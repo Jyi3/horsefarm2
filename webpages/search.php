@@ -105,7 +105,7 @@ session_start();
                 <label for="yellow-checkbox">Yellow</label>
                 <input type="checkbox" id="red-checkbox" name="search5[]" value="red">
                 <label for="red-checkbox">Red</label>
-                <input type="checkbox" id="none-checkbox" name="search5[]" value="none">
+                <input type="checkbox" id="none-checkbox" name="search5[]" value="All">
                 <label for="none-checkbox">None</label>
 		    </div2>
 		
@@ -131,9 +131,9 @@ session_start();
                     document.getElementById("search5-container").style.display = "block";
                 } else {
                     search1Label.innerText = "Trainer Name:";
-                    search2Label.innerText = "Trainer Age:";
-                    search3Label.innerText = "Trainer Gender:";
-                    search4Label.innerText = "Trainer Nationality:";
+                    search2Label.innerText = "Trainer :";
+                    search3Label.innerText = "Trainer :";
+                    search4Label.innerText = "Trainer :";
                     search5Label.innerText = "";
                     document.getElementById("search5-container").style.display = "none";
                 }
