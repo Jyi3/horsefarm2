@@ -8,7 +8,8 @@
 
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Horse.php');
-date_default_timezone_set('EST')
+include_once(dirname(__FILE__).'/../domain/ArchivedHorse.php');
+date_default_timezone_set('America/New_York');
 
 
 
@@ -30,29 +31,31 @@ function archive_horse($horse){
     $con=connect();
 
     if(!$horse instanceof Horse){
-        die("Error: archive_horse type mismatch")
+        die("Error: archive_horse type mismatch");
     }
-    $arcTime = date("Y-m-d H:i:s")
-    $query = "SELECT * FROM archiveHorseDB WHERE horseName='" . $horse->get_horseName() . " AND archiveTime='" . $arcTime"';";
+    $arcTime = date("Y-m-d H:i:s");
+    
+    $query = "SELECT * FROM archivehorsedb WHERE horseName='" . $horse->get_horseName(). "' AND dateArchived='" . $arcTime . "';";
     $result = mysqli_query($con,$query);
 
 
     //If the query is empty, meaning the horse doesn't exist in the database,
     if ($result == null || mysqli_num_rows($result) == 0) {
         
-        mysqli_query($con,'INSERT INTO horseDB VALUES("' .
+        mysqli_query($con,'INSERT INTO archivehorsedb VALUES("' .
                 $horse->get_horseName() . '","' .
                 $horse->get_color() . '","' .
                 $horse->get_breed() . '","' .
                 $horse->get_pastureNum() . '","' .
                 $horse->get_colorRank() . '","'.
                 $archiveTime . '");');							        
-        mysqli_close($con)
+        mysqli_close($con);
         return true;
     }
     //Else then the horse already exists (same name and time archived) so an error has occured 
-    mysqli_close($con)
-    return false
+    mysqli_close($con);
+    return false;
+    
 
 
 }
@@ -64,14 +67,14 @@ function archive_horse($horse){
 //Work on this next
 function getall_arcHorseDB(){
 
-    $con=connect()
+    $con=connect();
     $query = "SELECT * FROM archiveHorseDB ORDER BY horseName";
-    $result = mysqli_query($con,$query)
+    $result = mysqli_query($con,$query);
 
     if($result == null || mysqli_num_rows($result) == 0){
 
         //close connection and return false
-        mysqli_close($con)
+        mysqli_close($con);
         return false;
     }
     else{
@@ -92,14 +95,14 @@ function getall_arcHorseDB(){
 //Horses are saved by the order of the time they were archived
 function getall_arcHorseDB_byTime(){
 
-    $con=connect()
+    $con=connect();
     $query = "SELECT * FROM archiveHorseDB ORDER BY arcTime";
-    $result = mysqli_query($con,$query)
+    $result = mysqli_query($con,$query);
 
     if($result == null || mysqli_num_rows($result) == 0){
 
         //close connection and return false
-        mysqli_close($con)
+        mysqli_close($con);
         return 0;
     }
     else{
@@ -121,16 +124,16 @@ function getall_archived_horse_names(){
 
     //If archive is empty.
     if($result == null || mysqli_num_rows($result) == 0){
-        mysqli_close($con)
+        mysqli_close($con);
         return false;
     }
 
-    names = array();
-    while ($result_row = mysqli_fetch_assoc($result) {
+    $names = array();
+    while ($result_row = mysqli_fetch_assoc($result)) {
         $names[] = $result_row['horseName'];
     }
 
-    mysqli_close($con)
+// close ehre
     return $names;
 }
 
@@ -145,21 +148,21 @@ function num_archived(){
 
 function getall_archived_horse_times(){
     $con = connect();
-    $query = "SELECT arcTime from horseDB ORDER BY arcTime";
+    $query = "SELECT dateArchived from archivehorsedb ORDER BY dateArchived";
     $result = my_sqli_query($con,$query);
 
     //If archive is empty.
     if($result == null || mysqli_num_rows($result) == 0){
-        mysqli_close($con)
+        
         return false;
     }
 
-    names = array();
-    while ($result_row = mysqli_fetch_assoc($result) {
+    $names = array();
+    while ($result_row = mysqli_fetch_assoc($result)) {
         $names[] = $result_row['arcTime'];
     }
 
-    mysqli_close($con)
+   
     return $names;
 }
 
@@ -180,7 +183,7 @@ function horse_to_archive($result_row) {
                 $result_row['breed'],
                 $result_row['pastureNum'],
                 $result_row['colorRank']);
-                $result_row['arcTime']
+                $result_row['arcTime'];
     return $archivedHorse;
 }
 

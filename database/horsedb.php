@@ -7,7 +7,7 @@
 //Include the MySQL connection and Horse class.
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Horse.php');
-
+include_once(dirname(__FILE__).'/../database/archiveHorseDb.php');
 
 /*
  * Function name: add_horse($horse)
@@ -127,9 +127,9 @@ function remove_horse($horseName) {
 
     
     //Saves the horse that is being deleted
-    $archived = retrieve_horse($horseName)
+    $archived = retrieve_horse($horseName);
     //Adds the deleted horse to the archived DB using the archive_horse function
-    archive_horse($archived)
+    archive_horse($archived);
     
 
     $query = 'DELETE FROM horseDB WHERE horseName = "' . $horseName . '"';

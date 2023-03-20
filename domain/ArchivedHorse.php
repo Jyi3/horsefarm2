@@ -18,7 +18,7 @@ class ArchivedHorse {
         $this->breed = $breed;
         $this->pastureNum = $pastureNum;
         $this->colorRank = $colorRank;
-        $this-.$arcTime = $arcTime;
+        $this->$arcTime = $arcTime;
     }
 
     function get_horseName() {
