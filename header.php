@@ -10,29 +10,32 @@
 ?>
 <!-- Begin Header -->
 <style type="text/css">
-    h1 {padding-left: 0px; padding-right:165px;}
+    h1 {padding-left: 0px; padding-right: 165px;}
+    #navigationLinks {font-size: 100%;}
+    #mainNavLinks {font-size: 150%;}
+    #navigationLinks a:first-child, #navigationLinks a:nth-child(2) {font-size: 130%;}
 </style>
 <div id="header">
 <!--<br><br><img src="images/rmhHeader.gif" align="center"><br>
 <h1><br><br>Homebase <br></h1>-->
-
 </div>
 
 <div align="center" id="navigationLinks">
     <?PHP    
-        echo("<br><b>"."CVHR Horse Training Management System"."</b> ");
+        echo('<br><b style="font-size:200%;">'.'CVHR Horse Training Management System'.'</b> ');
         echo('<br><br>');
-        echo('<a href="index.php">home</a>');
-        echo(' | <a href="about.php">about</a>');
+
+        echo('<a href="index.php" style="font-size:150%;">HOME</a>');
+        echo('<a style="font-size:200%;"> | </a>');
+        echo('<a href="search.php" style="font-size:150%;">SEARCH</a>');
+        echo('<a style="font-size:200%;"> | </a>');
+        echo('<a href="about.php" style="font-size:150%;">ABOUT</a>');
+        
+       
         echo('</br>');
-        //echo(' | <a href="' . $path . 'help.php?helpPage=' . $current_page . '" target="_BLANK">help</a>');
-        //echo(' | calendars: <a href="' . $path . 'calendar.php?venue=portland'.''.'">Portland, </a>');
-        //echo(' <a href="' . $path . 'calendar.php?venue=bangor'.''.'">Bangor</a>');
-        //echo('<br>master schedules: <a href="' . $path . 'viewSchedule.php?venue=portland'."".'">Portland, </a>');
-        //echo('<a href="' . $path . 'viewSchedule.php?venue=bangor'."".'">Bangor</a>');
         echo('<br>');
-        echo('<strong>Horse Actions</strong>| 
-                        <a href="horseActions.php?formAction=searchHorse"><u>Search Horse</u></a>,
+        echo('<strong>Horse Actions | </strong>
+                        <a href="horseActions.php?formAction=searchHorse"><u>View Horses</u></a>,
                         <a href="horseActions.php?formAction=addHorse"><u>Add Horse</u></a>, 
                         <a href="horseActions.php?formAction=selectHorse"><u>Edit Horse</u></a>,
                         <a href="horseActions.php?formAction=removeHorse"><u>Remove Horse</u></a>');
@@ -63,6 +66,9 @@
                         <a><u>Unassign Trainer</u></a>, 
                         <a><u>Assign Behavior</u></a>,
                         <a><u>Unassign Behavior</u></a>');
+        echo("<br>");
+        echo("_______________________________________________________________________________________________________________________________________");
+        echo("<br><br><br><br>");
     ?>
 </div>
 <!-- End Header -->
