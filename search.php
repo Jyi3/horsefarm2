@@ -72,6 +72,19 @@ session_start();
                 cursor: pointer;
             }
 
+            #content {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 400px;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px #ccc;
+            overflow: auto;
+            }
+
         </style>
 
     </head>
@@ -98,17 +111,15 @@ session_start();
             <input type="text" id="search4" name="search4">
             
             <div2 id="search5-container">
-                <center>
-                <label id="search5-label">Horse Difficulty:</label>
+                <label id="search5-label">Horse Color:</label>
                 <input type="checkbox" id="green-checkbox" name="search5[]" value="green">
                 <label for="green-checkbox">Green</label>
                 <input type="checkbox" id="yellow-checkbox" name="search5[]" value="yellow">
                 <label for="yellow-checkbox">Yellow</label>
                 <input type="checkbox" id="red-checkbox" name="search5[]" value="red">
                 <label for="red-checkbox">Red</label>
-                <input type="checkbox" id="none-checkbox" name="search5[]" value="none">
-                <label for="none-checkbox">All</label>
-                </center>
+                <input type="checkbox" id="none-checkbox" name="search5[]" value="All">
+                <label for="none-checkbox">None</label>
 		    </div2>
 		
             <button type="submit">Search</button>
@@ -133,7 +144,7 @@ session_start();
                     document.getElementById("search5-container").style.display = "block";
                 } else {
                     search1Label.innerText = "Trainer Name:";
-                    search2Label.innerText = "Trainer Phone#:";
+                    search2Label.innerText = "Trainer :";
                     search3Label.innerText = "Trainer :";
                     search4Label.innerText = "Trainer Rank:";
                     search5Label.innerText = "";
