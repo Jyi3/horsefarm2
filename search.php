@@ -1,15 +1,10 @@
 <?php
-/*
- * Copyright 2015 by Allen Tucker. This program is part of RMHP-Homebase, which is free 
- * software.  It comes with absolutely no warranty. You can redistribute and/or 
- * modify it under the terms of the GNU General Public License as published by the 
- * Free Software Foundation (see <http://www.gnu.org/licenses/ for more information).
- */
 
 session_start();
-//session_cache_expire(3000);
+
 
 ?>
+
 <html>
     <head>
         <title>
@@ -150,6 +145,83 @@ session_start();
                     search5Label.innerText = "";
                     document.getElementById("search5-container").style.display = "none";
                 }
+            }
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+            {
+                // Get the search parameters from the form
+                $type = $_POST['type'];
+                $search1 = $_POST['search1'];
+                $search2 = $_POST['search2'];
+                $search3 = $_POST['search3'];
+                $search4 = $_POST['search4'];
+                $search5 = isset($_POST['search5']) ? $_POST['search5'] : [];
+
+                //Include MySQL connection file, horse database functions, and horse class.
+                include_once('database/horsedb.php');
+                include_once('database/dbinfo.php');
+                include_once('domain/Horse.php');
+                $host = "localhost"; 
+                $username = "homebasedb";
+                $password = "homebasedb";
+                $database = "horsefarm2";
+                $conn = new mysqli($servername, $username, $password, $dbname);
+
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                // Construct the SQL query based on the search parameters
+                $sql = "SELECT * FROM " . $type;
+                $conditions = [];
+                
+
+                if (!empty($search1)) {
+                    $conditions[] = "name LIKE '%" . $search1 . "%'";
+                }
+                if (!empty($search2)) {
+                    $conditions[] = "color = '" . $search2 . "'";
+                }
+                if (!empty($search3)) {
+                    $conditions[] = "breed = '" . $search3 . "'";
+                }
+                if (!empty($search4)) {
+                    $conditions[] = "pasture_number = " . $search4;
+                }
+                if (!empty($search5)) {
+                    $conditions[] = "color_rank IN ('" . implode("','", $search5) . "')";
+                }
+
+                if (!empty($conditions)) {
+                    $sql .= " WHERE " . implode(" AND ", $conditions);
+                }
+
+                // Execute the query
+                $result = $conn->query($sql);
+
+                // Create the windows
+                echo "<div>";
+                while ($row = $result->fetch_assoc()) {
+                    echo "<div style='border: 1px solid black; padding: 10px; margin-bottom: 10px;'>";
+
+                    if ($type == "horse") {
+                        echo "<p>Name: " . $row['name'] . "</p>";
+                        echo "<p>Color: " . $row['color'] . "</p>";
+                        echo "<p>Breed: " . $row['breed'] . "</p>";
+                        echo "<p>Pasture Number: " . $row['pasture_number'] . "</p>";
+                        echo "<p>Color Rank: " . $row['color_rank'] . "</p>";
+                    } else {
+                        echo "<p>Name: " . $row['name'] . "</p>";
+                        echo "<p>Rank: " . $row['rank'] . "</p>";
+                    }
+
+                    echo "</div>";
+                }
+                echo "</div>";
+
+                // Close the database connection
+                $conn->close();
             }
             </script>
             <?PHP //include('footer.inc'); ?>
