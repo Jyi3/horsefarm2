@@ -21,7 +21,7 @@ function connect() {
     $host = "localhost"; 
     $username = "homebasedb";
     $password = "homebasedb";
-    $database = "homebasedb";
+    $database = "horsefarm2";
 
     $con = mysqli_connect($host, $username, $password, $database);
     if (!$con) { 
