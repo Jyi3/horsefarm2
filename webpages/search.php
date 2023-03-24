@@ -77,7 +77,7 @@ session_start();
     </head>
     <body>
         <div id="container">
-            <?PHP include('../header.php'); ?>
+            <?PHP include('../newHeader.php'); ?>
             <div id="content">
             <form action="search.php" method="post">
             <label for="type">Search Type:</label>
