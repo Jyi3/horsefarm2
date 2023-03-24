@@ -24,7 +24,7 @@ session_start();
     </head>
     <body>
         <div id="container">
-            <?PHP include('header.php'); ?>
+            <?PHP include('newHeader.php'); ?>
             <div id="content">
                 <?PHP
                 include_once('domain/Horse.php');
