@@ -8,13 +8,19 @@
   }
   
   .header .logo {
-    font-size: 25px;
-    font-family: 'Sriracha', cursive;
+    font-size: 40px;
+    font-family: sans-serif;
     color: #000;
     text-decoration: none;
     margin-left: 30px;
   }
-
+  .header .menu-options {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f5f5f5;
+    margin-right: 20px;
+  }
   .intro {
     display: flex;
     flex-direction: column;
