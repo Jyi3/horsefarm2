@@ -15,13 +15,31 @@
     #mainNavLinks {font-size: 150%;}
     #navigationLinks a:first-child, #navigationLinks a:nth-child(2) {font-size: 130%;}
 </style>
-<div id="header">
+<div class="intro"> 
+      <h1>
+        <a href="https://centralvahorserescue.org/">
+        <img src="https://i0.wp.com/centralvahorserescue.org/wp-content/uploads/2021/10/cropped-10441289_779793575378834_6338759994579667054_n.png?w=250&ssl=1" alt="CVHR Logo" style="float:left;width:72px;height:72px;"> 
+        </a>
+         CVHR Horse Training Management System</h1>
+    </div>
+
 <!--<br><br><img src="images/rmhHeader.gif" align="center"><br>
 <h1><br><br>Homebase <br></h1>-->
-</div>
+<header class="header">
+  <a href="#" class="logo">Horse</a>
+  <nav class="nav-items">
+    <a href="index.php">Home</a>
+    <a href="search.php">Search</a>
+    <a href="about.php">About</a>
+    <a href="logout.php">Logout</a>
+    <br>
+  </nav>
+</header>
+
 
 <div align="center" id="navigationLinks">
     <?PHP    
+        
         echo('<br><b style="font-size:200%;">'.'CVHR Horse Training Management System'.'</b> ');
         echo('<br><br>');
 

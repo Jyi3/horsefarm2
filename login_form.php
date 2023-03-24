@@ -96,7 +96,7 @@
         }
     }
     ?>
-    <?PHP include('footer.inc'); ?>
+    <?PHP //include('footer.inc'); ?>
 </div>
 </div>
 </body>
