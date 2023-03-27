@@ -27,7 +27,7 @@
 <h1><br><br>Homebase <br></h1>-->
 <header class="header">
   <a href="#" class="logo">Horse</a>
-  <nav class="nav-items">
+  <nav class="menu-options">
     <a href="index.php">Home</a>
     <a href="search.php">Search</a>
     <a href="about.php">About</a>
