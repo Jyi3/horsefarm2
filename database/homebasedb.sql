@@ -41,6 +41,8 @@ DROP TABLE IF EXISTS dbweeks;
 
 /*Drop CVHR tables*/
 DROP TABLE IF EXISTS notesDB;
+DROP TABLE IF EXISTS archivePersonDB;
+DROP TABLE IF EXISTS archiveHorseDB;
 DROP TABLE IF EXISTS trainerToHorseDB;
 DROP TABLE IF EXISTS horseToBehaviorDB;
 DROP TABLE IF EXISTS horseDB;
@@ -72,6 +74,7 @@ CREATE TABLE archiveHorseDB (
   dateArchived DATETIME
 );
 
+
 CREATE TABLE behaviorDB (
   title varchar(100) primary key NOT NULL,
   behaviorLevel text
@@ -87,6 +90,18 @@ CREATE TABLE personDB (
   pass text,
   userType text NOT NULL
 );
+CREATE TABLE archivePersonDB(
+	firstName text,
+	lastName text,
+	fullName varchar(50) primary key NOT NULL,
+	phone text, 
+	email text, 
+	username text, 
+	pass text,
+	userType text NOT NULL, 
+	dateArchived DATETIME
+);
+	
 
 CREATE TABLE trainerToHorseDB (
   trainerName varchar(50) NOT NULL,
