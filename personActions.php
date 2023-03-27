@@ -14,6 +14,10 @@ session_start();
 include_once('database/persondb.php');
 include_once('database/dbinfo.php');
 include_once('domain/Person.php');
+include_once('domain/ArchivedPerson.php');
+include_once('database/archivePersondb.php');
+
+
 
 $formAction = $_GET["formAction"];
 $personToAdd;
@@ -26,6 +30,7 @@ $oldEmail;
 $oldUsername;
 $oldPass;
 $oldUserType;
+$arcTime;
 
 function process_form($name, $person, $action) {
 

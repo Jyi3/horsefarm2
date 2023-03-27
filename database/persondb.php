@@ -108,13 +108,19 @@ function remove_person($personName) {
 
     //Create a database connection and delete the person.
     $con=connect();
-    $query = 'SELECT * FROM persondb WHERE fullName = "' . $personName . '"';
-    $query = 'DELETE FROM persondb WHERE fullName = "' . $personName . '"';
+    $archived = retrieve_person($personName);
+    archive_person($archived);
+   
+    
+    
+
+    $query = 'DELETE FROM personDB WHERE fullName = "' . $personName . '"';
     $result = mysqli_query($con,$query);
 
     //Close the connection and return true.
     mysqli_close($con);
     return true;
+    
 }
 
 
