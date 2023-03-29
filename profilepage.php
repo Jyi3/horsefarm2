@@ -27,19 +27,25 @@
             text-align: center;
         }
 
-        .profile-info h1 {
-            font-size: 2em;
-            margin-top: 20px;
-        }
-
-        /* Container for profile picture and name */
+        /* Container for profile picture and details */
         .profile-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             margin-bottom: 20px;
         }
 
+        /* Container for profile details */
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-weight: bold;
+        }
+
+        /* Style profile detail labels */
+        .profile-details p {
+            margin: 5px 0;
+        }
     </style>
 
 </head>
@@ -51,7 +57,7 @@
         $servername = "localhost";
         $username = "homebasedb";
         $password = "homebasedb";
-        $dbname = "horsefarm2";
+        $dbname = "homebasedb";
 
         // Create database connection
         $conn = mysqli_connect($servername, $username, $password, $dbname);
@@ -62,8 +68,8 @@
         }
 
         // Retrieve person information from database based on username 
-        $username = "homebasedb"; // replace with actual username from session or URL parameter
-        $sql = "SELECT * FROM persondb WHERE username = '$username'";
+        $username = "Sally7037993827"; // replace with actual username from session or URL parameter
+        $sql = "SELECT * FROM dbPersons WHERE id = '$username'";
         $result = mysqli_query($conn, $sql);
 
         // Check if there is exactly one person with the given username
@@ -73,10 +79,10 @@
 
         // Retrieve person data from query result
         $row = mysqli_fetch_assoc($result);
-        $name = $row["username"];
+        $name = $row["id"];
         $email = $row["email"];
-        $phone = $row["phone"];
-        $userType = $row["userType"];
+        $phone = $row["phone1"];
+        $userType = $row["type"];
         // Close database connection
         mysqli_close($conn);
         ?>
@@ -91,13 +97,14 @@
                 <div class="profile-info">
                     <h1><?php echo $username; ?>'s Profile</h1>
                 </div>
+                <div class="profile-details">
+                    <p>Username: <?php echo $username; ?></p>
+                    <p>Email: <?php echo $email; ?></p>
+                    <p>Phone: <?php echo $phone; ?></p>
+                    <p>User Type: <?php echo $userType; ?></p>
+                </div>
             </div>
-            <p>Username: <?php echo $username; ?></p>
-            <p>Email: <?php echo $email; ?></p>
-            <p>Phone: <?php echo $phone; ?></p>
-            <p>User Type: <?php echo $userType; ?></p>
         </div>
         <?PHP //include('footer.inc'); ?>
     </div>
-</body>
-</html>
+</body
