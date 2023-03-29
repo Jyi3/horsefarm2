@@ -25,16 +25,43 @@
 
 <!--<br><br><img src="images/rmhHeader.gif" align="center"><br>
 <h1><br><br>Homebase <br></h1>-->
+
 <header class="header">
   <a href="#" class="logo">Horse</a>
   <nav class="menu-options">
-    <a href="index.php">Home</a>
-    <a href="search.php">Search</a>
-    <a href="about.php">About</a>
-    <a href="logout.php">Logout</a>
+    <div class = "dropdown">
+      <p> &emsp; Database</p>
+      <div class = "dropdown-content">
+        <a href="horseActions.php?formAction=searchHorse">View All Horses</a>
+        <br>
+        <a href="#">View All Trainers</a>
+        <br>
+        <a href="search.php">Search Horses/Trainers</a>
+      </div>
+    </div>
+    <div class = "dropdown">
+      <p>&emsp; Training</p>
+      <div class = "dropdown-content">
+        <a href="behaviorActions.php?formAction=addBehavior">Create Behavior</a>
+        <br>
+        <a href="behaviorActions.php?formAction=selectBehavior">Edit Behavior</a>
+      </div>
+    </div>
+    <div class = "dropdown">
+      <p>&emsp; Administration</p>
+      <div class = "dropdown-content">
+        <a href="personActions.php?formAction=selectPerson">Edit Trainers</a>
+        <br>
+        <a href="#">Archive Trainer</a>
+        <br>
+        <a href="#">Archive Horse</a>
+      </div>
+    </div>
+    <a href="logout.php">&emsp; Logout</a>
     <br>
   </nav>
 </header>
+
 
 
 <div align="center" id="navigationLinks">
