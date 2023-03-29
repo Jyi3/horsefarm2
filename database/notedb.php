@@ -32,7 +32,7 @@ function add_note($note) {
     $query = "SELECT * FROM noteDB WHERE noteID='" . $note->get_noteID() . "';";
     $result = mysqli_query($con,$query);
 
-    //If the query is empty, meaning the horse doesn't exist in the database,
+    //If the query is empty, meaning the note doesn't exist in the database,
     if ($result == null || mysqli_num_rows($result) == 0) {
         
         //add the note to the database.
@@ -231,13 +231,34 @@ function getall_notes_from_horse($horseName) {
  *      $thenote, the note object created from the MySQL row.
  */
 function make_a_note($result_row) {
-    $thenote = new note(
+    //get a new ID.
+    $con = connect();
+    $query = 'SELECT MAX(noteID) FROM noteDB ';
+    $result = mysqli_query($con,$query);
+    $newID = -2147483648;
+    //this value above is the BOTTOM of the integer value space.
+    if($result==null){$newID=-2147483648;}
+    else{
+    if($result==2147483647){
+        //this is a HIGHLY UNLIKELY CASE, BUT THIS MEANS THAT WE RAN OUT OF SPACE
+        //IN A 32 BIT INTEGER. WE CANNOT ADD ANY MORE NOTES.
+        echo("CRITICAL ERROR. MAXIMUM ID VALUE ACHIEVED. NO MORE SPACE IN NOTEID.");
+
+    }
+    else{$newID = $result + 1;}    
+        
+    
+    }
+    $thenote = new Note(
                 $result_row['horseName'],
                 $result_row['date'],
                 $result_row['timestamp'],
                 $result_row['noteText'],
                 $result_row['trainerFirstName'],
-                $result_row['trainerLastName']);
+                $result_row['trainerLastName'],
+                $newID
+            );
+
     return $thenote;
 }
 
