@@ -79,14 +79,16 @@
 
         // Retrieve person data from query result
         $row = mysqli_fetch_assoc($result);
-        $name = $row["id"];
+        $firstName = $row["firstName"];
+        $lastName = $row["lastName"];
+        $id = $row["id"];
         $email = $row["email"];
         $phone = $row["phone1"];
         $userType = $row["type"];
         // Close database connection
         mysqli_close($conn);
         ?>
-        <title><?php echo $username; ?>'s Profile</title>
+        <title><?php echo $id; ?>'s Profile</title>
 
         <?PHP include('header.php'); ?>
         <div id="content">
@@ -95,7 +97,7 @@
                     <img src="images/cvhrIMG.png" alt="Profile Picture">
                 </div>
                 <div class="profile-info">
-                    <h1><?php echo $username; ?>'s Profile</h1>
+                    <h1><?php echo $id; ?>'s Profile</h1>
                 </div>
                 <div class="profile-details">
                     <p>Username: <?php echo $username; ?></p>
