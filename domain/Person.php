@@ -5,6 +5,7 @@
  */
 
 class Person {
+    private $trainerID; //string
     private $firstName; //string
     private $lastName; //string
 	private $fullName; //string
@@ -13,8 +14,11 @@ class Person {
 	private $username; //string
 	private $pass; //strng
     private $userType; //string
+    private $archive; //boolean
+    private $archiveDate; //string
     
     function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
+        $this->trainerID = $trainerID;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
 		$this->fullName = $fullName;
@@ -23,6 +27,12 @@ class Person {
 		$this->username = $username;
 		$this->pass = $pass;
         $this->userType = $userType;
+		$this->archive = false;
+        $this->archiveDate = NULL;
+    }
+
+    function get_trainerID() {
+        return $this->trainerID;
     }
 
     function get_firstName() {
@@ -55,5 +65,13 @@ class Person {
 
     function get_userType() {
         return $this->userType;
+    }
+
+    function get_archive() {
+        return $this->archive;
+    }
+
+    function get_archiveDate() {
+        return $this->archiveDate;
     }
 }

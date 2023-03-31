@@ -7,23 +7,21 @@
  */
 
 class Notes {
-    private $horseName; //string
+    private $horseID; //string
     private $noteDate; //date format
     private $noteTimestamp; //timestamp
     private $note; //string
-    private $trainerFirstName; //string
-    private $trainerLastName; //string
+    private $trainerID; //string
     
-    function __construct($horseName, $date, $timestamp, $note, $trainerFirstName, $trainerLastName) {
-            $this->horseName = $horseName;
+    function __construct($horseID, $date, $timestamp, $note, $trainerID) {
+            $this->horseID = $horseID;
             $this->date = $date;
             $this->timestamp = $timestamp;
             $this->note = $note;
-            $this->trainerFirstName = $trainerFirstName;
-            $this->trainerLastName = $trainerLastName;
+            $this->trainerID = $trainerID;
     }
-    function get_horseName() {
-        return $this->horseName;
+    function get_horseID() {
+        return $this->horseID;
     }
     function get_date() {
         return $this->date;
@@ -34,10 +32,7 @@ class Notes {
     function get_note() {
         return $this->note;
     }
-    function get_trainerFirstName() {
-        return $this->trainerFirstName;
-    }
-    function get_trainerLastName() {
-        return $this->trainerLastName;
+    function get_trainerID() {
+        return $this->trainerID;
     }
 }

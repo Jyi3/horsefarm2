@@ -58,21 +58,24 @@ SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
 
 CREATE TABLE horseDB (
-  horseName varchar(50) primary key NOT NULL,
-  color text,
-  breed text,
-  pastureNum int,
-  colorRank text
-);
-
-CREATE TABLE archiveHorseDB (
-  horseName varchar(50) primary key NOT NULL,
+  horseID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  horseName varchar(50) NOT NULL,
   color text,
   breed text,
   pastureNum int,
   colorRank text,
-  dateArchived DATETIME
+  archive boolean,
+  archiveDate text
 );
+
+-- CREATE TABLE archiveHorseDB (
+--   horseName varchar(50) primary key NOT NULL,
+--   color text,
+--   breed text,
+--   pastureNum int,
+--   colorRank text,
+--   dateArchived DATETIME
+-- );
 
 
 CREATE TABLE behaviorDB (
@@ -80,55 +83,63 @@ CREATE TABLE behaviorDB (
   behaviorLevel text
 );
 
-CREATE TABLE personDB (
-  firstName text,
-  lastName text, 
-  fullName varchar(50) primary key NOT NULL,
-  phone text,
+CREATE TABLE personDB 
+(
+  trainerID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  firstName text NOT NULL,
+  lastName text NOT NULL, 
+  fullName varchar(50) NOT NULL,
+  phone text NOT NULL,
   email text,
-  username text,
+  username text NOT NULL,
   pass text,
-  userType text NOT NULL
+  userType text NOT NULL,
+  archive boolean,
+  archiveDate text,
+  unique key (firstName, lastName, phone, username)
 );
-CREATE TABLE archivePersonDB(
-	firstName text,
-	lastName text,
-	fullName varchar(50) primary key NOT NULL,
-	phone text, 
-	email text, 
-	username text, 
-	pass text,
-	userType text NOT NULL, 
-	dateArchived DATETIME
-);
+
+
+-- CREATE TABLE archivePersonDB(
+-- 	firstName text,
+-- 	lastName text,
+-- 	fullName varchar(50) primary key NOT NULL,
+-- 	phone text, 
+-- 	email text, 
+-- 	username text, 
+-- 	pass text,
+-- 	userType text NOT NULL, 
+-- 	dateArchived DATETIME
+-- );
 	
 
 CREATE TABLE trainerToHorseDB (
-  trainerName varchar(50) NOT NULL,
-  horseName varchar(100) NOT NULL,
-  primary key (trainerName, horseName)/*,
+  trainerID varchar(50) NOT NULL,
+  horseID varchar(50) NOT NULL,
+  primary key (trainerID, horseID)/*,
   FOREIGN KEY (horseName) REFERENCES horseDB(horseName)
   FOREIGN KEY (behaviorTitle) REFERENCES behaviorDB(title) */
 );
 
 CREATE TABLE horseToBehaviorDB (
-  horseName varchar(50) NOT NULL,
+  horseID varchar(50) NOT NULL,
   behaviorTitle varchar(50) NOT NULL,
-  primary key (horseName, behaviorTitle)/*,
+  primary key (horseID, behaviorTitle)/*,
   FOREIGN KEY (trainerName) REFERENCES personDB(personName)
   FOREIGN KEY (horseName) REFERENCES horseDB(horseName) */
 );
 
 CREATE TABLE notesDB (
-  horseName varchar(50) NOT NULL,
+  horseID INT NOT NULL,
   noteDate date,
   noteTimestamp timestamp,
   note text,
-  trainerName varchar(50),
-  primary key (horseName, noteDate, noteTimestamp),
-  FOREIGN KEY (horseName) REFERENCES horseDB(horseName),
-  FOREIGN KEY (trainerName) REFERENCES personDB(fullName)
-); 
+  trainerID INT NOT NULL,
+  primary key (horseID, noteDate, noteTimestamp, note(255), trainerID),
+  FOREIGN KEY (horseID) REFERENCES horseDB(horseID),
+  FOREIGN KEY (trainerID) REFERENCES personDB(trainerID)
+);
+
 
 
 

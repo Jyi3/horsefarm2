@@ -18,7 +18,6 @@ include_once('domain/ArchivedPerson.php');
 include_once('database/archivePersondb.php');
 
 
-
 $formAction = $_GET["formAction"];
 $personToAdd;
 $personToEdit;
