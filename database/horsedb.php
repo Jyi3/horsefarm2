@@ -43,7 +43,7 @@ function add_horse($horse) {
                 $horse->get_breed() . '","' .
                 $horse->get_pastureNum() . '","' .
                 $horse->get_colorRank() . '","' .
-                
+               
                 $horse->get_horseArchived() . '","' .
 					 $horse->get_horseArchiveDate() . '","' .
                 //archive 
@@ -103,7 +103,7 @@ function retrieve_horse($horseName) {
     
     //Create a database connection and retrieve the horse from the database.    
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE horseName='" . $horseName . "';";
+    $query = "SELECT * FROM horseDB WHERE horseName='" . $horseName . "'";
     $result = mysqli_query($con,$query);
 
     //If the horse does NOT exist in the database,
@@ -285,12 +285,19 @@ function get_numHorses() {
  *      $theHorse, the Horse object created from the MySQL row.
  */
 function make_a_horse($result_row) {
+	 $arcTime = "0000-00-00";
+	 $archiveNo = 0;
+	 $trainer = "none";
     $theHorse = new Horse(
                 $result_row['horseName'],
                 $result_row['color'],
                 $result_row['breed'],
                 $result_row['pastureNum'],
-                $result_row['colorRank']);
+                $result_row['colorRank'],
+                $archiveNo,
+                $arcTime,
+                $trainer);
+            
     return $theHorse;
 }
 

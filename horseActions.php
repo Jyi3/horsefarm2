@@ -277,7 +277,9 @@ function process_form($name, $horse, $action) {
                     
                     //attempt to validate and process the form.
                     include('horseValidate.inc'); 
-                    
+                    $arcTime = "0000-00-00";
+                    $notArchive = 0;
+                    $trainer = "none";
                     $oldName = $_POST['oldName'];
                     $newName = $_POST['horseName'];
                     $newColor = $_POST['color'];
@@ -322,7 +324,7 @@ function process_form($name, $horse, $action) {
                         else {
 
                             //so create a Behavior object and process the form to edit a behavior.
-                            $horseToEdit = new Horse($newName, $newColor, $newBreed, $newPastureNum, $newColorRank);
+                            $horseToEdit = new Horse($newName, $newColor, $newBreed, $newPastureNum, $newColorRank,$notArchive, $arcTime,$trainer);
                             process_form($oldName, $horseToEdit, "edit");
                             echo ('</div>');
                             //include('footer.inc');
