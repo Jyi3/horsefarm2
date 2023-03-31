@@ -103,7 +103,11 @@ function retrieve_horse($horseName) {
     
     //Create a database connection and retrieve the horse from the database.    
     $con=connect();
+    
     $query = "SELECT * FROM horseDB WHERE horseName='" . $horseName . "'";
+    if ($arcy == 1){
+    	
+    }
     $result = mysqli_query($con,$query);
 
     //If the horse does NOT exist in the database,
@@ -226,7 +230,35 @@ function getall_horse_names() {
 
     //Create a database connection and retrieve all of the horse names.
     $con=connect();
-    $query = "SELECT horseName FROM horseDB ORDER BY horseName";
+    $query = "SELECT horseName FROM horseDB where archived = 0 ORDER BY horseName";
+    $result = mysqli_query($con,$query);
+
+    //If the horse table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+
+    $result = mysqli_query($con,$query); //This line might be redundant.
+
+    //Otherwise, create an array and add each horse name to the array.
+    $names = array();
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $names[] = $result_row['horseName'];
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $names;
+}
+function getall_archived_horse_names() {
+
+    //Create a database connection and retrieve all of the horse names.
+    $con=connect();
+    $query = "SELECT horseName FROM horseDB where archived = 1 ORDER BY horseName";
     $result = mysqli_query($con,$query);
 
     //If the horse table is empty,
