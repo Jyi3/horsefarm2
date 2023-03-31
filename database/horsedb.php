@@ -33,14 +33,23 @@ function add_horse($horse) {
 
     //If the query is empty, meaning the horse doesn't exist in the database,
     if ($result == null || mysqli_num_rows($result) == 0) {
-        
+        $arctime = "0000-00-00";
+        $notArchive = 0;
+        $trainer = "none";
         //add the horse to the database.
         mysqli_query($con,'INSERT INTO horseDB VALUES("' .
                 $horse->get_horseName() . '","' .
                 $horse->get_color() . '","' .
                 $horse->get_breed() . '","' .
                 $horse->get_pastureNum() . '","' .
-                $horse->get_colorRank() . '");');							        
+                $horse->get_colorRank() . '","' .
+                
+                $horse->get_horseArchived() . '","' .
+					 $horse->get_horseArchiveDate() . '","' .
+                //archive 
+                //arctime
+                //trainer
+                $horse->get_assignedTrainer() . '");');							        
                 //dont need to insert datetime, since the default is equal to 00-00-0000 00:00:00
                 //dont need to insert trainer here, since the default is just NULL
         //Close the connection and return true.

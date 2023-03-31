@@ -209,12 +209,15 @@ function process_form($name, $horse, $action) {
                     else {
 
                         //so retrieve the form answers and validate it.
+                        $arcTime = "0000-00-00";
+                        $notArchive = 0;
+                        $trainer = "none";
                         $newName = $_POST['horseName'];
                         $newColor = $_POST['color'];
                         $newBreed = $_POST['breed'];
                         $newPastureNum = $_POST['pastureNum'];
                         $newColorRank = $_POST['colorRank'];
-                        $newHorse = new Horse($newName, $newColor, $newBreed, $newPastureNum, $newColorRank);
+                        $newHorse = new Horse($newName, $newColor, $newBreed, $newPastureNum, $newColorRank, $notArchive, $arcTime, $trainer);
 
                         $errors = validate_form($newHorse);
                         //errors array lists problems on the form submitted
@@ -356,7 +359,7 @@ function process_form($name, $horse, $action) {
                     if ($_POST['_form_submit'] != 1) {
 
                         //show the form again.
-                        include('assignTrainer.inc');
+                        include('editHorseForm.inc');
                     }
 
                     //Else, the form has been submitted,
