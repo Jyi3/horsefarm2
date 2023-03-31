@@ -7,7 +7,7 @@
 //Include the MySQL connection and Horse class.
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Horse.php');
-date_default_timezone_set('America/New York');
+date_default_timezone_set('America/New_York');
 
 
 /*
@@ -119,7 +119,7 @@ function archive_horse($horse){
         die("Error: archive_horse type mismatch");
     }
     $arcTime = date("Y-m-d H:i:s");
-    $horseName = $horse->get_horseName()
+    $horseName = $horse->get_horseName();
 
     //checks the DB to see if theres a horse with the same name and dateArchived, to avoid any duplications
     $query = "SELECT * FROM horsedb WHERE horseName='" . $horseName . "' AND dateArchived='" . $arcTime . "';";
@@ -128,7 +128,7 @@ function archive_horse($horse){
 
     //If the query is empty, meaning the horse doesn't exist in the database,
     if ($result == null || mysqli_num_rows($result) == 0) {
-        $archived = 1
+        $archived = 1;
         //updates the inputted horse, changing its archived to 1 and updating the dateArchived        
         mysqli_query($con, "UPDATE horsedb SET archived = 1, dateArchived='" .$arcTime . "' WHERE horseName='" . $horseName . "';");						        
         mysqli_close($con);

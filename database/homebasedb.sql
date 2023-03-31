@@ -62,9 +62,9 @@ CREATE TABLE horseDB (
   breed text,
   pastureNum int,
   colorRank text,
-  archived boolean DEFAULT 0,
-  dateArchived DATETIME DEFAULT '00-00-00 00:00:00',
-  trainer text DEFAULT NULL
+  archived boolean,
+  dateArchived DATETIME,
+  trainer text
 );
 
 
