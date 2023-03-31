@@ -7,7 +7,8 @@
 //Include the MySQL connection and Horse class.
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Horse.php');
-include_once(dirname(__FILE__).'/../database/archiveHorseDb.php');
+date_default_timezone_set('America/New_York');
+
 
 /*
  * Function name: add_horse($horse)
@@ -40,7 +41,8 @@ function add_horse($horse) {
                 $horse->get_breed() . '","' .
                 $horse->get_pastureNum() . '","' .
                 $horse->get_colorRank() . '");');							        
-        
+                //dont need to insert datetime, since the default is equal to 00-00-0000 00:00:00
+                //dont need to insert trainer here, since the default is just NULL
         //Close the connection and return true.
         mysqli_close($con);
         return true;
@@ -108,7 +110,39 @@ function retrieve_horse($horseName) {
     $theHorse = make_a_horse($result_row);
     return $theHorse;
 }
+ 
+function archive_horse($horse){
+
+    $con=connect();
+
+    if(!$horse instanceof Horse){
+        die("Error: archive_horse type mismatch");
+    }
+    $arcTime = date("Y-m-d H:i:s");
+    $horseName = $horse->get_horseName();
+
+    //checks the DB to see if theres a horse with the same name and dateArchived, to avoid any duplications
+    $query = "SELECT * FROM horsedb WHERE horseName='" . $horseName . "' AND dateArchived='" . $arcTime . "';";
+    $result = mysqli_query($con,$query);
+
+
+    //If the query is empty, meaning the horse doesn't exist in the database,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        $archived = 1;
+        //updates the inputted horse, changing its archived to 1 and updating the dateArchived        
+        mysqli_query($con, "UPDATE horsedb SET archived = 1, dateArchived='" .$arcTime . "' WHERE horseName='" . $horseName . "';");						        
+        mysqli_close($con);
+        return true;
+    }
+    //Else then the horse already exists (same name and time archived) so an error has occured 
+    mysqli_close($con);
+    return false;
     
+
+
+}
+
+
 // Change this so that remove saves the horse removed and adds the removed horse to a archivedDB
 
 /*
@@ -122,21 +156,13 @@ function retrieve_horse($horseName) {
  */
 function remove_horse($horseName) {
 
-    //Create a database connection and remove the horse from the database.
-    $con=connect();
-
-    
-    //Saves the horse that is being deleted
+    //gets the horse from horseDB that has the inputted name
     $archived = retrieve_horse($horseName);
-    //Adds the deleted horse to the archived DB using the archive_horse function
+    //calls the archive_horse function to change the horses archived column to 1, and updates its dateArchived to the time the function was called. 
     archive_horse($archived);
     
 
-    $query = 'DELETE FROM horseDB WHERE horseName = "' . $horseName . '"';
-    $result = mysqli_query($con,$query);
-
     //Close the connection and return true.
-    mysqli_close($con);
     return true;
 }
 

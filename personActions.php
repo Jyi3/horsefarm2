@@ -113,6 +113,12 @@ function process_form($name, $person, $action) {
                 else if($formAction == 'confirmEdit') {
                     echo("Edit Person");
                 }
+                else if($formAction == 'assignTrainer') {
+                    echo("Select Person to assign");
+                }
+                else if($formAction == 'confirmAssign') {
+                    echo("Assign Person");
+                }
                 else if($formAction == 'removePerson') {
                     echo("Select Person to Remove");
                 }
@@ -364,6 +370,25 @@ function process_form($name, $person, $action) {
                     //Else, display the form for selecting a person to edit.
                     else {
                         include('getPersonForm.inc');
+                    } 
+                    
+                }
+                else if ($formAction == 'assignTrainer') { 
+                    
+                    //check if there are people in the database to edit.
+                    $numPersons = get_numPersons();
+
+                    //If there are no people to remove, 
+                    if($numPersons == 0) {
+
+                        //display a message as such.
+                        echo("<p><strong>There are no people to assign.</strong></p>");
+                        echo('<p>Please add people using the "Add Trainer" link next to "Trainer Actions".</p><br>');
+                    }
+
+                    //Else, display the form for selecting a person to edit.
+                    else {
+                        include('assignTrainer.inc');
                     } 
                     
                 }
