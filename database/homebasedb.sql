@@ -42,7 +42,6 @@ DROP TABLE IF EXISTS dbweeks;
 /*Drop CVHR tables*/
 DROP TABLE IF EXISTS notesDB;
 DROP TABLE IF EXISTS archivePersonDB;
-DROP TABLE IF EXISTS archiveHorseDB;
 DROP TABLE IF EXISTS trainerToHorseDB;
 DROP TABLE IF EXISTS horseToBehaviorDB;
 DROP TABLE IF EXISTS horseDB;
@@ -62,17 +61,12 @@ CREATE TABLE horseDB (
   color text,
   breed text,
   pastureNum int,
-  colorRank text
+  colorRank text,
+  archived boolean DEFAULT 0,
+  dateArchived DATETIME DEFAULT '00-00-00 00:00:00',
+  trainer text DEFAULT NULL
 );
 
-CREATE TABLE archiveHorseDB (
-  horseName varchar(50) primary key NOT NULL,
-  color text,
-  breed text,
-  pastureNum int,
-  colorRank text,
-  dateArchived DATETIME
-);
 
 
 CREATE TABLE behaviorDB (
