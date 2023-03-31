@@ -56,10 +56,10 @@
         echo("_______________________________________________________________________________________________________________________________________");
         echo("<br><br>");
         echo('<strong>Notes Actions</strong> (links later!) | 
-                        <a><u>Search Training Notes</u></a>, 
-                        <a><u>Add Training Notes</u></a>, 
-                        <a><u>Edit Training Notes</u></a>,
-                        <a><u>Remove Training Notes</u></a>');
+                        <a href="noteActions.php?formAction=searchNote"><u>Search Training Notes</u></a>, 
+                        <a href="noteActions.php?formAction=addNote"><u>Add Training Notes</u></a>, 
+                        <a href="noteActions.php?formAction=editNote"><u>Edit Training Notes</u></a>,
+                        <a href="noteActions.php?formAction=removeNote"><u>Remove Training Notes</u></a>');
         echo("<br><br>");
         echo('<strong>Management Actions</strong> (links later!) | 
                         <a><u>Assign Trainer</u></a>, 

@@ -220,6 +220,22 @@ function getall_notes_from_horse($horseName) {
     mysqli_close($con);
     return $noteIDs;
 }
+
+/*
+ * Function name: get_numNotes()
+ * Description: retrieve the number of Notes in the database.
+ * Parameters: None
+ * Return Values: the number of Notes (numNotes)
+ */
+function get_numNotes() {
+
+    $con=connect();
+    $query = 'SELECT COUNT(*) FROM noteDB ';
+    $result = mysqli_query($con,$query);
+    $numNotes = $result->fetch_row()[0];
+    return count($numNotes);
+}
+
  
 
 /*
