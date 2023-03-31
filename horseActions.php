@@ -356,7 +356,7 @@ function process_form($name, $horse, $action) {
                     if ($_POST['_form_submit'] != 1) {
 
                         //show the form again.
-                        include('assignTrainer.inc');
+                        include('editHorseForm.inc');
                     }
 
                     //Else, the form has been submitted,
