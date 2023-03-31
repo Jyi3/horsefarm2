@@ -7,7 +7,7 @@
 //Include the MySQL connection and Person class.
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Person.php');
-
+date_default_timezone_set('America/New_York');
 /*
  * add a person to persondb table: if already there, return false
  */
@@ -35,7 +35,8 @@ function add_person($person) {
 
     //If the person to add doesn't exist,
     if ($result == null || mysqli_num_rows($result) == 0) {
-        
+        $archived = 0;
+        $dateArchived = '0000-00-00 00:00:00';
         //add the person to the database.
         mysqli_query($con,'INSERT INTO persondb VALUES("' .
                 $person->get_firstName() . '","' .
@@ -45,7 +46,9 @@ function add_person($person) {
                 $person->get_email() . '","' .
                 $person->get_username() . '","' .
                 $person->get_pass() . '","' .
-                $person->get_userType() . '");');							        
+                $person->get_userType()  . '","' .
+                $archived . '","' .
+                $dateArchived . '");');						        
         
         //Close the connection and return true.
         mysqli_close($con);
@@ -95,6 +98,38 @@ function edit_person($name, $person) {
 }
 
 
+function archive_person($person){
+
+    $con=connect();
+
+    if(!$person instanceof Person){
+        die("Error: archive_person type mismatch");
+    }
+    $arcTime = date("Y-m-d H:i:s");
+    $personName = $person->get_horseName();
+
+    //checks the DB to see if theres a horse with the same name and dateArchived, to avoid any duplications
+    $query = "SELECT * FROM horsedb WHERE personName='" . $horseName . "' AND dateArchived='" . $arcTime . "';";
+    $result = mysqli_query($con,$query);
+
+
+    //If the query is empty, meaning the horse doesn't exist in the database,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        $archived = 1;
+        //updates the inputted horse, changing its archived to 1 and updating the dateArchived        
+        mysqli_query($con, "UPDATE persondb SET archived = 1, dateArchived='" .$arcTime . "' WHERE personName='" . $personName . "';");						        
+        mysqli_close($con);
+        return true;
+    }
+    //Else then the horse already exists (same name and time archived) so an error has occured 
+    mysqli_close($con);
+    return false;
+    
+
+
+}
+
+
 /*
  * Function name: remove_person($personName)
  * Description: remove a person from the database.
@@ -110,12 +145,6 @@ function remove_person($personName) {
     $con=connect();
     $archived = retrieve_person($personName);
     archive_person($archived);
-   
-    
-    
-
-    $query = 'DELETE FROM personDB WHERE fullName = "' . $personName . '"';
-    $result = mysqli_query($con,$query);
 
     //Close the connection and return true.
     mysqli_close($con);
@@ -243,7 +272,7 @@ function getall_person_names() {
 
     //Create a database connection and retrieve all of the full names.
     $con=connect();
-    $query = "SELECT fullName FROM persondb ORDER BY fullName";
+    $query = "SELECT fullName FROM persondb WHERE archived = 0 ORDER BY fullName";
     $result = mysqli_query($con,$query);
 
     //If the person table is empty,
@@ -265,7 +294,34 @@ function getall_person_names() {
     mysqli_close($con);
     return $names;
 }
-  
+
+
+function getall_archived_person_names() {
+
+    //Create a database connection and retrieve all of the full names.
+    $con=connect();
+    $query = "SELECT fullName FROM persondb WHERE archived = 1 ORDER BY fullName";
+    $result = mysqli_query($con,$query);
+
+    //If the person table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array, and add each full name to the array.
+    $result = mysqli_query($con,$query); //This line might be redundant.
+    $names = array();
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $names[] = $result_row['fullName'];
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $names;
+}
 
 /*
  * Function name: make_a_person($result_row)
@@ -276,7 +332,11 @@ function getall_person_names() {
  *      $thePerson, a Person object created using the parameter information.
  */
 function make_a_person($result_row) {
+    $arcTime = "0000-00-00";
+    $archiveNo = 0;
+
     $thePerson = new Person(
+        
                 $result_row['firstName'],
                 $result_row['lastName'],
                 $result_row['fullName'],
@@ -284,7 +344,9 @@ function make_a_person($result_row) {
                 $result_row['email'],
                 $result_row['username'],
                 $result_row['pass'],
-                $result_row['userType']);
+                $result_row['userType'],
+                $arcTime,
+                $archiveNo);
     return $thePerson;
 }
 

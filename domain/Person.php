@@ -13,8 +13,11 @@ class Person {
 	private $username; //string
 	private $pass; //strng
     private $userType; //string
+    private $archived; //boolean
+    private $dateArchived;//string  SQL Datetime Format
+ //Not going to have anassigned horse variable. Instead, we will query all horses whos trainer is equal to a persons fullName
     
-    function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
+    function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType, $archived, $dateArchived) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
 		$this->fullName = $fullName;
@@ -23,6 +26,9 @@ class Person {
 		$this->username = $username;
 		$this->pass = $pass;
         $this->userType = $userType;
+        $this->archived = $archived;
+        $this->dateArchived = $dateArchived;
+
     }
 
     function get_firstName() {
@@ -55,5 +61,13 @@ class Person {
 
     function get_userType() {
         return $this->userType;
+    }
+
+    function get_personArchived(){
+        return $this->archived;
+    }
+
+    function get_personArchivedDate(){
+        return $this->dateArchived;
     }
 }
