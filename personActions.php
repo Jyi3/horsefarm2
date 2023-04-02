@@ -301,7 +301,7 @@ function process_form($name, $person, $action) {
 
                     //This time, the user can directly edit the username and password. 
                         //Thus, duplicate usernames and passwords can happen very easily.
-                    $newUsername = $_POST['username'];
+                    $newUsername = $newFirstName . $newLastName . str_replace('-', '', $newPhone);
                     $newPass = $_POST['pass'];
                     $newUserType = $_POST['userType'];
                     
@@ -316,7 +316,7 @@ function process_form($name, $person, $action) {
                     else {
 
                         //so validate it. BTW, the parameter doesn't matter, because "validate_form" uses the form's $_POST values, NOT the parameter.
-                        $errors = validate_form($person);
+                        $errors = validate_form($oldName);
 
                         //errors array lists problems on the form submitted.
 
@@ -343,6 +343,7 @@ function process_form($name, $person, $action) {
 
                             //so create a Behavior object and process the form to edit a behavior.
                             $personToEdit = new Person($newFirstName, $newLastName, $newFullName, $newPhone, $newEmail, $newUsername, $newPass, $newUserType);
+                            echo $newUsername;
                             process_form($oldName, $personToEdit, "edit");
                             echo ('</div>');
                             //include('footer.inc');
