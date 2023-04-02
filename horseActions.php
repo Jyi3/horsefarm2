@@ -159,7 +159,7 @@ function process_form($name, $horse, $action) {
                     //Else, there are horses in the database,
                     else {
                         //so retrieve and show all of the horses in a table.
-                        $allHorses = getall_horsedb();
+                        $allHorses = getall_horseDB();
 
                         echo("<h2><strong>List of Horses</strong></h2>");
                         echo("<br>");

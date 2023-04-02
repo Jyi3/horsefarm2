@@ -260,7 +260,7 @@ function getall_horseDB()
 
     //Create a database connection and retrieve all non-archived horses from the database.
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive=0 ORDER BY horseName ASC";
+    $query = "SELECT * FROM horseDB WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
     $result = mysqli_query($con,$query);
 
     //If there are no non-archived horses in the database,
@@ -325,7 +325,7 @@ function getall_horse_names() {
 
     //Create a database connection and retrieve all of the horse names.
     $con=connect();
-    $query = "SELECT horseName FROM horseDB WHERE archive = 0 ORDER BY horseName";
+    $query = "SELECT * FROM horseDB WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
     $result = mysqli_query($con,$query);
 
     //If the horse table is empty,
@@ -377,7 +377,7 @@ function get_numHorses() {
 
     //Create a database connection and retrieve the count of non-archived horses from the database.
     $con=connect();
-    $query = "SELECT COUNT(*) as num_horses FROM horseDB WHERE archive = 0";
+    $query = "SELECT COUNT(*) as num_horses FROM horseDB WHERE archive IS NULL OR archive=0";
     $result = mysqli_query($con,$query);
 
     //If the query returns no rows, close the connection and return 0.
