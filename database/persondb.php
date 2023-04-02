@@ -383,7 +383,7 @@ function getall_usernames() {
 
     //Create a connection and retrieve all the usernames.
     $con=connect();
-    $query = "SELECT username FROM persondb ORDER BY username";
+    $query = "SELECT username FROM persondb WHERE archive IS NULL OR archive = 0 ORDER BY username";
     $result = mysqli_query($con,$query);
     
 
