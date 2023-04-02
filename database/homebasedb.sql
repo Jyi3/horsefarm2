@@ -85,18 +85,17 @@ CREATE TABLE behaviorDB (
 
 CREATE TABLE personDB 
 (
-  trainerID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   firstName text NOT NULL,
   lastName text NOT NULL, 
   fullName varchar(50) NOT NULL,
   phone text NOT NULL,
   email text,
-  username text NOT NULL,
+  username text NOT NULL PRIMARY KEY,
   pass text,
   userType text NOT NULL,
   archive boolean,
   archiveDate text,
-  unique key (firstName, lastName, phone, username)
+  unique key (username)
 );
 
 
@@ -114,9 +113,9 @@ CREATE TABLE personDB
 	
 
 CREATE TABLE trainerToHorseDB (
-  trainerID varchar(50) NOT NULL,
+  username text NOT NULL,
   horseID varchar(50) NOT NULL,
-  primary key (trainerID, horseID)/*,
+  primary key (username, horseID)/*,
   FOREIGN KEY (horseName) REFERENCES horseDB(horseName)
   FOREIGN KEY (behaviorTitle) REFERENCES behaviorDB(title) */
 );
@@ -134,10 +133,10 @@ CREATE TABLE notesDB (
   noteDate date,
   noteTimestamp timestamp,
   note text,
-  trainerID INT NOT NULL,
-  primary key (horseID, noteDate, noteTimestamp, note(255), trainerID),
+  username text NOT NULL,
+  primary key (horseID, noteDate, noteTimestamp, note(255), username),
   FOREIGN KEY (horseID) REFERENCES horseDB(horseID),
-  FOREIGN KEY (trainerID) REFERENCES personDB(trainerID)
+  FOREIGN KEY (username) REFERENCES personDB(username)
 );
 
 

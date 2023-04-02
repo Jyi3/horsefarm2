@@ -72,22 +72,8 @@ function add_person($person) {
     //If the person to add doesn't exist,
     if ($result == null || mysqli_num_rows($result) == 0) {
         
-        //Get the current maximum trainerID from the database.
-        $max_trainerID_query = "SELECT MAX(trainerID) AS max_trainerID FROM persondb;";
-        $max_trainerID_result = mysqli_query($con, $max_trainerID_query);
-        $max_trainerID_row = mysqli_fetch_assoc($max_trainerID_result);
-        $max_trainerID = $max_trainerID_row['max_trainerID'];
-        
-        //If there are no people in the database, set the new trainerID to 1.
-        if ($max_trainerID == null) {
-            $new_trainerID = 1;
-        } else {
-            //Otherwise, increment the maximum trainerID to get the new trainerID.
-            $new_trainerID = $max_trainerID + 1;
-        }
-        
-        //add the person to the database with the new trainerID.
-        mysqli_query($con,'INSERT INTO persondb VALUES("' .
+        //add the person to the database.
+        mysqli_query($con,'INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType) VALUES("' .
                 $person->get_firstName() . '","' .
                 $person->get_lastName() . '","' .
                 $person->get_fullName() . '","' .
@@ -143,7 +129,7 @@ function add_person($person) {
 //     mysqli_close($con);
 //     return true;
 // }
-function edit_person($trainerID) {
+function edit_person($person) {
 
     //Legacy code check to ensure the parameter is a Person object.
     if (!$person instanceof Person) {
@@ -160,7 +146,7 @@ function edit_person($trainerID) {
                                   username='" . $person->get_username() . "', 
                                   pass='" . $person->get_pass() . "', 
                                   userType='" . $person->get_userType() . "'
-                                  WHERE trainerID='" . $trainerID . "';";
+                                  WHERE username='" . $person->get_username() . "';";
 
     $result = mysqli_query($con,$query);
     
@@ -168,6 +154,7 @@ function edit_person($trainerID) {
     mysqli_close($con);
     return true;
 }
+
 
 
 /*
@@ -224,7 +211,7 @@ function remove_person($username) {
     $archived = retrieve_person_by_username($username);
     
     // Sets the archive boolean and archive date for the trainer being removed
-    $query = 'UPDATE horseDB SET archive=true, archiveDate=CURDATE() WHERE username = "' . $username . '"';
+    $query = 'UPDATE persondb SET archive=true, archiveDate=CURDATE() WHERE username = "' . $username . '"';
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
@@ -392,6 +379,33 @@ function getall_person_names() {
     return $names;
 }
   
+function getall_usernames() {
+
+    //Create a connection and retrieve all the usernames.
+    $con=connect();
+    $query = "SELECT username FROM persondb ORDER BY username";
+    $result = mysqli_query($con,$query);
+    
+
+    //If the person table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array and add each username to the array.
+    $usernames = array();
+
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $usernames[] = $result_row['username'];
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $usernames;
+}
 
 /*
  * Function name: make_a_person($result_row)
@@ -403,7 +417,6 @@ function getall_person_names() {
  */
 function make_a_person($result_row) {
     $thePerson = new Person(
-                $result_row['trainerID'],
                 $result_row['firstName'],
                 $result_row['lastName'],
                 $result_row['fullName'],

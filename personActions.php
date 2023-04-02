@@ -18,6 +18,7 @@ include_once('domain/ArchivedPerson.php');
 include_once('database/archivePersondb.php');
 
 
+
 $formAction = $_GET["formAction"];
 $personToAdd;
 $personToEdit;
@@ -39,7 +40,7 @@ function process_form($name, $person, $action) {
         //try to add a new person to the database.
 
         //Check if there's already an entry.
-        $dup = retrieve_person($name);
+        $dup = retrieve_person_by_username($name);
 
         //If there's already a person with this name,
         if ($dup == true) {
@@ -59,7 +60,8 @@ function process_form($name, $person, $action) {
             if (!$result) 
                 echo('<p class="error">Unable to add to the database. <br>Please report this error.');
             else 
-                echo('<p>You have successfully added ' . $person->get_fullName() . ' to the database! If you wish to add another person, please click "Add person" after "person Actions."</p>');
+                echo('<p>You have successfully added ' . $person->get_firstName() . ' ' . $person->get_lastName() . ' to the database! If you wish to add another person, please click "Add person" after "person Actions."</p>');
+
         }
     }
 
@@ -83,7 +85,11 @@ function process_form($name, $person, $action) {
         if (!$result) 
             echo('<p class="error">Unable to remove from the database. <br>Please report this error.');
         else 
-            echo('<p>You have successfully removed ' . $person->get_fullName() . ' the database! If you wish to remove another person, please click "Remove person" after "person Actions."</p>');
+            if (!$person) {
+            echo('<p class="error">Invalid person object.</p>');
+            return;
+            }
+            echo('<p>You have successfully removed ' . $person->get_firstName() . ' ' . $person->get_lastName() . ' the database! If you wish to remove another person, please click "Remove person" after "person Actions."</p>');
     }
 }
 
@@ -271,7 +277,7 @@ function process_form($name, $person, $action) {
                 else if($formAction == 'editPerson') {
 
                     //get the old title of the person, in case the user edited the person.
-                    $oldName = $_POST['personName'];
+                    $oldName = $_POST['username'];
 
                     //Then, display the form for adding/editing behaviors.
                     include("editPersonForm.inc");
@@ -284,7 +290,7 @@ function process_form($name, $person, $action) {
                     include('personValidate.inc'); 
                     
                     //so retrieve the form answers and validate it.
-                    $oldName = $_POST['oldName'];
+                    $oldName = $_POST['username'];
                     $newFirstName = $_POST['firstName'];
                     $newLastName = $_POST['lastName'];
 
@@ -325,7 +331,7 @@ function process_form($name, $person, $action) {
                         //Else, if the user changed the name of a person to a name that already exists,
                             //Conditions: (1) The person must exist, and (2) the user wants to change the name of the existing person.
                             //If the user left the name the same, then the existing person will be edited under the same name.
-                        else if((retrieve_person($newFullName)) && (strcmp($oldName, $newFullName) != 0)) {
+                        else if((retrieve_person_by_username($newFullName)) && (strcmp($oldName, $newFullName) != 0)) {
                             
                             //print that the user cannot change a person name to an existing name, and then show the form again.
                             echo("<h4 style='color:FF0000'>" . $newFullName . " is the name of an existing person. Please enter another first and last name combination.</h4><br>");
@@ -370,7 +376,7 @@ function process_form($name, $person, $action) {
                 //Else, if the user has selected a person to remove,
                 else if($formAction == 'confirmRemove') {
                     
-                    $oldName = $_POST['personName'];
+                    $oldName = $_POST['username'];
 
                     //If the form has not been submitted (somehow).
                     if ($_POST['_form_submit'] != 1) {
@@ -400,7 +406,7 @@ function process_form($name, $person, $action) {
                             //so create a Behavior object and process the form to remove a behavior.
                             //$personToRemove = new person($Name, $Color, $Breed, $PastNum, $ColRank);
                            
-                             $personToRemove = retrieve_person($oldName);
+                             $personToRemove = retrieve_person_by_username($oldName);
                            
                             process_form($oldName, $personToRemove, "remove");
                             echo ('</div>');

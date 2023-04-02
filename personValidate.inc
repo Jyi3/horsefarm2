@@ -10,13 +10,15 @@
  * it returns are array of the errors with the form (string warnings)
  * this array is null (aka false) if there are no errors
  */
-function validate_form($horse) {
+function validate_form($personDB) {
+    $errors = array(); // define $errors as an empty array
     if ($_POST['firstName'] == null)
         $errors[] = 'Please enter a first name';
     if ($_POST['lastName'] == null) 
         $errors[] = 'Please enter a last name';
     return $errors;
 }
+
 function show_errors($e) {
     //this function should display all of the errors
     echo('<div class="warning">');

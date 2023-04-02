@@ -20,7 +20,7 @@ class Horse {
         $this->breed = $breed;
         $this->pastureNum = $pastureNum;
         $this->colorRank = $colorRank;
-        $this->archive = false;
+        $this->archive = 0;
         $this->archiveDate = NULL;
     }
     function get_horseID() {

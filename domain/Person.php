@@ -5,7 +5,6 @@
  */
 
 class Person {
-    private $trainerID; //string
     private $firstName; //string
     private $lastName; //string
 	private $fullName; //string
@@ -18,21 +17,16 @@ class Person {
     private $archiveDate; //string
     
     function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
-        $this->trainerID = $trainerID;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
 		$this->fullName = $fullName;
         $this->phone = $phone;
         $this->email = $email;
-		$this->username = $username;
+        $this->username = $firstName . $lastName . str_replace('-', '', $phone);
 		$this->pass = $pass;
         $this->userType = $userType;
 		$this->archive = false;
         $this->archiveDate = NULL;
-    }
-
-    function get_trainerID() {
-        return $this->trainerID;
     }
 
     function get_firstName() {
