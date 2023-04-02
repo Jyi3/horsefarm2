@@ -56,7 +56,7 @@ SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
 
 CREATE TABLE horseDB (
-  horseName varchar(50) primary key NOT NULL,
+  horseName text primary key NOT NULL,
   color text,
   breed text,
   pastureNum int,
