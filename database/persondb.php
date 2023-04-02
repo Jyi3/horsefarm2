@@ -406,6 +406,34 @@ function getall_usernames() {
     mysqli_close($con);
     return $usernames;
 }
+  
+function getall_usernames_inactive() {
+
+    //Create a connection and retrieve all the usernames.
+    $con=connect();
+    $query = "SELECT username FROM persondb WHERE archive = 1 ORDER BY username";
+    $result = mysqli_query($con,$query);
+    
+
+    //If the person table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array and add each username to the array.
+    $usernames = array();
+
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $usernames[] = $result_row['username'];
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $usernames;
+}
 
 /*
  * Function name: make_a_person($result_row)
