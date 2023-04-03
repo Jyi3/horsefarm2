@@ -4,9 +4,9 @@
  * notedb.php: PHP file containing all functions to access and manipulate the notedb database.
  */
 
-//Include the MySQL connection and notes class.
+//Include the MySQL connection and Note class.
 include_once('dbinfo.php');
-include_once(dirname(__FILE__).'/../domain/Notes.php');
+include_once(dirname(__FILE__).'/../domain/Note.php');
 
 /*
  * Function name: add_note($note)
@@ -20,7 +20,7 @@ include_once(dirname(__FILE__).'/../domain/Notes.php');
 function add_note($note) {
     
     //Legacy code check to ensure the parameter is a note object.
-    if (!$note instanceof Notes) {
+    if (!$note instanceof Note) {
         die("Error: add_note type mismatch");
     }
     
@@ -263,7 +263,6 @@ function make_a_note($result_row) {
     }
     else{$newID = $result + 1;}    
         
-    
     }
     $thenote = new Note(
                 $result_row['horseName'],

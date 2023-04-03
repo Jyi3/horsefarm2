@@ -7,7 +7,7 @@
 <?php
 include_once('database/nodedb.php');
 include_once('database/dbinfo.php');
-include_once('database/Notes.php');
+include_once('database/Note.php');
 
 $formAction = $_GET["formAction"];
 $noteToAdd;
@@ -86,7 +86,9 @@ if($formAction=='removeNote'){echo ("Remove Training Note");}
 
                     if(get_numNotes()==0){echo('there are no notes to remove!');}
 
-                    else{//remove the note somehow}
+                    else{
+                        //remove the note somehow
+                    }
                 }
                 ?>
             </div>
