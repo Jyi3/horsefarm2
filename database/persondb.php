@@ -21,6 +21,41 @@ include_once(dirname(__FILE__).'/../domain/Person.php');
  *      true, the person was added to the database.
  *      false, the person was NOT added to the database.
  */
+// function add_person($person) {
+ 
+//     //Legacy code check to ensure the parameter is a Person object.
+//     if (!$person instanceof Person) {
+//         die("Error: add_person userType mismatch");
+//     }
+    
+//     //Create a database connection and check if the person to add already exists.
+//     $con=connect();
+//     $query = "SELECT * FROM persondb WHERE fullName='" . $person->get_fullName() . "';";
+//     $result = mysqli_query($con,$query);
+
+//     //If the person to add doesn't exist,
+//     if ($result == null || mysqli_num_rows($result) == 0) {
+        
+//         //add the person to the database.
+//         mysqli_query($con,'INSERT INTO persondb VALUES("' .
+//                 $person->get_firstName() . '","' .
+//                 $person->get_lastName() . '","' .
+//                 $person->get_fullName() . '","' .
+//                 $person->get_phone() . '","' .
+//                 $person->get_email() . '","' .
+//                 $person->get_username() . '","' .
+//                 $person->get_pass() . '","' .
+//                 $person->get_userType() . '");');							        
+        
+//         //Close the connection and return true.
+//         mysqli_close($con);
+//         return true;
+//     }
+
+//     //Otherwise, close the connection and return false.
+//     mysqli_close($con);
+//     return false;
+// }
 function add_person($person) {
  
     //Legacy code check to ensure the parameter is a Person object.
@@ -30,14 +65,15 @@ function add_person($person) {
     
     //Create a database connection and check if the person to add already exists.
     $con=connect();
-    $query = "SELECT * FROM persondb WHERE fullName='" . $person->get_fullName() . "';";
+    $query = "SELECT * FROM persondb WHERE firstName='" . $person->get_firstName() . "' AND lastName='" . $person->get_lastName() . "' AND fullName='" . $person->get_fullName() . "' AND phone='" . $person->get_phone() . "' AND username='" . $person->get_username() . "';";
+
     $result = mysqli_query($con,$query);
 
     //If the person to add doesn't exist,
     if ($result == null || mysqli_num_rows($result) == 0) {
         
         //add the person to the database.
-        mysqli_query($con,'INSERT INTO persondb VALUES("' .
+        mysqli_query($con,'INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType) VALUES("' .
                 $person->get_firstName() . '","' .
                 $person->get_lastName() . '","' .
                 $person->get_fullName() . '","' .
@@ -57,6 +93,22 @@ function add_person($person) {
     return false;
 }
 
+function delete_person($username) {
+ 
+    //Create a database connection and delete the person from the database based on their username.
+    $con = connect();
+    $query = "DELETE FROM persondb WHERE username='" . $username . "'";
+    $result = mysqli_query($con, $query);
+
+    //If the query was successful, return true. Otherwise, return false.
+    if ($result) {
+        mysqli_close($con);
+        return true;
+    } else {
+        mysqli_close($con);
+        return false;
+    }
+}
 
 /*
  * Function name: edit_person($name, $person)
@@ -68,7 +120,33 @@ function add_person($person) {
  * Return Values:
  *      true, the existing person was edited.
  */
-function edit_person($name, $person) {
+// function edit_person($name, $person) {
+
+//     //Legacy code check to ensure the parameter is a Person object.
+//     if (!$person instanceof Person) {
+//         die("Errors: edit_person userType mismatch");
+//     }
+
+//     //Create a database connection and update the database.
+//     $con=connect();    
+//     $query = "UPDATE persondb SET firstName='" . $person->get_firstName() . "', 
+//                                   lastName='" . $person->get_lastName() . "', 
+//                                   fullName='" . $person->get_fullName() . "', 
+//                                   phone='" . $person->get_phone() . "', 
+//                                   email='" . $person->get_email() . "', 
+//                                   username='" . $person->get_username() . "', 
+//                                   pass='" . $person->get_pass() . "', 
+//                                   userType='" . $person->get_userType() . "'
+//                                   WHERE fullName='" . $name . "';";
+
+//     $result = mysqli_query($con,$query);
+    
+//     //Close the connection and return true.
+//     mysqli_close($con);
+//     return true;
+// }
+function edit_person($oldUsername, $person) 
+{
 
     //Legacy code check to ensure the parameter is a Person object.
     if (!$person instanceof Person) {
@@ -85,7 +163,7 @@ function edit_person($name, $person) {
                                   username='" . $person->get_username() . "', 
                                   pass='" . $person->get_pass() . "', 
                                   userType='" . $person->get_userType() . "'
-                                  WHERE fullName='" . $name . "';";
+                                  WHERE username='" . $oldUsername . "';";
 
     $result = mysqli_query($con,$query);
     
@@ -93,6 +171,7 @@ function edit_person($name, $person) {
     mysqli_close($con);
     return true;
 }
+
 
 
 /*
@@ -104,25 +183,58 @@ function edit_person($name, $person) {
  * Return Values:
  *      true, the existing person was removed.
  */
-function remove_person($personName) {
+// function remove_person($personName) {
 
-    //Create a database connection and delete the person.
-    $con=connect();
-    $archived = retrieve_person($personName);
-    archive_person($archived);
+//     //Create a database connection and delete the person.
+//     $con=connect();
+//     $archived = retrieve_person($personName);
+//     archive_person($archived);
    
     
     
 
-    $query = 'DELETE FROM personDB WHERE fullName = "' . $personName . '"';
-    $result = mysqli_query($con,$query);
+//     $query = 'DELETE FROM personDB WHERE fullName = "' . $personName . '"';
+//     $result = mysqli_query($con,$query);
 
+//     //Close the connection and return true.
+//     mysqli_close($con);
+//     return true;
+    
+// }
+// function remove_person($trainerID) {
+
+//     //Create a database connection and delete the person.
+//     $con=connect();
+//     $archived = retrieve_person_by_trainerID($trainerID);
+//     archive_person($archived);
+   
+    
+    
+
+//     $query = 'DELETE FROM personDB WHERE trainerID = "' . $trainerID . '"';
+//     $result = mysqli_query($con,$query);
+
+//     //Close the connection and return true.
+//     mysqli_close($con);
+//     return true;
+    
+// }
+function remove_person($username) {
+
+    //Create a database connection and remove the trainer from the database.
+    $con=connect();
+
+    //Saves the trainer that is being deleted
+    $archived = retrieve_person_by_username($username);
+    
+    // Sets the archive boolean and archive date for the trainer being removed
+    $query = 'UPDATE persondb SET archive=true, archiveDate=CURDATE() WHERE username = "' . $username . '"';
+    $result = mysqli_query($con,$query);
+    
     //Close the connection and return true.
     mysqli_close($con);
     return true;
-    
 }
-
 
 /*
  * Function name: retrieve_person($personName)
@@ -133,29 +245,47 @@ function remove_person($personName) {
  *      $thePerson, a Person object created using the person information from the database.
  *      false, a person with the name "$personName" doesn't exist.
  */
-function retrieve_person($personName) {
+// function retrieve_person($personName) {
 
-    //Create a database connection and retrieve a person with the name.
-    $con=connect();
-    $query = "SELECT * FROM persondb WHERE fullName='" . $personName . "';";
-    $result = mysqli_query($con,$query);
+//     //Create a database connection and retrieve a person with the name.
+//     $con=connect();
+//     $query = "SELECT * FROM persondb WHERE fullName='" . $personName . "';";
+//     $result = mysqli_query($con,$query);
 
-    //If the person does NOT exist in the database,
-    if (mysqli_num_rows($result) != 1) {
-        mysqli_close($con);
+//     //If the person does NOT exist in the database,
+//     if (mysqli_num_rows($result) != 1) {
+//         mysqli_close($con);
 
-        //close the connection and return false.
-        return false;
-    }
+//         //close the connection and return false.
+//         return false;
+//     }
 
-    //Otherwise, make a Person object using the query result.
-    $result_row = mysqli_fetch_assoc($result);
-    $thePerson = make_a_person($result_row);
+//     //Otherwise, make a Person object using the query result.
+//     $result_row = mysqli_fetch_assoc($result);
+//     $thePerson = make_a_person($result_row);
 
-    //Close the connection and return the Person object.
-    mysqli_close($con);
-    return $thePerson;
-}
+//     //Close the connection and return the Person object.
+//     mysqli_close($con);
+//     return $thePerson;
+// // }
+// function remove_person($trainerID) {
+
+//     //Create a database connection and delete the person.
+//     $con=connect();
+//     $archived = retrieve_person_by_trainerID($trainerID);
+//     archive_person($archived);
+   
+    
+    
+
+//     $query = 'DELETE FROM personDB WHERE trainerID = "' . $trainerID . '"';
+//     $result = mysqli_query($con,$query);
+
+//     //Close the connection and return true.
+//     mysqli_close($con);
+//     return true;
+    
+// }
 
 
 /*
@@ -266,6 +396,61 @@ function getall_person_names() {
     return $names;
 }
   
+function getall_usernames() {
+
+    //Create a connection and retrieve all the usernames.
+    $con=connect();
+    $query = "SELECT username FROM persondb WHERE archive IS NULL OR archive = 0 ORDER BY username";
+    $result = mysqli_query($con,$query);
+    
+
+    //If the person table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array and add each username to the array.
+    $usernames = array();
+
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $usernames[] = $result_row['username'];
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $usernames;
+}
+  
+function getall_usernames_inactive() {
+
+    //Create a connection and retrieve all the usernames.
+    $con=connect();
+    $query = "SELECT username FROM persondb WHERE archive = 1 ORDER BY username";
+    $result = mysqli_query($con,$query);
+    
+
+    //If the person table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array and add each username to the array.
+    $usernames = array();
+
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $usernames[] = $result_row['username'];
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $usernames;
+}
 
 /*
  * Function name: make_a_person($result_row)
@@ -276,17 +461,22 @@ function getall_person_names() {
  *      $thePerson, a Person object created using the parameter information.
  */
 function make_a_person($result_row) {
+    $username = str_replace('-', '', $result_row['phone']);
     $thePerson = new Person(
                 $result_row['firstName'],
                 $result_row['lastName'],
                 $result_row['fullName'],
                 $result_row['phone'],
                 $result_row['email'],
-                $result_row['username'],
+                $username,
                 $result_row['pass'],
-                $result_row['userType']);
+                $result_row['userType'],
+                $result_row['archive'],
+                $result_row['archiveDate']
+                );
     return $thePerson;
 }
+
 
 /*
  * Function name: get_numPersons()

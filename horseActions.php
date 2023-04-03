@@ -148,6 +148,7 @@ function process_form($name, $horse, $action) {
 
                     //check if there are horses in the database to edit.
                     $numHorses = get_numHorses();
+                    //echo $numHorses;
 
                     //If there aren't any horses in the database, 
                     if($numHorses == 0) {
@@ -158,7 +159,7 @@ function process_form($name, $horse, $action) {
                     //Else, there are horses in the database,
                     else {
                         //so retrieve and show all of the horses in a table.
-                        $allHorses = getall_horsedb();
+                        $allHorses = getall_horseDB();
 
                         echo("<h2><strong>List of Horses</strong></h2>");
                         echo("<br>");

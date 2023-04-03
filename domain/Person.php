@@ -13,6 +13,8 @@ class Person {
 	private $username; //string
 	private $pass; //strng
     private $userType; //string
+    private $archive; //boolean
+    private $archiveDate; //string
     
     function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
         $this->firstName = $firstName;
@@ -20,9 +22,11 @@ class Person {
 		$this->fullName = $fullName;
         $this->phone = $phone;
         $this->email = $email;
-		$this->username = $username;
+        $this->username = $firstName . $lastName . str_replace('-', '', $phone);
 		$this->pass = $pass;
         $this->userType = $userType;
+		$this->archive = false;
+        $this->archiveDate = NULL;
     }
 
     function get_firstName() {
@@ -55,5 +59,13 @@ class Person {
 
     function get_userType() {
         return $this->userType;
+    }
+
+    function get_archive() {
+        return $this->archive;
+    }
+
+    function get_archiveDate() {
+        return $this->archiveDate;
     }
 }
