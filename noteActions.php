@@ -16,7 +16,11 @@ $noteToEdit;
 
 function process_form($noteID , $Note, $action){
 
-if($action == "add"){}
+if($action == "add"){
+    //There should be no need to go ahead and check for a duplicate notes.
+    //noteID's should be generated upon creation
+
+}
 
 else if($action == "edit"){}
 
@@ -30,13 +34,13 @@ else if($action == "remove"){}
     <head>
         <title>
             <?PHP
-if($formAction=='searchNote'){echo ("Search Training Note")}
+if($formAction=='searchNote'){echo ("Search Training Note");}
 
-if($formAction=='addNote'){echo ("Add Training Note"}
+if($formAction=='addNote'){echo ("Add Training Note");}
 
-if($formAction=='editNote'){echo ("Edit Training Note"}
+if($formAction=='editNote'){echo ("Edit Training Note");}
 
-if($formAction=='removeNote'){echo ("Remove Training Note"}
+if($formAction=='removeNote'){echo ("Remove Training Note");}
 
 
 
@@ -66,11 +70,24 @@ if($formAction=='removeNote'){echo ("Remove Training Note"}
                 <?PHP
                 if($formAction=='searchNote'){}
 
-                if($formAction=='addNote'){}
+                if($formAction=='addNote'){
+                    
+                    //we don't have these yet.
+                    //TODO make editNoteForm.inc
+                    include('editNoteForm.inc');
+                }
                 
-                if($formAction=='editNote'){}
+                if($formAction=='editNote'){
+
+                    include('editNoteForm.inc');
+                }
                 
-                if($formAction=='removeNote'){}
+                if($formAction=='removeNote'){
+
+                    if(get_numNotes()==0){echo('there are no notes to remove!');}
+
+                    else{//remove the note somehow}
+                }
                 ?>
             </div>
         </div>
