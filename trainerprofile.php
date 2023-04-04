@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         mysqli_close($conn);
     } elseif (isset($_POST["activate"])) {  
-        $conn = mysqli_connect($servername, $db_username, $password, $dbname);
         $sql = "UPDATE persondb SET archive = 0 WHERE username = '$pp_username'";
         $action_success = mysqli_query($conn, $sql);
         if (!$action_success) {
