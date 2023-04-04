@@ -34,7 +34,7 @@
       <div class = "dropdown-content">
         <a href="horseActions.php?formAction=searchHorse">View All Horses</a>
         <br>
-        <a href="#">View All Trainers</a>
+        <a href="personActions.php?formAction=searchPeople">View All Trainers</a>
         <br>
         <a href="search.php">Search Horses/Trainers</a>
       </div>
@@ -52,9 +52,9 @@
       <div class = "dropdown-content">
         <a href="personActions.php?formAction=selectPerson">Edit Trainers</a>
         <br>
-        <a href="#">Archive Trainer</a>
+        <a href="personActions.php?formAction=searchPeople">Archive Trainer</a>
         <br>
-        <a href="#">Archive Horse</a>
+        <a href="personActions.php?formAction=searchPeople">Archive Horse</a>
       </div>
     </div>
     <a href="logout.php">&emsp; Logout</a>
