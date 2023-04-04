@@ -6,7 +6,7 @@
 
 //Include the MySQL connection and Behavior class.
 include_once('dbinfo.php');
-include_once(dirname(__FILE__).'/../domain/Behavior.php');
+include_once('../domain/Behavior.php');
 
 
 /*

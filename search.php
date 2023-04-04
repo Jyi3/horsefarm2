@@ -11,9 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $search5 = isset($_POST['search5']) ? $_POST['search5'] : [];
 
     //Include MySQL connection file, horse database functions, and horse class.
-    include_once('database/horsedb.php');
-    include_once('database/dbinfo.php');
-    include_once('domain/Horse.php');
+    include('database/horsedb.php');
+    include('database/dbinfo.php');
+    include('domain/Horse.php');
     $conn = connect();
 
     // Check connection

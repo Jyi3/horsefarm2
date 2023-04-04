@@ -7,8 +7,8 @@
 */
 
 include_once('dbinfo.php');
-include_once(dirname(__FILE__).'/../domain/Horse.php');
-include_once(dirname(__FILE__).'/../domain/ArchivedHorse.php');
+include_once('../domain/Horse.php');
+include_once('../domain/ArchivedHorse.php');
 date_default_timezone_set('America/New_York');
 
 

@@ -6,8 +6,7 @@
 
 //Include the MySQL connection and Horse class.
 include_once('dbinfo.php');
-include_once(dirname(__FILE__).'/../domain/Horse.php');
-include_once(dirname(__FILE__).'/../database/archiveHorseDb.php');
+include_once('../domain/Horse.php');
 
 /*
  * Function name: add_horse($horse)

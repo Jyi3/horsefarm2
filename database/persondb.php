@@ -5,8 +5,8 @@
  */
 
 //Include the MySQL connection and Person class.
-include_once('dbinfo.php');
-include_once(dirname(__FILE__).'/../domain/Person.php');
+include('dbinfo.php');
+include('../domain/Person.php');
 
 /*
  * add a person to persondb table: if already there, return false

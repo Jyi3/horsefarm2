@@ -2,7 +2,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pp_username = $_POST["username"];
 
-    include_once('database/dbinfo.php');
+    include('database/dbinfo.php');
 
     $conn = connect();
     if (!$conn) {
@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?PHP include('header.php'); ?>
         
             <?php
-            include_once('database/dbinfo.php');
+            include('database/dbinfo.php');
 
             $conn = connect();
             if (!$conn) {

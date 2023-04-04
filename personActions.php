@@ -11,11 +11,8 @@
  */
 
 session_start();
-include_once('database/persondb.php');
-include_once('database/dbinfo.php');
-include_once('domain/Person.php');
-include_once('domain/ArchivedPerson.php');
-include_once('database/archivePersondb.php');
+include('database/dbinfo.php');
+include('database/persondb.php');
 
 
 
