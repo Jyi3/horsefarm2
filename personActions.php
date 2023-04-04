@@ -161,13 +161,12 @@ function process_form($name, $person, $action) {
                     }
                     //Else, there are people in the database,
                     else {
-
                         //so retrieve and show all of the people in a table.
                         $allPersons = getall_persondb();
-
-                        echo("<h2><strong>List of People</strong></h2>");
+                    
+                        echo("<h2><strong>List of Active People</strong></h2>");
                         echo("<br>");
-                        echo("<table>
+                        echo("<table style='float: left; margin-right: 20px;'>
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>
@@ -175,21 +174,46 @@ function process_form($name, $person, $action) {
                                     <th>Email</th>
                                     <th>Role</th>
                                 </tr>");
-                        
+                    
                         for($x = 0; $x < count($allPersons); $x++) {
+                            $userName = $allPersons[$x]->get_userName();
                             echo("<tr>
-                                    <td> " . $allPersons[$x]->get_firstName() . " </td>
-                                    <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_lastName() . " </td>
-                                    <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
-                                    <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
-                                    <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                                <td style='border-left: 1px solid black'><a href='profilepage.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='profilepage.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                            </tr>");
+                        }
+                        echo("</table>");
+                    
+                        // Second table
+                        $allPersons = getall_persondb();
+                    
+                        echo("<h2><strong>List of Inactive People</strong></h2>");
+                        echo("<br>");
+                        echo("<table style='float: right;'>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
                                 </tr>");
+                    
+                        for($x = 0; $x < count($allPersons); $x++) {
+                            $userName = $allPersons[$x]->get_userName();
+                            echo("<tr>
+                                <td style='border-left: 1px solid black'><a href='profilepage.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='profilepage.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                            </tr>");
+                        }
+                        echo("</table>");
                     }
                     
-                    echo("</table>");  
-                    }
-
-
                     
                 }
                 //Else, if the user wants to add a behavior,

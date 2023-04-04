@@ -87,7 +87,7 @@ session_start();
         <div id="container">
             <?PHP include('header.php'); ?>
             <div id="content">
-                <form action="search.php" method="post">
+                <form action="search.php" method="GET">
                 <label for="type">Search Type:</label>
                 <select id="type" name="type" onchange="updateSearchCriteria()">
                     <option value="horse">Horse</option>
@@ -121,8 +121,10 @@ session_start();
                 </form>
         
                 <script>
+
             function updateSearchCriteria() 
             {
+                echo "TEST";
                 var type = document.getElementById("type").value;
                 var search1Label = document.getElementById("search1-label");
                 var search2Label = document.getElementById("search2-label");
@@ -130,13 +132,13 @@ session_start();
                 var search4Label = document.getElementById("search4-label");
                 var search5Label = document.getElementById("search5-label");
 
-                if (type === "horse") {
-                    search1Label.innerText = "Horse Name:";
-                    search2Label.innerText = "Horse Color:";
-                    search3Label.innerText = "Horse Breed:";
-                    search4Label.innerText = "Pasture Number:";
-                    search5Label.innerText = "Color Rank:";
-                    document.getElementById("search5-container").style.display = "block";
+                if (type == "horse") {
+                    // search1Label.innerText = "Horse Name:";
+                    // search2Label.innerText = "Horse Color:";
+                    // search3Label.innerText = "Horse Breed:";
+                    // search4Label.innerText = "Pasture Number:";
+                    // search5Label.innerText = "Color Rank:";
+                    // document.getElementById("search5-container").style.display = "block";
                 } else {
                     search1Label.innerText = "Trainer Name:";
                     search2Label.innerText = "Trainer :";
@@ -147,91 +149,92 @@ session_start();
                 }
             }
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-            {
-                // Get the search parameters from the form
-                $type = $_POST['type'];
-                $search1 = $_POST['search1'];
-                $search2 = $_POST['search2'];
-                $search3 = $_POST['search3'];
-                $search4 = $_POST['search4'];
-                $search5 = isset($_POST['search5']) ? $_POST['search5'] : [];
-
-                //Include MySQL connection file, horse database functions, and horse class.
-                include_once('database/horsedb.php');
-                include_once('database/dbinfo.php');
-                include_once('domain/Horse.php');
-                $host = "localhost"; 
+            if($_GET["type"] == "horse") {
+                echo "TEST";
+                $servername = "localhost";
                 $username = "homebasedb";
                 $password = "homebasedb";
-                $database = "horsefarm2";
-                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                // Check connection
-                if ($conn->connect_error) {
-                    die("Connection failed: " . $conn->connect_error);
+                $dbname = "homebasedb";
+                $conn = mysqli_connect($servername, $username, $password, $dbname);
+                if (!$conn) {
+                    die("Connection failed: " . mysqli_connect_error());
                 }
 
-                // Construct the SQL query based on the search parameters
-                $sql = "SELECT * FROM " . $type;
-                $conditions = [];
+
+                $horsename = $_GET["search1"];
+                $horsecolor = $_GET["search2"];
+                $horseBreed = $_GET["search3"];
+                $horsePastNum = $_GET["search4"];
+                if(isset($_GET['search5'])) 
+                    foreach($_GET['search5'] as $each_check)
+                        if($each_check == "all") {
+                            $each_check = "*";
+                            return $each_check;
+                            break;
+                        }
+                        else {
+                            echo $each_check;
+                        }
+                $$query = "SELECT * FROM horseDB WHERE horseName='" . $horsename . "';";
+                $results = mysqli_query($conn,$query);
+                while($row = mysqli_fetch_assoc($results))
+                {
+                    echo $row['horseName']." ";
+                    echo $row['color']." ";
+                    echo $row['breed']." ";
+                    echo $row['pastureNum']." ";
+                    echo $row['colorRank']." ";
+
+
+                }
                 
 
-                if (!empty($search1)) {
-                    $conditions[] = "name LIKE '%" . $search1 . "%'";
-                }
-                if (!empty($search2)) {
-                    $conditions[] = "color = '" . $search2 . "'";
-                }
-                if (!empty($search3)) {
-                    $conditions[] = "breed = '" . $search3 . "'";
-                }
-                if (!empty($search4)) {
-                    $conditions[] = "pasture_number = " . $search4;
-                }
-                if (!empty($search5)) {
-                    $conditions[] = "color_rank IN ('" . implode("','", $search5) . "')";
-                }
-
-                if (!empty($conditions)) {
-                    $sql .= " WHERE " . implode(" AND ", $conditions);
-                }
-
-                // Execute the query
-                $result = $conn->query($sql);
-
-                // Create the windows
-                echo "<div>";
-                while ($row = $result->fetch_assoc()) {
-                    echo "<div style='border: 1px solid black; padding: 10px; margin-bottom: 10px;'>";
-
-                    if ($type == "horse") {
-                        echo "<p>Name: " . $row['name'] . "</p>";
-                        echo "<p>Color: " . $row['color'] . "</p>";
-                        echo "<p>Breed: " . $row['breed'] . "</p>";
-                        echo "<p>Pasture Number: " . $row['pasture_number'] . "</p>";
-                        echo "<p>Color Rank: " . $row['color_rank'] . "</p>";
-                    } else {
-                        echo "<p>Name: " . $row['name'] . "</p>";
-                        echo "<p>Rank: " . $row['rank'] . "</p>";
-                    }
-
-                    echo "</div>";
-                }
-                echo "</div>";
-
-                // Close the database connection
-                $conn->close();
+                
+                        //echo $each_check;
             }
+        
+            
+            if ($_GET["type"] == "trainer") {
+                $servername = "localhost";
+                $username = "homebasedb";
+                $password = "homebasedb";
+                $dbname = "homebasedb";
+                $conn = mysqli_connect($servername, $username, $password, $dbname);
+                if (!$conn) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+
+                $personname = $_GET["search1"];
+                $personnumber = $_GET["search2"];
+                $personEmail = $_GET["search3"];
+                $personRank = $_GET["search4"];
+                //$query = "SELECT * FROM persondb WHERE username='" . $username . "';";
+
+                $query = "SELECT * FROM persondb WHERE firstName='" . $personname ."'AND userType='" . $personRank . "'AND phone='". $personnumber ."'AND email='" . $personEmail . "';" ;
+                $results = mysqli_query($conn,$query);
+                //$row = mysqli_fetch_assoc($results);
+                while($row = mysqli_fetch_assoc($results))
+                {
+                    echo $row['firstName']." ";
+                    echo $row['lastName']." ";
+                    echo $row['phone']." ";
+                    echo $row['userType']." ";
+
+                }
+                //echo $row['firstName'];
+                //echo $row['lastName'];
+
+
+
+                // echo $personname;
+                // echo $personnumber;
+                // echo $personEmail;
+                // echo $personRank;
+
+            }
+
             </script>
             <?PHP //include('footer.inc'); ?>
         </div>
-        
-        <div id="container">
-            <?PHP 
-                echo "test";
-            ?>
-        </div>
-
     </body>
 </html>
