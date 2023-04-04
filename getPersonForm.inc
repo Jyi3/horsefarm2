@@ -35,14 +35,14 @@
 <fieldset>
     <legend>Person Name:</legend>
     <p>Person Name<span style="font-size:x-small;color:FF0000"></span>: </p>
-    <select name="personName" tabindex="1"> 
-        <?PHP
+    <select name="username" tabindex="1"> 
+        <?php
 
-        //Create an array to hold the full names of all the people in the database.
-        $names = getall_person_names();
+        //Create an array to hold the usernames of all the people in the database.
+        $usernames = getall_usernames();
 
-        foreach ($names as $n) {
-            echo("<option value='$n' >$n</option>");
+        foreach ($usernames as $username) {
+            echo("<option value='$username'>$username</option>");
         }
         ?>
     </select>
@@ -50,7 +50,7 @@
     <script src="lib/>jquery-ui.js"></script>
 </fieldset>
 <br>
-<?PHP
+<?php
 
     //Display the appropriate submit button text based on what the user wants to do.
     if($formAction == "selectPerson") {
