@@ -2,7 +2,6 @@
 
 session_start();
 
-
 ?>
 
 <html>
