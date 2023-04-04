@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_close($conn);
     }
     
-    echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "';</script>";
+    echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?userName=$pp_username';</script>";
     exit();
 }
 ?>
@@ -126,43 +126,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div id="container">
-        <?PHP include('header.php'); ?>
-    
-        <?php
-        $servername = "localhost";
-        $db_username = "homebasedb";
-        $password = "homebasedb";
-        $dbname = "homebasedb";
+            <?PHP include('header.php'); ?>
+        
+            <?php
+            $servername = "localhost";
+            $db_username = "homebasedb";
+            $password = "homebasedb";
+            $dbname = "homebasedb";
 
-        $conn = mysqli_connect($servername, $db_username, $password, $dbname);
-        if (!$conn) {
-            die("Connection failed: " . mysqli_connect_error());
-        }
+            $conn = mysqli_connect($servername, $db_username, $password, $dbname);
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
 
-        $pp_username = "finalTest2finalTest21231234565";
-        $sql = "SELECT * FROM persondb WHERE username = '$pp_username'";
-        $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate 
-          FROM notesdb n
-          INNER JOIN horsedb h ON n.horseID = h.horseID 
-          WHERE n.username = '$pp_username'";
-        $result = mysqli_query($conn, $sql);
-        $result2 = mysqli_query($conn, $notes);
+            // Use $_GET to get the userName parameter
+            $pp_username = $_GET["userName"];
+            $sql = "SELECT * FROM persondb WHERE username = '$pp_username'";
+            $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate 
+            FROM notesdb n
+            INNER JOIN horsedb h ON n.horseID = h.horseID 
+            WHERE n.username = '$pp_username'";
+            $result = mysqli_query($conn, $sql);
+            $result2 = mysqli_query($conn, $notes);
 
-        if (mysqli_num_rows($result) != 1) {
-            die("Error: Invalid username");
-        }
+            if (mysqli_num_rows($result) != 1) {
+                die("Error: Invalid username");
+            }
 
-        $row = mysqli_fetch_assoc($result);
-        $firstName = $row["firstName"];
-        $lastName = $row["lastName"];
-        $pp_username = $row["username"];
-        $email = $row["email"];
-        $phone = $row["phone"];
-        $userType = $row["userType"];
-        $archive = $row["archive"];
-        mysqli_close($conn);
-        ?>
-        <title><?php echo $pp_username; ?>'s Profile</title>
+            $row = mysqli_fetch_assoc($result);
+            $firstName = $row["firstName"];
+            $lastName = $row["lastName"];
+            $pp_username = $row["username"];
+            $email = $row["email"];
+            $phone = $row["phone"];
+            $userType = $row["userType"];
+            $archive = $row["archive"];
+            mysqli_close($conn);
+            ?>
+            <title><?php echo $pp_username; ?>'s Profile</title>
+
 
         <div id="content">
             <div class="profile-container">
@@ -193,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     <form method="POST">
                         <input type="hidden" name="username" value="<?php echo $pp_username; ?>" />
-                        <input type="submit" name="archive" value="Archive" <?php if ($archive == 1) echo 'style="display:none"'; ?> />
+                        <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> />
                         <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> />
                     </form>
 
