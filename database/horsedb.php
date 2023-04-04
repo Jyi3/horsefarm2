@@ -5,8 +5,8 @@
  */
 
 //Include the MySQL connection and Horse class.
-include_once('dbinfo.php');
-include_once('../domain/Horse.php');
+include('dbinfo.php');
+include('/domain/Horse.php');
 
 /*
  * Function name: add_horse($horse)
