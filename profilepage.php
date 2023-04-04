@@ -2,12 +2,9 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pp_username = $_POST["username"];
 
-    $servername = "localhost";
-    $db_username = "homebasedb";
-    $password = "homebasedb";
-    $dbname = "homebasedb";
+    include_once('database/dbinfo.php');
 
-    $conn = mysqli_connect($servername, $db_username, $password, $dbname);
+    $conn = connect();
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
@@ -129,12 +126,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?PHP include('header.php'); ?>
         
             <?php
-            $servername = "localhost";
-            $db_username = "homebasedb";
-            $password = "homebasedb";
-            $dbname = "homebasedb";
+            include_once('database/dbinfo.php');
 
-            $conn = mysqli_connect($servername, $db_username, $password, $dbname);
+            $conn = connect();
             if (!$conn) {
                 die("Connection failed: " . mysqli_connect_error());
             }
