@@ -27,7 +27,9 @@
 <h1><br><br>Homebase <br></h1>-->
 
 <header class="header">
-  <a href="#" class="logo">Horse</a>
+  <a href="index.php" class="logo">Home</a>
+  <a href="search.php" class="logo">Search</a>
+  <a href="about.php" class="logo">About</a>
   <nav class="menu-options">
     <div class = "dropdown">
       <p> &emsp; Database</p>
@@ -36,7 +38,7 @@
         <br>
         <a href="personActions.php?formAction=searchPeople">View All Trainers</a>
         <br>
-        <a href="search.php">Search Horses/Trainers</a>
+        <a href="search.php">Search</a>
       </div>
     </div>
     <div class = "dropdown">
@@ -70,11 +72,11 @@
         echo('<br><b style="font-size:200%;">'.'CVHR Horse Training Management System'.'</b> ');
         echo('<br><br>');
 
-        echo('<a href="index.php" style="font-size:150%;">HOME</a>');
-        echo('<a style="font-size:200%;"> | </a>');
-        echo('<a href="search.php" style="font-size:150%;">SEARCH</a>');
-        echo('<a style="font-size:200%;"> | </a>');
-        echo('<a href="about.php" style="font-size:150%;">ABOUT</a>');
+        //echo('<a href="index.php" style="font-size:150%;">HOME</a>');
+       // echo('<a style="font-size:200%;"> | </a>');
+       // echo('<a href="search.php" style="font-size:150%;">SEARCH</a>');
+       // echo('<a style="font-size:200%;"> | </a>');
+       // echo('<a href="about.php" style="font-size:150%;">ABOUT</a>');
         
        
         echo('</br>');
