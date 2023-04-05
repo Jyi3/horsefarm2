@@ -15,7 +15,12 @@ if($formAction=="confirmAdd"){
     echo("<p> MAKE A WAY TO CONFIRM THAT A NOTE HAS BEEN ADDED TO THE SYSTEM.</p>");
 
 }
+?>
 
+<fieldset>
+<lengend>Note information:</lengend>
+
+<?PHP
 echo("<p>Horse ID<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='horseID' tabindex='1' value='$horseID'></p>");
                 echo("<p>Note Text: <input type='text' name='note' tabindex='1' value='$note'></p>");
                 echo("<p>username: <input type='text' name='username' tabindex='1' value='$username'></p>");
@@ -26,7 +31,9 @@ else { //$formAction == "editNote" or "confirmEdit"
 
 ?>
 
-
+<script src="lib/>jquery-1.9.1.js"></script>
+<script src="lib/>jquery-ui.js"></script>
+</fieldset>
 
 <?PHP
 
