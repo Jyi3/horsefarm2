@@ -19,6 +19,21 @@ $theNote = new Note(
 return $theNote;
 }
 
+
+/*construct_note_now allows us to seemlessly construct a note without having to collect the time in other pages.
+* the parameters used here are the same that we would typically use in the construction of a note.
+*
+*/
+function construct_note_now($horseID , $note , $username){
+
+$noteTimestamp = time();
+$noteDate = date('Y-m-d');
+
+$theNote = new Note($horseID,$noteDate,$noteTimestamp,$note,$username);
+return $theNote;
+
+}
+
 /* note_full() is a function that tell us if all parameters are present in a note.
 * $note is the note that will be examined to be certain that all parameters are present.
 * returns false if note contains null values, and true if it doesnt.

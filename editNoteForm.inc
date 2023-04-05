@@ -16,8 +16,9 @@ if($formAction=="confirmAdd"){
 
 }
 
-
-
+echo("<p>Horse ID<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='horseID' tabindex='1' value='$horseID'></p>");
+                echo("<p>Note Text: <input type='text' name='note' tabindex='1' value='$note'></p>");
+                echo("<p>username: <input type='text' name='username' tabindex='1' value='$username'></p>");
 }
 
 else { //$formAction == "editNote" or "confirmEdit"
