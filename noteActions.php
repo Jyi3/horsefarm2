@@ -14,17 +14,15 @@ $noteToAdd;
 $noteToEdit;
 
 
-function process_form($noteID , $Note, $action){
+function process_form($Note, $formAction){
 
-if($action == "add"){
-    //There should be no need to go ahead and check for a duplicate notes.
-    //noteID's should be generated upon creation
+if($formAction == "addNote"){
 
 }
 
-else if($action == "edit"){}
+else if($formAction == "editNote"){}
 
-else if($action == "remove"){}
+else if($formAction == "removeNote"){}
 
 
 }
