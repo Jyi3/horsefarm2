@@ -7,42 +7,33 @@
  */
 
 class Note {
-    private $horseName; //string
-    private $noteDate; //date format
-    private $noteTimestamp; //timestamp
-    private $noteText; //string
-    private $trainerFirstName; //string
-    private $trainerLastName; //string
-    private $noteID; //integer between -2,147,483,648 and 2,147,483,647.
+
+    private $horseID;
+    private $noteDate;
+    private $noteTimestamp;
+    private $note;
+    private $username;
     
-    function __construct($horseName, $noteDate, $timestamp, $noteText, $trainerFirstName, $trainerLastName,$noteID) {
-            $this->horseName = $horseName;
-            $this->noteDate = $noteDate;
-            $this->noteTimestamp = $timestamp;
-            $this->noteText = $noteText;
-            $this->trainerFirstName = $trainerFirstName;
-            $this->trainerLastName = $trainerLastName;
-            $this->noteID = $noteID;
+    function __construct($horseID,$noteDate,$noteTimestamp,$note,$username) {
+        $this->horseID = $horseID;
+        $this->noteDate = $noteDate;
+        $this->noteTimestamp = $noteTimestamp;
+        $this->note = $note;
+        $this->username = $username;
     }
-    function get_horseName() {
-        return $this->horseName;
+    function get_horseID() {
+        return $this->horseID;
     }
-    function get_date() {
+    function get_noteDate() {
         return $this->noteDate;
     }
     function get_timestamp() {
         return $this->noteTimestamp;
     }
-    function get_noteText() {
-        return $this->noteText;
+    function get_note() {
+        return $this->note;
     }
-    function get_trainerFirstName() {
-        return $this->trainerFirstName;
-    }
-    function get_trainerLastName() {
-        return $this->trainerLastName;
-    }
-    function get_noteID(){
-        return $this->noteID;
+    function get_username() {
+        return $this->username;
     }
 }
