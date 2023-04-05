@@ -28,7 +28,7 @@
   }
   
   .header .logo {
-    font-size: 40px;
+    font-size: 20px;
     font-family: sans-serif;
     color: #000;
     text-decoration: none;
@@ -36,7 +36,7 @@
   }
 
   .header .menu-options {
-    font-size: 40px;
+    font-size: 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
