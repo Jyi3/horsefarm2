@@ -19,7 +19,7 @@ class Person {
     function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-		$this->fullName = $fullName;
+		$this->fullName = $firstName . $lastName;
         $this->phone = $phone;
         $this->email = $email;
         $this->username = $firstName . $lastName . str_replace('-', '', $phone);

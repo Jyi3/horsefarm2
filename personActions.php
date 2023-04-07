@@ -14,8 +14,6 @@ session_start();
 include_once('database/persondb.php');
 include_once('database/dbinfo.php');
 include_once('domain/Person.php');
-include_once('domain/ArchivedPerson.php');
-include_once('database/archivePersondb.php');
 
 
 
@@ -133,6 +131,62 @@ function process_form($name, $person, $action) {
                 border-right: 1px solid black;
                 border-top: 1px solid black;
                 border-bottom: 1px solid black;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f3f3;
+                color: #333;
+                margin: 0;
+            }
+            #container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                position: relative;
+                min-height: 100vh;
+            }
+            #appLink:visited {
+                color: gray; 
+            }
+            #content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            #content-inner {
+                text-align: center;
+                max-width: 800px;
+                width: 100%;
+            }
+            h1 {
+                color: #4b6c9e;
+                font-size: 36px;
+                margin-bottom: 20px;
+                text-align: center;
+                margin: 0 auto;
+            }
+            p {
+                font-size: 18px;
+                line-height: 1.6;
+                margin: 0 auto;
+            }
+
+            @media (max-width: 768px) {
+                h1 {
+                    font-size: 28px;
+                }
+
+                p {
+                    font-size: 16px;
+                    max-width: 90%;
+                }
+
+                #container {
+                    padding: 10px;
+                }
             }
         </style>
         <link rel="stylesheet" href="lib/jquery-ui.css" />
@@ -447,7 +501,7 @@ function process_form($name, $person, $action) {
 
                 ?>
             </div>
-            <?PHP //include('footer.inc'); ?>
+            <?PHP include('footer.php'); ?>
         </div>
     </body>
 </html>    
