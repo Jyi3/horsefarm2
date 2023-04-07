@@ -93,7 +93,7 @@
                     <p>For more information, please visit our <a href="https://centralvahorserescue.org/" target="_blank"><strong><u>website</u></strong></a>.</p>
                 </div>
             </div>
-            <?php //include('footer.inc'); ?>
+            <?php include('footer.php'); ?>
         </div>
     </body>
 </html>
