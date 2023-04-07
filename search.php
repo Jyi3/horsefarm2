@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include_once('database/horsedb.php');
     include_once('database/dbinfo.php');
     include_once('domain/Horse.php');
+    include_once('database/persondb.php');
+    include_once('domain/Person.php');
     $conn = connect();
 
     // Check connection
@@ -25,29 +27,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     {
         $type = "horsedb ";
     }
+    elseif ($type == "trainer") 
+    {
+        $type = "persondb ";
+    }
+
     // Construct the SQL query based on the search parameters
     $sql = "SELECT * FROM " . $type;
     $conditions = [];
 
-    if (!empty($search1)) {
-        $conditions[] = "horseName LIKE '%" . $search1 . "%'";
-    }
-    if (!empty($search2)) {
-        $conditions[] = "color LIKE '%" . $search2 . "%'";
-    }
-    if (!empty($search3)) {
-        $conditions[] = "breed LIKE '%" . $search3 . "%'";
-    }
-    if (!empty($search4)) {
-        $conditions[] = "pastureNum LIKE '%" . $search4 . "%'";
-    }
-    if (!empty($search5)) {
-        if (in_array("All", $search5)) {
-            // Do nothing (all colors are included by default)
-        } else {
-            $conditions[] = "colorRank IN ('" . implode("','", $search5) . "')";
+
+    if ($type == "horsedb ") 
+    {
+        if (!empty($search1)) {
+            $conditions[] = "horseName LIKE '%" . $search1 . "%'";
+        }
+        if (!empty($search2)) {
+            $conditions[] = "color LIKE '%" . $search2 . "%'";
+        }
+        if (!empty($search3)) {
+            $conditions[] = "breed LIKE '%" . $search3 . "%'";
+        }
+        if (!empty($search4)) {
+            $conditions[] = "pastureNum LIKE '%" . $search4 . "%'";
+        }
+        if (!empty($search5)) {
+            if (in_array("All", $search5)) {
+                // Do nothing (all colors are included by default)
+            } else {
+                $conditions[] = "colorRank IN ('" . implode("','", $search5) . "')";
+            }
         }
     }
+    elseif ($type == "persondb ") 
+    {
+        // Trainer search conditions
+        if (!empty($search1)) {
+            $conditions[] = "fullName LIKE '%" . $search1 . "%'";
+        }
+        if (!empty($search2)) {
+            $conditions[] = "phone LIKE '%" . $search2 . "%'";
+        }
+        if (!empty($search3)) {
+            $conditions[] = "email LIKE '%" . $search3 . "%'";
+        }
+        if (!empty($search4)) {
+            $conditions[] = "userType LIKE '%" . $search4 . "%'";
+        }
+    }
+
 
     if (!empty($conditions)) {
         $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -249,9 +277,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             document.getElementById("search5-container").style.display = "block";
                         } else {
                             search1Label.innerText = "Trainer Name:";
-                            search2Label.innerText = "Trainer :";
-                            search3Label.innerText = "Trainer :";
-                            search4Label.innerText = "Trainer Rank:";
+                            search2Label.innerText = "Trainer Phone:";
+                            search3Label.innerText = "Trainer Email:";
+                            search4Label.innerText = "Trainer Role:";
                             search5Label.innerText = "";
                             document.getElementById("search5-container").style.display = "none";
                         }
@@ -285,37 +313,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <!-- Add this new div below the form to display search results -->
         <div id="content">
             <div id="contentSearches">
-            <?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($result) && $result->num_rows > 0): ?>
-                <h3>Search Results:</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Horse Name</th>
-                            <th>Color</th>
-                            <th>Breed</th>
-                            <th>Pasture Number</th>
-                            <th>Color Rank</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['horseName']); ?></td>
-                                <td><?php echo htmlspecialchars($row['color']); ?></td>
-                                <td><?php echo htmlspecialchars($row['breed']); ?></td>
-                                <td><?php echo htmlspecialchars($row['pastureNum']); ?></td>
-                                <td><?php echo htmlspecialchars($row['colorRank']); ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-                
-            <?php elseif ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
-                <p>No results found for your search criteria.</p>
-            <?php endif; ?>
-            <?PHP //include('footer.inc'); ?>
+                <?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($result) && $result->num_rows > 0): ?>
+                    <h3>Search Results:</h3>
+                    <table>
+                        <thead>
+                            <?php if ($type == "horsedb "): ?>
+                                <tr>
+                                    <th>Horse Name</th>
+                                    <th>Color</th>
+                                    <th>Breed</th>
+                                    <th>Pasture Number</th>
+                                    <th>Color Rank</th>
+                                </tr>
+                            <?php elseif ($type == "persondb "): ?>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                            <?php endif; ?>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <?php if ($type == "horsedb "): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($row['horseName']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['color']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['breed']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['pastureNum']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['colorRank']); ?></td>
+                                    </tr>
+                                <?php elseif ($type == "persondb "): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($row['fullName']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['userType']); ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                <?php elseif ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
+                    <p>No results found for your search criteria.</p>
+                <?php endif; ?>
+                <?PHP //include('footer.inc'); ?>
             </div>
         </div>
-                
+
     </body>
 </html>
