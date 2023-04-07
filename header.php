@@ -15,21 +15,68 @@
     #mainNavLinks {font-size: 150%;}
     #navigationLinks a:first-child, #navigationLinks a:nth-child(2) {font-size: 130%;}
 </style>
-<div id="header">
+<div class="intro"> 
+      <h1>
+        <a href="https://centralvahorserescue.org/">
+        <img src="https://i0.wp.com/centralvahorserescue.org/wp-content/uploads/2021/10/cropped-10441289_779793575378834_6338759994579667054_n.png?w=250&ssl=1" alt="CVHR Logo" style="float:left;width:72px;height:72px;"> 
+        </a>
+         CVHR Horse Training Management System</h1>
+    </div>
+
 <!--<br><br><img src="images/rmhHeader.gif" align="center"><br>
 <h1><br><br>Homebase <br></h1>-->
-</div>
+
+<header class="header">
+  <a href="index.php" class="logo">Home</a>
+  <a href="search.php" class="logo">Search</a>
+  <a href="about.php" class="logo">About</a>
+  <nav class="menu-options">
+    <div class = "dropdown">
+      <p> &emsp; Database</p>
+      <div class = "dropdown-content">
+        <a href="horseActions.php?formAction=searchHorse">View All Horses</a>
+        <br>
+        <a href="personActions.php?formAction=searchPeople">View All Trainers</a>
+        <br>
+        <a href="search.php">Search</a>
+      </div>
+    </div>
+    <div class = "dropdown">
+      <p>&emsp; Training</p>
+      <div class = "dropdown-content">
+        <a href="behaviorActions.php?formAction=addBehavior">Create Behavior</a>
+        <br>
+        <a href="behaviorActions.php?formAction=selectBehavior">Edit Behavior</a>
+      </div>
+    </div>
+    <div class = "dropdown">
+      <p>&emsp; Administration</p>
+      <div class = "dropdown-content">
+        <a href="personActions.php?formAction=selectPerson">Edit Trainers</a>
+        <br>
+        <a href="personActions.php?formAction=searchPeople">Archive Trainer</a>
+        <br>
+        <a href="personActions.php?formAction=searchPeople">Archive Horse</a>
+      </div>
+    </div>
+    <a href="logout.php">&emsp; Logout</a>
+    <br>
+  </nav>
+</header>
+
+
 
 <div align="center" id="navigationLinks">
     <?PHP    
+        
         echo('<br><b style="font-size:200%;">'.'CVHR Horse Training Management System'.'</b> ');
         echo('<br><br>');
 
-        echo('<a href="index.php" style="font-size:150%;">HOME</a>');
-        echo('<a style="font-size:200%;"> | </a>');
-        echo('<a href="search.php" style="font-size:150%;">SEARCH</a>');
-        echo('<a style="font-size:200%;"> | </a>');
-        echo('<a href="about.php" style="font-size:150%;">ABOUT</a>');
+        //echo('<a href="index.php" style="font-size:150%;">HOME</a>');
+       // echo('<a style="font-size:200%;"> | </a>');
+       // echo('<a href="search.php" style="font-size:150%;">SEARCH</a>');
+       // echo('<a style="font-size:200%;"> | </a>');
+       // echo('<a href="about.php" style="font-size:150%;">ABOUT</a>');
         
        
         echo('</br>');

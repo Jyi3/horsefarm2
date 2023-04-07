@@ -10,7 +10,8 @@
  *  oversees the editing of a behavior to be added, edited, or deleted from the database
  */
 
-session_start();
+
+
 
 include_once('database/behaviordb.php');
 include_once('database/dbinfo.php');

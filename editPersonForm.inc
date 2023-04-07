@@ -43,28 +43,33 @@
         <?php
             if($formAction == "addPerson" || $formAction == "confirmAdd"){
                 //leave the fields blank
-                echo("<p>First Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='firstName' tabindex='1' value=''></p>");
-                echo("<p>Last Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='lastName' tabindex='1' value=''></p>");
-                echo("<p>Phone Number (###-###-####): <input type='tel' name='phone' placeholder='123-456-7890' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' tabindex='1' value=''></p>"); //Add "required" after "pattern" later!
+                echo("<p>First Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='firstName' required tabindex='1' value=''></p>");
+                echo("<p>Last Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='lastName' required tabindex='1' value=''></p>");
+                echo("<p>Phone Number (###-###-####):<span style='font-size:x-small;color:FF0000'>* <input type='tel' name='phone' placeholder='123-456-7890' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' required tabindex='1' value=''></p>");
                 echo("<p>Email: <input type='email' name='email' tabindex='1' value=''></p>");
                 
             //editing a person
             } 
             else  { //$formAction = "editPerson" or "confirmEdit"
-                //auto-populate the fields with the exisitng information
-                $currentFirstName = retrieve_person($oldName)->get_firstName();
-                $currentLastName = retrieve_person($oldName)->get_lastName();
-                $currentPhone = retrieve_person($oldName)->get_phone();
-                $currentEmail = retrieve_person($oldName)->get_email();
-                $currentUsername = retrieve_person($oldName)->get_username();
-                $currentPassword = retrieve_person($oldName)->get_pass();
+                // Retrieve the person object from the database
+                $person = retrieve_person_by_username($oldName);
+                
+                // Get the required information from the person object
+                $currentFirstName = retrieve_person_by_username($oldName)->get_firstName();
+                $currentLastName = retrieve_person_by_username($oldName)->get_lastName();
+                $currentPhone = retrieve_person_by_username($oldName)->get_phone();
+                $currentEmail = retrieve_person_by_username($oldName)->get_email();
+                $currentUsername = retrieve_person_by_username($oldName)->get_username();
+                $currentPassword = retrieve_person_by_username($oldName)->get_pass();
 
+                // Populate the form fields with the existing information
+                echo("<p>Username(Uneditable): <input type='text' name='username' tabindex='1' value='$currentUsername' readonly></p>");
                 echo("<p>First Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='firstName' tabindex='1' value='$currentFirstName'></p>");
                 echo("<p>Last Name<span style='font-size:x-small;color:FF0000'>*</span>: <input type='text' name='lastName' tabindex='1' value='$currentLastName'></p>");
-                echo("<p>Phone Number (###-###-####): <input type='tel' name='phone' placeholder='123-456-7890' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' tabindex='1' value='$currentPhone'></p>"); //Add "required" after "pattern" later!
+                echo("<p>Phone Number (###-###-####):<span style='font-size:x-small;color:FF0000'>* <input type='tel' name='phone' placeholder='123-456-7890' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' required tabindex='1' value='$currentPhone'></p>"); 
                 echo("<p>Email: <input type='email' name='email' tabindex='1' value='$currentEmail'></p>");
-                echo("<p>Username: <input type='text' name='username' tabindex='1' value='$currentUsername'></p>");
                 echo("<p>Password: <input type='text' name='pass' tabindex='1' value='$currentPassword'></p>");
+
             }
         ?>
         <p>Person Type<span style="font-size:x-small;color:FF0000"></span>:
@@ -84,7 +89,7 @@
                 }
                 //the user is editing a person
                 else {
-                    $currentUserType = retrieve_person($oldName)->get_userType();
+                    $currentUserType = retrieve_person_by_username($oldName)->get_userType();
 
                     echo "<option value=" . $currentUserType . ">" . $currentUserType . "</option>";
 

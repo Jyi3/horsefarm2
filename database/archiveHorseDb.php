@@ -48,7 +48,7 @@ function archive_horse($horse){
                 $horse->get_breed() . '","' .
                 $horse->get_pastureNum() . '","' .
                 $horse->get_colorRank() . '","'.
-                $archiveTime . '");');							        
+                $arcTime . '");');							        
         mysqli_close($con);
         return true;
     }
