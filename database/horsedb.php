@@ -347,6 +347,7 @@ function getall_horse_names() {
 
     //Close the connection and return the array.
     mysqli_close($con);
+    var_dump($names);
     return $names;
 }
  

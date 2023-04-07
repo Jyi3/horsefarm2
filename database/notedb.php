@@ -3,13 +3,42 @@
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Note.php');
 
+/*get_next_note_id() returns the next available noteID.
+*
+*
+*/
+function get_next_note_id() {
+    // create a database connection
+    $con = connect();
+
+    // retrieve the maximum noteID value from the noteDB table
+    $query = "SELECT MAX(noteID) as max_id FROM noteDB";
+    $result = mysqli_query($con, $query);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+    // if there are no notes in the table, set the next ID to 1
+    if ($row['max_id'] == null) {
+        $next_id = 1;
+    }
+    // otherwise, set the next ID to 1 greater than the maximum ID value
+    else {
+        $next_id = $row['max_id'] + 1;
+    }
+
+    // close the database connection and return the next ID
+    mysqli_close($con);
+    return $next_id;
+}
+
+
 /* construct_note() will return a new note object.
 * $inputRow is a mySQL row that contains all parameters required for a new Note.
 * returns NULL if not all parameters are present.
 */
 function construct_note($inputRow){
-
+$ID = get_next_note_id();
 $theNote = new Note(
+    $ID,
     $inputRow['horseID'],
     $inputRow['noteDate'],
     $inputRow['noteTimestamp'],
@@ -28,8 +57,8 @@ function construct_note_now($horseID , $note , $username){
 
 $noteTimestamp = time();
 $noteDate = date('Y-m-d');
-
-$theNote = new Note($horseID,$noteDate,$noteTimestamp,$note,$username);
+$ID = get_next_note_id();
+$theNote = new Note($ID,$horseID,$noteDate,$noteTimestamp,$note,$username);
 return $theNote;
 
 }
@@ -84,19 +113,19 @@ return false;
 }
 
 
-/* edit_note($note, $Note) is a function that allows you to edit a given note.
-*  $note is the text that will be replaced.
+/* edit_note($noteText, $Note) is a function that allows you to edit a given note.
+*  $noteText is the text that will inside of the note.
 *  $Note is the actual Note object that is being edited.
 *   returns true if the note was edited.
 */
-function edit_note($note, $Note){
+function edit_note($noteText, $Note){
     if (!$Note instanceof Note) {
         die("Errors: edit_note type mismatch");
     }
 
     //Create a database connection and update the existing note.
     $con=connect();
-    $query = "UPDATE noteDB SET note='" . $note->get_note() . "';";
+    $query = "UPDATE noteDB SET note='" . $noteText . " WHERE noteID= " . $Note->get_note_ID() . "';";
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
@@ -105,12 +134,13 @@ function edit_note($note, $Note){
 }
 /*retrieve_horse_notes() gives us all the notes that are associated with a horse.
 *returns an array containing all the notes that we encountered.
+*horseID is an integer that matches an existing horse in the horsedb.
 */
 function retrieve_horse_notes($horseID){
 
     //Create a database connection and retrieve all of the note ID numbers.
     $con=connect();
-    $query = 'SELECT * FROM noteDB WHERE horseID = "' . $horseID . '"';
+    $query = "SELECT * FROM noteDB WHERE horseID = '" . $horseID . "'ORDER BY noteDate DESC";
     $result = mysqli_query($con,$query);
 
     //If the note table is empty,
@@ -128,7 +158,6 @@ function retrieve_horse_notes($horseID){
     $notes = array();
     while ($result_row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
         $notes[] = $result_row;
-    $count++;
     }
 
     //Close the connection and return the array.

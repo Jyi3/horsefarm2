@@ -8,18 +8,24 @@
 
 class Note {
 
+    private $noteID;
     private $horseID;
     private $noteDate;
     private $noteTimestamp;
     private $note;
     private $username;
     
-    function __construct($horseID,$noteDate,$noteTimestamp,$note,$username) {
+    function __construct($noteID,$horseID,$noteDate,$noteTimestamp,$note,$username) {
+        $this->noteID = $noteID;
         $this->horseID = $horseID;
         $this->noteDate = $noteDate;
         $this->noteTimestamp = $noteTimestamp;
         $this->note = $note;
         $this->username = $username;
+    }
+
+    function get_note_ID(){
+        return $this->noteID;
     }
     function get_horseID() {
         return $this->horseID;

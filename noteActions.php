@@ -1,46 +1,63 @@
-
-<?php
-/*
-*noteActions.php
-*
-*@author Ethan Thompson @ ethomps5@mail.umw.edu
-*/
-
+<?PHP
 include_once('database/notedb.php');
 include_once('database/dbinfo.php');
 include_once('domain/Note.php');
-
-$formAction = $_GET["formAction"];
-$noteToAdd;
-$noteToEdit;
+include_once('database/horsedb.php');
 
 
-function process_form($Note, $formAction){
-
-if($formAction == "addNote"){
-
-}
-
-else if($formAction == "editNote"){}
-
-else if($formAction == "removeNote"){}
-
-
-}
-
+//global variables here.
+$formAction = $_GET["formAction"]; 
+$selectedHorse = $_POST["horse"];
+$selectedNote = $_POST["note"];
 ?>
-<html>
-    <head>
-        <title>
-            <?PHP
-if($formAction=='searchNote'){echo ("Search Training Note");}
 
-if($formAction=='addNote'){echo ("Add Training Note");}
 
-if($formAction=='editNote'){echo ("Edit Training Note");}
 
-if($formAction=='removeNote'){echo ("Remove Training Note");}
 
+<?PHP
+
+function selectHorse(){
+
+    //we need to show the user all the horses in the database, and allow the user to select one.
+$allHorses = 
+
+    //after we do this, we need to resubmit the page.
+
+
+}
+
+function selectNote($selectedHorse){
+
+    //once we get the Horse, we can present the user with all the notes relating to that horse, and allow the user to act on them.
+
+
+
+
+
+}
+
+function processForm($formAction, $selectedHorse,$selectedNote){
+
+
+    if($formAction=='searchNote'){
+        echo("time to look for some notes.");
+    }
+
+    if($formAction=='addNote'){
+    echo("time to add some notes.");
+    }
+    
+    if($formAction=='editNote'){
+        echo("time to edit some notes.");
+        include('getHorseForm.inc');
+
+    }
+    
+    if($formAction=='removeNote'){
+        echo("time to remove some notes.");
+
+    }
+}
 
 
 ?>
@@ -67,28 +84,7 @@ if($formAction=='removeNote'){echo ("Remove Training Note");}
 
             <div id="content">
                 <?PHP
-                if($formAction=='searchNote'){}
 
-                if($formAction=='addNote'){
-                    
-                    //we don't have these yet.
-                    //TODO make editNoteForm.inc
-                    include('editNoteForm.inc');
-                }
-                
-                if($formAction=='editNote'){
-
-                    include('editNoteForm.inc');
-                }
-                
-                if($formAction=='removeNote'){
-
-                    if(get_numNotes()==0){echo('there are no notes to remove!');}
-
-                    else{
-                        //remove the note somehow
-                    }
-                }
                 ?>
             </div>
         </div>
