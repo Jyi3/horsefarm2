@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include_once('database/horsedb.php');
     include_once('database/dbinfo.php');
     include_once('domain/Horse.php');
+    include_once('database/persondb.php');
+    include_once('domain/Person.php');
     $conn = connect();
 
     // Check connection
@@ -25,29 +27,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     {
         $type = "horsedb ";
     }
+    elseif ($type == "trainer") 
+    {
+        $type = "persondb ";
+    }
+
     // Construct the SQL query based on the search parameters
     $sql = "SELECT * FROM " . $type;
     $conditions = [];
 
-    if (!empty($search1)) {
-        $conditions[] = "horseName LIKE '%" . $search1 . "%'";
-    }
-    if (!empty($search2)) {
-        $conditions[] = "color LIKE '%" . $search2 . "%'";
-    }
-    if (!empty($search3)) {
-        $conditions[] = "breed LIKE '%" . $search3 . "%'";
-    }
-    if (!empty($search4)) {
-        $conditions[] = "pastureNum LIKE '%" . $search4 . "%'";
-    }
-    if (!empty($search5)) {
-        if (in_array("All", $search5)) {
-            // Do nothing (all colors are included by default)
-        } else {
-            $conditions[] = "colorRank IN ('" . implode("','", $search5) . "')";
+
+    if ($type == "horsedb ") 
+    {
+        if (!empty($search1)) {
+            $conditions[] = "horseName LIKE '%" . $search1 . "%'";
+        }
+        if (!empty($search2)) {
+            $conditions[] = "color LIKE '%" . $search2 . "%'";
+        }
+        if (!empty($search3)) {
+            $conditions[] = "breed LIKE '%" . $search3 . "%'";
+        }
+        if (!empty($search4)) {
+            $conditions[] = "pastureNum LIKE '%" . $search4 . "%'";
+        }
+        if (!empty($search5)) {
+            if (in_array("All", $search5)) {
+                // Do nothing (all colors are included by default)
+            } else {
+                $conditions[] = "colorRank IN ('" . implode("','", $search5) . "')";
+            }
         }
     }
+    elseif ($type == "persondb ") 
+    {
+        // Trainer search conditions
+        if (!empty($search1)) {
+            $conditions[] = "fullName LIKE '%" . $search1 . "%'";
+        }
+        if (!empty($search2)) {
+            $conditions[] = "phone LIKE '%" . $search2 . "%'";
+        }
+        if (!empty($search3)) {
+            $conditions[] = "email LIKE '%" . $search3 . "%'";
+        }
+        if (!empty($search4)) {
+            $conditions[] = "userType LIKE '%" . $search4 . "%'";
+        }
+    }
+
 
     if (!empty($conditions)) {
         $sql .= " WHERE " . implode(" AND ", $conditions);
@@ -63,30 +91,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <html>
     <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>
-            CVHR Horse Training Management System
+            Search
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
-        	#appLink:visited {
-        		color: gray; 
-        	}	
-
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f3f3;
+                color: #333;
+                margin: 0;
+            }
+            
+            #container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                position: relative;
+                min-height: 100vh;
+            }
+            
+            #appLink:visited {
+                color: gray; 
+            }
+            
             #contentSearches {
-                margin-left: 10%;
-                margin-right: 30%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
             }
 
+
             form {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
-			align-items: center;
-			max-width: 800px;
-			margin: 0 auto;
-			padding: 20px;
-			border: 1px solid #ddd;
-			border-radius: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
             }
 
             label {
@@ -104,14 +154,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             .checkboxes-container {
-			display: flex;
-			flex-wrap: wrap;
-			flex-basis: 75%;
-			padding: 5px;
-			border-radius: 5px;
-			border: 1px solid #ddd;
-			justify-content: center;
-		    }
+                display: flex;
+                flex-wrap: wrap;
+                flex-basis: 75%;
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+                justify-content: center;
+            }
 
             input[type="checkbox"] {
                 flex-basis: 20%;
@@ -130,17 +180,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             #content-search {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 25%;
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
                 position: fixed;
                 bottom: 0;
                 right: 0;
-                width: 300px;
                 height: 400px;
-                padding: 10px;
                 background-color: #f7f7f7;
-                border: 1px solid #ccc;
                 box-shadow: 0 0 5px #ccc;
                 overflow: auto;
+                z-index: 1;
             }
+
 
             #minimizeButton {
                 position: absolute;
@@ -153,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 cursor: pointer;
                 padding: 5px 10px;
             }
-            
+
             #maximizeWindow {
                 position: fixed;
                 bottom: 20px;
@@ -170,6 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 align-items: center;
                 justify-content: center;
             }
+
             table {
                 border-collapse: collapse;
                 width: 100%;
@@ -185,6 +245,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 background-color: #f2f2f2;
             }
 
+            #content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding-bottom: 200px;
+            }
+
+            #content h3 {
+                text-align: center;
+            }
+
+            #content table {
+                margin: 0 auto;
+            }
+
         </style>
 
     </head>
@@ -196,21 +272,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button id="minimizeButton" onclick="toggleSearch()">Minimize</button>
 
                 <form action="search.php" method="post">
-                <label for="type">Search Type:</label>
+                <label for="type">Type:</label>
                 <select id="type" name="type" onchange="updateSearchCriteria()">
                     <option value="horse">Horse</option>
                     <option value="trainer">Trainer</option>
                 </select>
-                <label for="search1" id="search1-label">Horse Name:</label>
+                <label for="search1" id="search1-label">Name:</label>
                 <input type="text" id="search1" name="search1">
                 
-                <label for="search2" id="search2-label">Horse Color:</label>
+                <label for="search2" id="search2-label">Color:</label>
                 <input type="text" id="search2" name="search2">
                 
-                <label for="search3" id="search3-label">Horse Breed:</label>
+                <label for="search3" id="search3-label">Breed:</label>
                 <input type="text" id="search3" name="search3">
                 
-                <label for="search4" id="search4-label">Pasture Number:</label>
+                <label for="search4" id="search4-label">Pasture:</label>
                 <input type="text" id="search4" name="search4">
                 
                 <div2 id="search5-container">
@@ -241,17 +317,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         var search5Label = document.getElementById("search5-label");
 
                         if (type === "horse") {
-                            search1Label.innerText = "Horse Name:";
-                            search2Label.innerText = "Horse Color:";
-                            search3Label.innerText = "Horse Breed:";
+                            search1Label.innerText = "Name:";
+                            search2Label.innerText = "Color:";
+                            search3Label.innerText = "Breed:";
                             search4Label.innerText = "Pasture Number:";
-                            search5Label.innerText = "Color Rank:";
+                            search5Label.innerText = "Rank:";
                             document.getElementById("search5-container").style.display = "block";
                         } else {
-                            search1Label.innerText = "Trainer Name:";
-                            search2Label.innerText = "Trainer :";
-                            search3Label.innerText = "Trainer :";
-                            search4Label.innerText = "Trainer Rank:";
+                            search1Label.innerText = "Name:";
+                            search2Label.innerText = "Phone:";
+                            search3Label.innerText = "Email:";
+                            search4Label.innerText = "Role:";
                             search5Label.innerText = "";
                             document.getElementById("search5-container").style.display = "none";
                         }
@@ -273,22 +349,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                     }
 
+                    function resizeContentSearches() {
+                        var windowHeight = window.innerHeight;
+                        var contentSearches = document.getElementById("contentSearches");
+                        var newHeight = windowHeight / 8 * 7 - 200;
+                        contentSearches.style.height = newHeight + "px";
+                    }
+
+                    resizeContentSearches();
+
+                    window.addEventListener('resize', function () {
+                        resizeContentSearches();
+                    });
+
                 </script>
 
         </div>
 
-        <!-- Add the maximizeWindow div -->
-        <div id="maximizeWindow" onclick="toggleSearch()" style="display:none;">
-            <span>Maximize Search</span>
-        </div>
+<!-- Add the maximizeWindow div -->
+<div id="maximizeWindow" onclick="toggleSearch()" style="display:none;">
+    <span>Maximize</span>
+</div>
 
-        <!-- Add this new div below the form to display search results -->
-        <div id="content">
-            <div id="contentSearches">
-            <?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($result) && $result->num_rows > 0): ?>
-                <h3>Search Results:</h3>
-                <table>
-                    <thead>
+<!-- Add this new div below the form to display search results -->
+<div id="content">
+    <div id="contentSearches">
+        <h3>How to search for a horse or trainer:</h3>
+        <p>To search for a horse or trainer, select the appropriate search type from the dropdown menu above.</br>Enter your search criteria in the fields provided and click the "Search" button to retrieve matching results.</p>
+        <p>For horse searches, you can search by name, color, breed, and pasture number.</br>You can also filter results by color rank by selecting one or more options from the checkboxes.</p>
+        <p>For trainer searches, you can search by name, phone number, email, and role.</p>
+    </div>
+    <?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($result) && $result->num_rows > 0): ?>
+        <div id="contentSearches">
+            <h3>Search Results:</h3>
+            <table>
+                <thead>
+                    <?php if ($type == "horsedb "): ?>
                         <tr>
                             <th>Horse Name</th>
                             <th>Color</th>
@@ -296,9 +392,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <th>Pasture Number</th>
                             <th>Color Rank</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php elseif ($type == "persondb "): ?>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                    <?php endif; ?>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <?php if ($type == "horsedb "): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($row['horseName']); ?></td>
                                 <td><?php echo htmlspecialchars($row['color']); ?></td>
@@ -306,16 +411,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <td><?php echo htmlspecialchars($row['pastureNum']); ?></td>
                                 <td><?php echo htmlspecialchars($row['colorRank']); ?></td>
                             </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-                
-            <?php elseif ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
-                <p>No results found for your search criteria.</p>
-            <?php endif; ?>
-            <?PHP //include('footer.inc'); ?>
-            </div>
+                        <?php elseif ($type == "persondb "): ?>
+                            <tr>
+                                <td><a href="trainerprofile.php?userName=<?php echo urlencode($row['username']); ?>" style="color: blue; text-decoration: underline;"><?php echo htmlspecialchars($row['fullName']); ?></a></td>
+                                <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                                <td><?php echo htmlspecialchars($row['email']); ?></td>
+                                <td><?php echo htmlspecialchars($row['userType']); ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
         </div>
-                
-    </body>
+    <?php elseif ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
+        <div id="contentSearches">
+            <h3>Search Results:</h3>
+            <p>No results found for your search criteria.</p>
+        </div>
+    <?php endif; ?>
+    <?php include('footer.php'); ?>
+</div>
+
+</body>
 </html>
+
