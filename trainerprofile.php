@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         mysqli_close($conn);
     } elseif (isset($_POST["activate"])) {  
-        $conn = mysqli_connect($servername, $db_username, $password, $dbname);
         $sql = "UPDATE persondb SET archive = 0 WHERE username = '$pp_username'";
         $action_success = mysqli_query($conn, $sql);
         if (!$action_success) {
@@ -34,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" type="text/css" />
     <style>
         .profile-pic {
@@ -117,13 +117,108 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             overflow-y: auto;
         }
 
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            color: #333;
+            margin: 0;
+        }
+
+        #container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        #content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #content-inner {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #4b6c9e;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0 auto;
+        }
+
+        a {
+            color: #4b6c9e;
+            text-decoration: underline;
+        }
+
+        a:visited {
+            color: #4b6c9e;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .profile-pic {
+                margin-bottom: 20px;
+            }
+
+            .profile-name {
+                margin: 0;
+                text-align: center;
+            }
+
+            .profile-details {
+                margin-top: 20px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .notes-container {
+                padding-bottom: 50px;
+            }
+
+            .notes-table th {
+                font-size: 14px;
+            }
+
+            .notes-table td {
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
 
     </style>
 
 </head>
 <body>
     <div id="container">
-            <?PHP include('header.php'); ?>
+        <?PHP include('header.php'); ?>
         
             <?php
             include_once('database/dbinfo.php');
@@ -194,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </form>
 
                                         
-                </div>
+                    </div>
             </div>
             <div class="notes-container">
                 <h2 style="text-align: center;">Notes</h2>
@@ -223,7 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php endif; ?>
             </div>
         </div>
-        <?PHP //include('footer.inc'); ?>
+        <?PHP include('footer.php'); ?>
     </div>
 </body>
 </html>
