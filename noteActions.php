@@ -1,13 +1,14 @@
+
+<?php
 /*
 *noteActions.php
 *
 *@author Ethan Thompson @ ethomps5@mail.umw.edu
 */
 
-<?php
-include_once('database/nodedb.php');
+include_once('database/notedb.php');
 include_once('database/dbinfo.php');
-include_once('database/Note.php');
+include_once('domain/Note.php');
 
 $formAction = $_GET["formAction"];
 $noteToAdd;
