@@ -131,7 +131,7 @@ function process_form($name, $horse, $action) {
                 border-top: 1px solid black;
                 border-bottom: 1px solid black;
             }
-            
+
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f3f3f3;
@@ -143,11 +143,11 @@ function process_form($name, $horse, $action) {
                 max-width: 1200px;
                 margin: 0 auto;
                 background-color: #fff;
-                padding: 20px;
+                padding: 200px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 position: relative;
                 min-height: 100vh;
-                
+                margin-bottom: 200px;
             }
 
             #content {
@@ -199,6 +199,7 @@ function process_form($name, $horse, $action) {
                     padding: 10px;
                 }
             }
+
         </style>
         <link rel="stylesheet" href="lib/jquery-ui.css" />
         <link rel="stylesheet" href="styles.css" type="text/css" />

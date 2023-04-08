@@ -6,8 +6,7 @@
 
 //Include the MySQL connection and Horse class.
 include_once('dbinfo.php');
-include_once(dirname(__FILE__).'/../domain/Horse.php');
-include_once(dirname(__FILE__).'/../database/archiveHorseDb.php');
+include_once('./domain/Horse.php');
 
 /*
  * Function name: add_horse($horse)
@@ -201,21 +200,31 @@ function retrieve_horse($horseID) {
 //     mysqli_close($con);
 //     return true;
 // }
-function remove_horse($horseID) {
-
-    //Create a database connection and remove the horse from the database.
-    $con=connect();
-
-    //Saves the horse that is being deleted
-    $archived = retrieve_horse_by_id($horseID);
+function archive_horse($horseID) {
+    // Create a database connection and update the archive and archiveDate fields for the horse
+    $con = connect();
     
-    // Sets the archive boolean and archive date for the horse being removed
-    $query = 'UPDATE horseDB SET archive=true, archiveDate=CURDATE() WHERE horseID = "' . $horseID . '"';
-    $result = mysqli_query($con,$query);
-    
-    //Close the connection and return true.
+    // Update the archive and archiveDate fields for the specified horse
+    $query = 'UPDATE horseDB SET archive=1, archiveDate=CURDATE() WHERE horseID = "' . $horseID . '"';
+
+    $result = mysqli_query($con, $query);
+
+    // Close the connection and return true if the update was successful, false otherwise
     mysqli_close($con);
-    return true;
+    return $result !== false;
+}
+
+function activate_horse($horseID) {
+    // Create a database connection and update the archive and archiveDate fields for the horse
+    $con = connect();
+
+    // Update the archive and archiveDate fields for the specified horse
+    $query = 'UPDATE horseDB SET archive=0, archiveDate=null WHERE horseID = "' . $horseID . '"';
+    $result = mysqli_query($con, $query);
+
+    // Close the connection and return true if the update was successful, false otherwise
+    mysqli_close($con);
+    return $result !== false;
 }
 
 
@@ -255,46 +264,14 @@ function remove_horse($horseID) {
 //     mysqli_close($con);
 //     return $theHorses;
 // }
-function getall_horseDB() 
-{
-
+function getall_horseDB() {
     //Create a database connection and retrieve all non-archived horses from the database.
-    $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
-    $result = mysqli_query($con,$query);
+    $con = connect();
+    $query = "SELECT * FROM horsedb WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
+    $result = mysqli_query($con, $query);
 
     //If there are no non-archived horses in the database,
     if ($result == null || mysqli_num_rows($result) == 0) {
-
-        //close the connection and return false.
-        mysqli_close($con);
-        return false;
-    }
-
-    //Otherwise, create an array, convert each query row into a Horse object, and add the objects to the array.
-    $theHorses = array();
-
-    while ($result_row = mysqli_fetch_assoc($result)) 
-    {
-        $theHorse = make_a_horse($result_row);
-        $theHorses[] = $theHorse;
-    }
-
-    //Close the connection and return the array.
-    mysqli_close($con);
-    return $theHorses;
-}
-
-function get_archived_horses() {
-
-    //Create a database connection and retrieve all archived horses from the database.
-    $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive=true ORDER BY horseName ASC";
-    $result = mysqli_query($con,$query);
-
-    //If there are no archived horses in the database,
-    if ($result == null || mysqli_num_rows($result) == 0) {
-
         //close the connection and return false.
         mysqli_close($con);
         return false;
@@ -304,7 +281,48 @@ function get_archived_horses() {
     $theHorses = array();
 
     while ($result_row = mysqli_fetch_assoc($result)) {
-        $theHorse = make_a_horse($result_row);
+        $theHorse = new Horse(
+            $result_row['horseName'],
+            $result_row['color'],
+            $result_row['breed'],
+            $result_row['pastureNum'],
+            $result_row['colorRank'],
+            $result_row['horseID']
+        );
+        $theHorses[] = $theHorse;
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $theHorses;
+}
+
+
+function getallInactive_horses() {
+    //Create a database connection and retrieve all non-archived horses from the database.
+    $con = connect();
+    $query = "SELECT * FROM horsedb WHERE archive=1 ORDER BY horseName ASC"; 
+    $result = mysqli_query($con, $query);
+
+    //If there are no non-archived horses in the database,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array, convert each query row into a Horse object, and add the objects to the array.
+    $theHorses = array();
+
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $theHorse = new Horse(
+            $result_row['horseName'],
+            $result_row['color'],
+            $result_row['breed'],
+            $result_row['pastureNum'],
+            $result_row['colorRank'],
+            $result_row['horseID']
+        );
         $theHorses[] = $theHorse;
     }
 
@@ -428,11 +446,12 @@ function get_num_archiveHorses() {
  */
 function make_a_horse($result_row) {
     $theHorse = new Horse(
-                $result_row['horseName'],
-                $result_row['color'],
-                $result_row['breed'],
-                $result_row['pastureNum'],
-                $result_row['colorRank']);
+        $result_row['horseID'],
+        $result_row['horseName'],
+        $result_row['color'],
+        $result_row['breed'],
+        $result_row['pastureNum'],
+        $result_row['colorRank']);
     return $theHorse;
 }
 

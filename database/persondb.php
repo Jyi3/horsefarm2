@@ -6,7 +6,7 @@
 
 //Include the MySQL connection and Person class.
 include_once('dbinfo.php');
-include_once(dirname(__FILE__).'/../domain/Person.php');
+include_once('./domain/Person.php');
 
 /*
  * add a person to persondb table: if already there, return false
@@ -333,9 +333,9 @@ function retrieve_person_by_username($username) {
 function getall_persondb() {
 
     //Create a connection and retrieve all the people information.
-    $con=connect();
-    $query = "SELECT * FROM persondb ORDER BY lastName, firstName";
-    $result = mysqli_query($con,$query);
+    $con = connect();
+    $query = "SELECT * FROM persondb WHERE archive IS NULL OR archive = 0 ORDER BY lastName, firstName";
+    $result = mysqli_query($con, $query);
     
 
     //If the person table is empty,
@@ -347,7 +347,6 @@ function getall_persondb() {
     }
 
     //Otherwise, create an array, create a Person object for each query row, and add it to the array.
-    $result = mysqli_query($con,$query); //This line might be redundant.
     $thePersons = array();
 
     while ($result_row = mysqli_fetch_assoc($result)) {
@@ -359,6 +358,44 @@ function getall_persondb() {
     mysqli_close($con);
     return $thePersons;
 }
+
+/*
+ * Function name: getinactive_persondb()
+ * Description: retrieve all inactive people from the database into an array.
+ * Parameters: None
+ * Return Values:
+ *      $thePersons, an array of Person objects created using the inactive person information from the database.
+ *      false, the person table is empty.
+ */
+function getinactive_persondb() {
+
+    //Create a connection and retrieve all the inactive people information.
+    $con = connect();
+    $query = "SELECT * FROM persondb WHERE archive = 1 ORDER BY lastName, firstName";
+    $result = mysqli_query($con, $query);
+    
+
+    //If the inactive person table is empty,
+    if ($result == null || mysqli_num_rows($result) == 0) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create an array, create a Person object for each query row, and add it to the array.
+    $thePersons = array();
+
+    while ($result_row = mysqli_fetch_assoc($result)) {
+        $thePerson = make_a_person($result_row);
+        $thePersons[] = $thePerson;
+    }
+
+    //Close the connection and return the array.
+    mysqli_close($con);
+    return $thePersons;
+}
+
 
 
 /*

@@ -228,6 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                z-index: 1;
             }
 
             table {
@@ -250,7 +251,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                padding-bottom: 200px;
             }
 
             #content h3 {
@@ -378,6 +378,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <p>To search for a horse or trainer, select the appropriate search type from the dropdown menu above.</br>Enter your search criteria in the fields provided and click the "Search" button to retrieve matching results.</p>
         <p>For horse searches, you can search by name, color, breed, and pasture number.</br>You can also filter results by color rank by selecting one or more options from the checkboxes.</p>
         <p>For trainer searches, you can search by name, phone number, email, and role.</p>
+        <p style="font-style: italic; color: #777;">Tip: Using more specific search criteria will result in more accurate and relevant search results.</p> 
+        </br>
     </div>
     <?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($result) && $result->num_rows > 0): ?>
         <div id="contentSearches">
@@ -422,16 +424,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php endwhile; ?>
                 </tbody>
             </table>
+            </br>
         </div>
     <?php elseif ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
         <div id="contentSearches">
             <h3>Search Results:</h3>
             <p>No results found for your search criteria.</p>
+        </br>
         </div>
     <?php endif; ?>
-    <?php include('footer.php'); ?>
+<?php include('footer.php'); ?>
 </div>
-
 </body>
+
 </html>
 

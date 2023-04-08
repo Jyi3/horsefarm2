@@ -14,12 +14,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        html,
+        body {
+            height: 100%;
+        }
+        .wrapper {
+            min-height: 100%;
+            margin-bottom: -50px; /* equal to footer height */
+        }
+        .footer,
+        .push {
+            height: 50px;
+        }
         .footer {
             background-color: #f8f9fa;
             border-top: 1px solid #dee2e6;
             padding: 10px 0;
-            position: absolute;
-            bottom: 0;
             width: 100%;
             text-align: center;
         }
@@ -31,6 +41,10 @@
     </style>
 </head>
 <body>
+    <div class="wrapper">
+        <!-- Begin content here -->
+    </div>
+    <div class="push"></div>
     <!-- Begin Footer -->
     <footer class="footer">
         <p>&copy; <?php echo date('Y'); ?> Central Virginia Horse Rescue. All rights reserved.</p>

@@ -318,7 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php endif; ?>
             </div>
         </div>
+    <?PHP include('footer.php'); ?>
     </div>
 </body>
-<?PHP include('footer.php'); ?>
 </html>

@@ -14,7 +14,8 @@ class Horse {
     private $archive; //string
     private $archiveDate; //string
     
-    function __construct($horseName, $color, $breed, $pastureNum, $colorRank) {
+    function __construct($horseName, $color, $breed, $pastureNum, $colorRank, $horseID) {
+        $this->horseID = $horseID;
         $this->horseName = $horseName;
         $this->color = $color;
         $this->breed = $breed;
