@@ -126,7 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 text-align: center;
             }
 
-
             form {
                 display: flex;
                 flex-wrap: wrap;
@@ -137,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 padding: 20px;
                 border: 1px solid #ddd;
                 border-radius: 10px;
+                background-color: #fff;
             }
 
             label {
@@ -144,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 text-align: right;
                 padding-right: 10px;
                 margin-bottom: 10px;
+                color: #333;
             }
 
             input[type="text"], select {
@@ -151,6 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 padding: 5px;
                 border-radius: 5px;
                 border: 1px solid #ddd;
+                background-color: #f3f3f3;
             }
 
             .checkboxes-container {
@@ -161,6 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 border-radius: 5px;
                 border: 1px solid #ddd;
                 justify-content: center;
+                background-color: #f3f3f3;
             }
 
             input[type="checkbox"] {
@@ -172,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 flex-basis: 100%;
                 margin-top: 10px;
                 padding: 10px;
-                background-color: #4CAF50;
+                background-color: #4b6c9e;
                 color: white;
                 border: none;
                 border-radius: 5px;
@@ -200,12 +203,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 z-index: 1;
             }
 
-
             #minimizeButton {
                 position: absolute;
                 top: 10px;
                 right: 10px;
-                background-color: #4CAF50;
+                background-color: #4b6c9e;
                 color: white;
                 border: none;
                 border-radius: 5px;
@@ -220,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 width: 120px;
                 height: 30px;
                 padding: 5px;
-                background-color: #4CAF50;
+                background-color: #4b6c9e;
                 color: white;
                 border: none;
                 border-radius: 5px;
