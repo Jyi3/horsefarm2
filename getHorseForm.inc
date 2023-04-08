@@ -58,7 +58,6 @@
         <?PHP
 
         //Create an array of all of the existing behavior titles for the user to select from.
-        echo("TEST");
         $names = getall_horse_names();
         var_dump($names);
         foreach ($names as $n) {
@@ -73,7 +72,7 @@
 <?PHP
 
     //Display the appropriate submit button text based on what the user wants to do.
-    if($formAction == "selectHorse" || $formAction=="editNote" || $formAction=="removeNote" || $formAction=="addNote") {
+    if($formAction == "selectHorse") {
         echo("<input type='submit' value='Select Horse'/>");
     }
     else {

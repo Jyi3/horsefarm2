@@ -289,7 +289,7 @@ function get_archived_horses() {
 
     //Create a database connection and retrieve all archived horses from the database.
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive=true ORDER BY horseName ASC";
+    $query = "SELECT * FROM horseDB WHERE archive=true ORDER BY horseName ASC ;";
     $result = mysqli_query($con,$query);
 
     //If there are no archived horses in the database,
@@ -325,7 +325,7 @@ function getall_horse_names() {
 
     //Create a database connection and retrieve all of the horse names.
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
+    $query = "SELECT * FROM horseDB WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC ;"; 
     $result = mysqli_query($con,$query);
 
     //If the horse table is empty,
