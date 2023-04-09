@@ -20,7 +20,7 @@ class Person {
     function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType, $archive, $archiveDate) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-		$this->fullName = $firstName . $lastName;
+		$this->fullName = $fullName;
         $this->phone = $phone;
         $this->email = $email;
         $this->username = $username;

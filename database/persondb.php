@@ -101,18 +101,24 @@ function remove_person($username) {
 }
 
 function retrieve_person_by_username($username) {
-    global $db;
-    $sql = "SELECT * FROM persons WHERE username = :username";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($result) {
-        return new Person($result);
-    } else {
-        return null;
+    
+    $con=connect();
+    $query = "SELECT * FROM persondb WHERE username = '$username'";
+    $result = mysqli_query($con,$query);
+
+    //If the horse does NOT exist in the database,
+    if (mysqli_num_rows($result) != 1) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
     }
+    $result_row = mysqli_fetch_assoc($result);
+    $thePerson = make_a_person($result_row);
+    //Otherwise, create a Horse object from the query row and return the object.
+    return $thePerson;
 }
+
 
 function getall_persondb() {
 

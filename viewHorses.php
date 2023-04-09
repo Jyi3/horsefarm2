@@ -123,7 +123,7 @@
                 echo "<h2><strong>List of Active Horses</strong></h2>";
                 echo "<br>";
                 if (empty($allHorses)) {
-                echo "No horses found.";
+                    echo "<tr><td colspan='5' style='text-align:center'>There are no horses in this category.</td></tr>";
                 } else {
                 echo "<table>";
                 echo "<tr>
@@ -145,36 +145,41 @@
                 echo "</table>";
                 }
 
-                echo "<br><br>";
+                
+                echo "<hr style='clear:both;'>";
+                echo "<hr style='clear:both;'>";
 
                 // Retrieve all horses from the database
                 $allHorses = getallInactive_horses();
 
                 // Display all inactive horses in a table
-                echo "<br>";
-                echo "<br>";
                 echo "<h2><strong>List of Archived Horses</strong></h2>";
                 echo "<br>";
                 if (empty($allHorses)) {
-                echo "No horses archived.";
+                    echo "<tr><td colspan='5' style='text-align:center'>There are no horses in this category.</td></tr>";
                 } else {
                 echo "<table>";
                 echo "<tr>
-                        <th>Name</th>
-                        <th>Color</th>
-                        <th>Breed</th>
-                        <th>Color Rank</th>
+                            <th>Name</th>
+                            <th>Color</th>
+                            <th>Breed</th>
+                            <th>Pasture</th>
+                            <th>Color Rank</th>
                         </tr>";
                 foreach ($allHorses as $horse) {
                     echo "<tr>
                             <td style='border-left: 1px solid black'><a href='horseprofile.php?horseID=" . $horse->get_horseID() . "' style='color: blue;'>" . $horse->get_horseName() . "</a></td>
                             <td style='border-left: 1px solid black'>  " . $horse->get_color() . " </td>
                             <td style='border-left: 1px solid black'>  " . $horse->get_breed() . " </td>
+                            <td style='border-left: 1px solid black'>  " . $horse->get_pastureNum() . " </td>
                             <td style='border-left: 1px solid black'>  " . $horse->get_colorRank() . " </td>
                         </tr>";
                 }
                 echo "</table>";
                 }
+                
+                echo "<hr style='clear:both;'>";
+                echo "<hr style='clear:both;'>";
                 ?>
             </div>
             </div>

@@ -3,7 +3,6 @@
 ?>
 
 <?php
-session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the search parameters from the form
@@ -413,7 +412,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <?php if ($type == "horsedb "): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['horseName']); ?></td>
+                                <td><a href='horseprofile.php?horseID=<?php echo htmlspecialchars($row['horseID']); ?>' style='color: blue;'><?php echo htmlspecialchars($row['horseName']); ?></a></td>
                                 <td><?php echo htmlspecialchars($row['color']); ?></td>
                                 <td><?php echo htmlspecialchars($row['breed']); ?></td>
                                 <td><?php echo htmlspecialchars($row['pastureNum']); ?></td>
