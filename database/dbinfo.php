@@ -40,19 +40,3 @@ function connect() {
 }
 
 ?>
-
-<?php 
-/*
-<HTML>
-    <HEAD>
-        <TITLE>
-            Database Info
-        </TITLE>
-    <HEAD>
-    <BODY>
-        <?php connect() ?>
-    </BODY>
-</HTML>
-*/
-?>
-

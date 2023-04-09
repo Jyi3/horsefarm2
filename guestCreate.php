@@ -1,167 +1,193 @@
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-        
-        #content {
-            width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .error {
-            color: #ff0000;
-            font-weight: bold;
-        }
-        
-        table {
-            margin-bottom: 20px;
-        }
-        
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            color: #555;
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        }
-        
-        input[type="submit"] {
-            width: 100%;
-            padding: 6px 12px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #5cb85c;
-            border: 1px solid #4cae4c;
-            border-radius: 4px;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            cursor: pointer;
-            user-select: none;
-        }
-        
-        input[type="submit"]:hover {
-            background-color: #449d44;
-            border-color: #398439;
-        }
-    </style>
-</head>
-<body>
-<div id="content">
-    <?php
-    //include_once('database/dbPersons.php');
-    include_once('database/persondb.php');
-    include_once('domain/Person.php');
-    if (($_SERVER['PHP_SELF']) == "/logout.php") {
-        //prevents infinite loop of logging in to the page which logs you out...
-        echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
-    }
-    if (!array_key_exists('_submit_check', $_POST)) {
-    ?>
-        <div class="login-form">
-            <h3>Login</h3>
-            <p>Access to Homebase requires a Username and a Password.</p>
-            <ul>
-                <li>If you are applying for a volunteer position, enter the Username 'guest' and a blank Password.</li>
-                <li>If you are a volunteer logging in for the first time, your Username is your first name followed by your ten digit phone number. After you have logged in, you can change your password.</li>
-                <li>If you are having difficulty logging in or have forgotten your Password, please contact either the
-                    <a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
-                    or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>.</li>
-            </ul>
-            <form method="post">
-                <input type="hidden" name="_submit_check" value="true">
-                <div class="mb-3">
-                    <label for="user" class="form-label">Username:</label>
-                    <input type="text" class="form-control" id="user" name="user" tabindex="1">
-                </div>
-                <div class="mb-3">
-                    <label for="pass" class="form-label">Password:</label>
-                    <input type="password" class="form-control" id="pass" name="pass" tabindex="2">
-                </div>
-                <div class="d-grid">
-                    <input type="submit" name="Login" value="Login" class="btn btn-primary" tabindex="3">
-                </div>
-            </form>
-        </div>
-    <?php
-    } else {
-        //check if they logged in as a guest:
-        if ($_POST['user'] == "guest" && $_POST['pass'] == "") {
-            $_SESSION['logged_in'] = 1;
-            $_SESSION['access_level'] = 0;
-            $_SESSION['venue'] = "";
-            $_SESSION['type'] = "";
-            $_SESSION['_id'] = "guest";
-            echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
-        }
-        //otherwise authenticate their password
-        else {
-            $db_pass = md5($_POST['pass']);
-            $db_id = $_POST['user'];
-            $person = retrieve_person_by_username($db_id);
-            if ($person) { //avoids null results
-                if ($person->get_password() == $db_pass) { //if the passwords match, login
-                    $_SESSION['logged_in'] = 1;
-                    date_default_timezone_set ("America/New_York");
-                    if ($person->get_status() == "applicant")
-                        $_SESSION['access_level'] = 0;
-                    else if (in_array('manager', $person->get_type()))
-                        $_SESSION['access_level'] = 2;
-                    else
-                        $_SESSION['access_level'] = 1;
-                    $_SESSION['f_name'] = $person->get_first_name();
-                    $_SESSION['l_name'] = $person->get_last_name();
-                    $_SESSION['venue'] = $person->get_venue();
-                    $_SESSION['type'] = $person->get_type();
-                    $_SESSION['_id'] = $_POST['user'];
-                    echo "<script type=\"text/javascript\">window.location = \"index.php\";</script>";
-                }
-                else {
-                    echo('<div align="left"><p class="error">Error: invalid username/password<br />if you cannot remember your password, ask either the 
-        		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
-        		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>. to reset it for you.</p><p>Access to Homebase requires a Username and a Password. <p>For guest access, enter Username <strong>guest</strong> and no Password.</p>');
-                    echo('<p>If you are a volunteer, your Username is your first name followed by your phone number with no spaces. ' .
-                    'For instance, if your first name were John and your phone number were (207)-123-4567, ' .
-                    'then your Username would be <strong>John2071234567</strong>.  ');
-                    echo('If you do not remember your password, please contact either the 
-        		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
-        		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>.');
-                    echo('<p><table><form method="post"><input type="hidden" name="_submit_check" value="true"><tr><td>Username:</td><td><input type="text" name="user" tabindex="1"></td></tr><tr><td>Password:</td><td><input type="password" name="pass" tabindex="2"></td></tr><tr><td colspan="2" align="center"><input type="submit" name="Login" value="Login"></td></tr></table>');
-                }
-            } else {
-                //At this point, they failed to authenticate
-                echo('<div align="left"><p class="error">Error: invalid username/password<br />if you cannot remember your password, ask the House Manager to reset it for you.</p><p>Access to Homebase requires a Username and a Password. <p>For guest access, enter Username <strong>guest</strong> and no Password.</p>');
-                echo('<p>If you are a volunteer, your Username is your first name followed by your phone number with no spaces. ' .
-                'For instance, if your first name were John and your phone number were (207)-123-4567, ' .
-                'then your Username would be <strong>John2071234567</strong>.  ');
-                echo('If you do not remember your password, please contact either the 
-        		<a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
-        		or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>.');
-                echo('<p><table><form method="post"><input type="hidden" name="_submit_check" value="true"><tr><td>Username:</td><td><input type="text" name="user" tabindex="1"></td></tr><tr><td>Password:</td><td><input type="password" name="pass" tabindex="2"></td></tr><tr><td colspan="2" align="center"><input type="submit" name="Login" value="Login"></td></tr></table>');
+<html>
+    <head>
+        <title>Create User | CVHR Horse Training Management System</title>
+        <script src="script.js"></script>
+        <link rel="stylesheet" href="styles.css" type="text/css" />
+        <style>
+
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f3f3f3;
+                color: #333;
+                margin: 0;
             }
-        }
-    }
-    ?>
-</div>
-    <?PHP include('footer.php'); ?>
-</div>
-</body>
+
+            #container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                position: relative;
+                min-height: 100vh;
+            }
+
+            #content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #content-inner {
+                text-align: center;
+                max-width: 800px;
+                width: 100%;
+                margin: 0 auto; /* add this line to center the content horizontally */
+            }
+
+
+            h1 {
+                color: #4b6c9e;
+                font-size: 36px;
+                margin-bottom: 20px;
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            p {
+                font-size: 18px;
+                line-height: 1.6;
+                margin: 0 auto;
+            }
+
+            form {
+                max-width: 500px;
+                width: 90%;
+                padding: 20px;
+                background-color: #ffffff;
+                border: 1px solid #cccccc;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin: 0 auto; /* add this line to center the content horizontally */
+            }
+
+            label {
+                display: inline-block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            input[type="text"], input[type="email"], input[type="password"] {
+                width: 100%;
+                padding: 8px;
+                border-radius: 5px;
+                border: 1px solid #cccccc;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+            }
+
+            input[type="submit"] {
+                background-color: #4b6c9e;
+                color: #ffffff;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 5px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            input[type="submit"]:hover {
+                background-color: #374c6f;
+            }
+
+            .error {
+                color: #ff0000;
+                font-weight: bold;
+            }
+
+            @media (max-width: 768px) {
+                h1 {
+                    font-size: 28px;
+                }
+
+                p {
+                    font-size: 16px;
+                    max-width: 90%;
+                }
+
+                #container {
+                    padding: 10px;
+                }
+
+                form {
+                    max-width: 100%;
+                }
+            }
+            </style> 
+            <?php
+                include_once('domain/Person.php');
+                include_once('database/persondb.php');
+                include_once('database/dbinfo.php');
+
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    // create new Person object
+                    $username = str_replace("-", "", $_POST["phone"]); // remove dashes from phone number
+                    $username = $_POST["firstName"] . $_POST["lastName"] . $username; // combine name and phone number
+
+                    $conn = connect();
+                    // check if username already exists
+                    echo $username;
+                    $sql = "SELECT username FROM persondb WHERE username='$username'";
+                    $result = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($result) > 0) {
+                        echo "DUPLICATE FOUND";
+                        echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
+                    } else {
+                        // insert new Person data into the database
+                        $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $_POST["pass"] . "', 'Recruit', false, null)";
+
+                        // execute SQL query
+                        if (mysqli_query($conn, $sql)) {
+                            echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
+                            header("Location: login_form.php");
+                        } else {
+                            echo "<p>Error adding new user: " . mysqli_error($conn) . "</p>";
+                        }
+                    }
+
+                    // close database connection
+                    mysqli_close($conn);
+                }
+            ?>
+    </head>
+    <body>
+        <div id="container">
+            <?php include('header-no-menu.php'); ?>
+            <div id="content">
+                <div id="content-inner">
+                    <h1>Create User</h1>
+                    <br>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <div class="form-group">
+                            <label for="firstName">First Name:</label>
+                            <input type="text" name="firstName" class="form-control" value="<?php echo isset($_POST["firstName"]) ? htmlspecialchars($_POST["firstName"]) : ''; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" name="lastName" class="form-control" value="<?php echo isset($_POST["lastName"]) ? htmlspecialchars($_POST["lastName"]) : ''; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value="<?php echo isset($phone) ? htmlspecialchars($phone) : ''; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" class="form-control" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">Password:</label>
+                            <input type="password" name="pass" class="form-control">
+                        </div>
+                        <input type="submit" value="Create User" class="btn btn-primary">
+                    </form>
+                    <br>
+                </div>
+            <?php include('footer-no-session.php'); ?>
+            </div>
+        </div>
+    </body>
 </html>
+ 

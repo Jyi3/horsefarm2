@@ -16,6 +16,7 @@ class Person {
     private $archive; //boolean
     private $archiveDate; //string
     
+
     function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType, $archive, $archiveDate) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
