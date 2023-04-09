@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();
-        
+
         if ($stmt->num_rows > 0) {
             $stmt->bind_result($username, $hashed_password, $userType);
             $stmt->fetch();

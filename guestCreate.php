@@ -126,6 +126,9 @@
                     // create new Person object
                     $username = str_replace("-", "", $_POST["phone"]); // remove dashes from phone number
                     $username = $_POST["firstName"] . $_POST["lastName"] . $username; // combine name and phone number
+                    
+                    $hash = $_POST["pass"];
+                    $hash = password_hash($hash, PASSWORD_BCRYPT); // use bcrypt algorithm
 
                     $conn = connect();
                     // check if username already exists
@@ -137,7 +140,7 @@
                         echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
                     } else {
                         // insert new Person data into the database
-                        $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $_POST["pass"] . "', 'Recruit', false, null)";
+                        $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $hash . "', 'Recruit', false, null)";
 
                         // execute SQL query
                         if (mysqli_query($conn, $sql)) {
