@@ -35,25 +35,31 @@ else{$selectedNote=null;}
 <?PHP
 
 
-function selectNote($selectedHorse){
+function selectNote($formAction,$selectedHorse){
 
     //once we get the Horse, we can present the user with all the notes relating to that horse, and allow the user to act on them.
 
     echo("yippee!");
+if($selectedHorse==null){return false;}
 
+else{
+
+if($formAction=="searchNote"){}
+if($formAction=="editNote"){}
+if($formAction=="removeNote"){}
+
+}
 
 
 }
 
 function processForm($formAction, $selectedHorse,$selectedNote){
-    echo("DOES THIS HAPPEN?");
-    echo($formAction);
-    echo($selectedHorse);
-    echo($selectedNote);
+    //echo("DOES THIS HAPPEN?");
+    //echo($formAction);
+    //echo($selectedHorse);
+    //echo($selectedNote);
 
     if($selectedHorse==null && $selectedNote==null){
-        echo("DOES THIS HAPPEN?");
-
         if($formAction=='searchNote'){
             echo("Here we want to search for a note, but we need to select a horse first.");
             selectHorse($formAction);
@@ -82,7 +88,7 @@ function processForm($formAction, $selectedHorse,$selectedNote){
 
         if($formAction=='addNote'){
             echo("Here we want to add a note, and we also have a selected horse. ('$selectedHorse')");
-            selectNote($selectedHorse);
+            addNoteForm($formAction,$selectedHorse);
         }
         
         if($formAction=='editNote'){
@@ -97,6 +103,33 @@ function processForm($formAction, $selectedHorse,$selectedNote){
     }
 }
 
+function addNoteForm($formAction, $selectedHorse){
+    echo("<p>Please enter information that will be associated with " . $selectedHorse ."</p>");
+    echo("</br>");
+
+    $horseName = $selectedHorse;
+    $theHorse = retrieve_horse_by_name($horseName);
+    echo($theHorse->get_horseID());
+    $horseID = $theHorse->get_horseID();
+    echo("TEST:");
+    echo($horseID);
+    echo("
+<form action='/horse/horsefarm2/noteActions.php?formAction='" . $formAction . "' method='POST'>
+<label for='horseID'>Horse ID:</label>
+<input type='text' id='horseID' name='horseID' value='" . $horseID . "' required readonly><br>
+
+<label for='note'>Note:</label><br>
+<textarea id='note' name='note' rows='4' cols='50' required></textarea><br>
+
+<label for='username'>Username:</label>
+<input type='text' id='username' name='username' required><br>
+
+<input type='submit' value='Create Note'>
+</form>
+</body>
+");
+
+}
 
 function selectHorse($formAction){
 $theHorse = null;

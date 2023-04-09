@@ -149,7 +149,7 @@ function edit_horse($horseID, $horse) {
 //     return $theHorse;
 // }
     
-function retrieve_horse($horseID) {
+function retrieve_horse_by_id($horseID) {
     
     //Create a database connection and retrieve the horse from the database.    
     $con=connect();
@@ -170,6 +170,26 @@ function retrieve_horse($horseID) {
     return $theHorse;
 }
 
+function retrieve_horse_by_name($horseName) {
+    
+    //Create a database connection and retrieve the horse from the database.    
+    $con=connect();
+    $query = "SELECT * FROM horsedb WHERE horseName='" . $horseName . "';";
+    $result = mysqli_query($con,$query);
+
+    //If the horse does NOT exist in the database,
+    if (mysqli_num_rows($result) != 1) {
+
+        //close the connection and return false.
+        mysqli_close($con);
+        return false;
+    }
+
+    //Otherwise, create a Horse object from the query row and return the object.
+    $result_row = mysqli_fetch_assoc($result);
+    $theHorse = make_a_horse($result_row);
+    return $theHorse;
+}
 
 // Change this so that remove saves the horse removed and adds the removed horse to a archivedDB
 
