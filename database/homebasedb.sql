@@ -69,6 +69,10 @@ CREATE TABLE personDB (
   PRIMARY KEY (username)
 );
 
+INSERT INTO `persondb` (`firstName`, `lastName`, `fullName`, `phone`, `email`, `username`, `pass`, `userType`, `archive`, `archiveDate`) VALUES
+('testHT', 'testHT', 'testHT testHT', '111-111-1234', '', 'testHT', '$2y$10$hB9kyYi0VEBvb8UrG5aGoeWI6XpRZs4sVdy4HTF4QO0U/Jw45rADC', 'Head Trainer', 0, NULL),
+('testR', 'testR', 'testR testR', '111-111-1234', '', 'testR', '$2y$10$VCUfh1QSjSKvxnTr/sfzAuuDpJQctVyEV1Rtoz4W5f/Dpmka/35nW', 'Recruit', 0, NULL),
+('testT', 'testT', 'testT testT', '111-111-1234', '', 'testT', '$2y$10$6fCtYwAnnNh3iuG7wG7fEOkvdRZnOXm6KCQdFlrlX5qocFgTwt4Em', 'Trainer', 0, NULL);
 
 CREATE TABLE personToHorseDB (
   horseID INT NOT NULL,

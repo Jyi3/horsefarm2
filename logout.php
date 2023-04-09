@@ -1,7 +1,3 @@
-<?php
-session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,18 +96,18 @@ session_start();
     </style>
 </head>
 <body>
+    <?php
+    session_start();
+    session_unset();
+    session_destroy();
+    ?>
     <div id="container">
         <div class="overlay">
             <div class="popup">
-                <?php
-                session_unset();
-                session_write_close();
-                ?>
                 <p>You are now logged out of the CVHR System.</p>
                 <button onclick="window.location.href = 'login_form.php'">Okay</button>
             </div>
         </div>
     </div>
-    <?php include('footer.php'); ?>
 </body>
 </html>

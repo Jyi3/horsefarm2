@@ -1,4 +1,8 @@
 <?php
+    include('session.php');
+?>
+
+<?php
 /*
  * Copyright 2015 by Adrienne Beebe, Connor Hargus, Phuong Le, 
  * Xun Wang, and Allen Tucker. This program is part of RMHP-Homebase, which is free 

@@ -16,7 +16,8 @@ class Person {
     private $archive; //boolean
     private $archiveDate; //string
     
-    function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType) {
+
+    function __construct($firstName, $lastName, $fullName, $phone, $email, $username, $pass, $userType, $archive, $archiveDate) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
 		$this->fullName = $firstName . $lastName;
@@ -25,8 +26,8 @@ class Person {
         $this->username = $username;
 		$this->pass = $pass;
         $this->userType = $userType;
-		$this->archive = false;
-        $this->archiveDate = NULL;
+		$this->archive = $archive;
+        $this->archiveDate = $archiveDate;
     }
 
     function get_firstName() {
