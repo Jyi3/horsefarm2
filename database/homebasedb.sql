@@ -89,6 +89,7 @@ CREATE TABLE horseToBehaviorDB (
 
 CREATE TABLE notesDB (
   horseID INT NOT NULL,
+  noteID INT NOT NULL,
   noteDate date,
   noteTimestamp timestamp,
   note text,
