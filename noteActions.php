@@ -14,15 +14,18 @@ else{$formAction=null;}
 
 //HARDCODE THE FORMACTION FOR TESTING.
 $formAction="addNote";
+//THIS CAN NOT BE NULL
+
+
 if(isset($_POST["selectedHorse"])){
-    $selectedHorse = $_POST["horse"];
+    $selectedHorse = $_POST["selectedHorse"];
 }
-else{$formAction=null;}
+else{$selectedHorse=null;}
 
 if(isset($_POST["selectedNote"])){
-$selectedNote = $_POST["note"];
+$selectedNote = $_POST["selectedNote"];
 }
-else{$formAction=null;}
+else{$selectedNote=null;}
 
 ?>
 
@@ -36,48 +39,73 @@ function selectNote($selectedHorse){
 
     //once we get the Horse, we can present the user with all the notes relating to that horse, and allow the user to act on them.
 
-
+    echo("yippee!");
 
 
 
 }
 
 function processForm($formAction, $selectedHorse,$selectedNote){
+    echo("DOES THIS HAPPEN?");
+    echo($formAction);
+    echo($selectedHorse);
+    echo($selectedNote);
 
-    if($selectedHorse=null && $selectedNote==null){
-    if($formAction=='searchNote'){
-        echo("Here we want to search for a note, but we need to select a horse first.");
-        selectHorse($formAction);
-    }
+    if($selectedHorse==null && $selectedNote==null){
+        echo("DOES THIS HAPPEN?");
 
-    if($formAction=='addNote'){
-        echo("Here we want to add a note, but we need to select a horse first.");
-        selectHorse($formAction);
-    }
-    
-    if($formAction=='editNote'){
-        echo("Here we want to edit a note, but we need to select a horse first.");
-        selectHorse($formAction);
-    }
-    
-    if($formAction=='removeNote'){
-        echo("Here we want to remove a note, but we need to select a horse first.");
-        selectHorse($formAction);
-    }
+        if($formAction=='searchNote'){
+            echo("Here we want to search for a note, but we need to select a horse first.");
+            selectHorse($formAction);
+        }
 
+        if($formAction=='addNote'){
+            echo("Here we want to add a note, but we need to select a horse first.");
+            selectHorse($formAction);
+        }
+        
+        if($formAction=='editNote'){
+            echo("Here we want to edit a note, but we need to select a horse first.");
+            selectHorse($formAction);
+        }
+        
+        if($formAction=='removeNote'){
+            echo("Here we want to remove a note, but we need to select a horse first.");
+            selectHorse($formAction);
+        }
 }
+    if($formAction!=null && $selectedHorse!=null && $selectedNote==null){
+        if($formAction=='searchNote'){
+            echo("Here we want to search for a note, and we also have a selected horse. ('$selectedHorse')");
+            selectNote($selectedHorse);
+        }
+
+        if($formAction=='addNote'){
+            echo("Here we want to add a note, and we also have a selected horse. ('$selectedHorse')");
+            selectNote($selectedHorse);
+        }
+        
+        if($formAction=='editNote'){
+            echo("Here we want to edit a note, and we also have a selected horse. ('$selectedHorse')");
+            selectNote($selectedHorse);
+        }
+        
+        if($formAction=='removeNote'){
+            echo("Here we want to remove a note, and we also have a selected horse. ('$selectedHorse')");
+            selectNote($selectedHorse);
+        }
+    }
 }
 
 
 function selectHorse($formAction){
 $theHorse = null;
 
-
 //present the user with a form to select a horse.
 echo("<form method='POST' action='/horse/horsefarm2/noteActions.php?formAction='" . $formAction . ">");
 echo("<fieldset>");
 echo("<legend>Horse Name:</legend>");
-echo("<select name='horseName' tabindex='1'>");
+echo("<select name='selectedHorse' tabindex='1'>");
 //Create an array of all of the existing behavior titles for the user to select from.
 $names = getall_horse_names();
 foreach ($names as $n) {
@@ -185,8 +213,9 @@ return null;
                     include_once('database/dbinfo.php');
                     include_once('database/horsedb.php');
                     date_default_timezone_set('America/New_York');
-                    //process_form($formAction,$selectedHorse,$selectedNote);
-                    selectHorse($formAction);
+                    $formAction="addNote";
+                    //selectHorse($formAction);
+                    processForm($formAction,$selectedHorse,$selectedNote);
                     
                     ?>
 
