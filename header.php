@@ -86,7 +86,7 @@
                     Trainer Admin
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="personActions.php?formAction=addPerson">Create Trainer</a>
+                    <a class="dropdown-item" href="createUser.php">Create Trainer</a>
                     <a class="dropdown-item" href="personActions.php?formAction=selectPerson">Edit Trainers</a>
                     <a class="dropdown-item" href="archiveTrainers.php">Archive Trainers</a>
                 </div>
