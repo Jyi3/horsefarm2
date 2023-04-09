@@ -135,7 +135,7 @@
                 echo "<h2><strong>List of Horses</strong></h2>";
                 echo "<br>";
                 if (empty($allHorses)) {
-                    echo "No horses found.";
+                    echo "<tr><td colspan='5' style='text-align:center'>There are no horses in this category.</td></tr>";
                 } else {
                     echo "<table>";
                     echo "<tr>
@@ -172,7 +172,7 @@
                 echo "<h2><strong>List of Archived Horses</strong></h2>";
                 echo "<br>";
                 if (empty($allHorses)) {
-                    echo "No horses archived.";
+                    echo "<tr><td colspan='5' style='text-align:center'>There are no horses in this category.</td></tr>";
                 } else {
                     echo "<table>";
                     echo "<tr>

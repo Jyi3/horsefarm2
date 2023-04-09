@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_close($conn);
     }
     
-    echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?userName=$pp_username';</script>";
+    echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?username=$pp_username';</script>";
     exit();
 }
 ?>
@@ -240,8 +240,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 die("Connection failed: " . mysqli_connect_error());
             }
 
-            // Use $_GET to get the userName parameter
-            $pp_username = $_GET["userName"];
+            // Use $_GET to get the username parameter
+            $pp_username = $_GET["username"];
             $sql = "SELECT * FROM persondb WHERE username = '$pp_username'";
             $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate 
             FROM notesdb n
