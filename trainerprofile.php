@@ -1,4 +1,8 @@
 <?php
+    include('session.php');
+?>
+
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pp_username = $_POST["username"];
 
@@ -8,6 +12,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
+
+    // Only users with permission level 3 can see or use the archive/activate buttons
+    $permission_level = $_SESSION["permissions"];
+    if ($permission_level < 3) {
+        echo "Error: You do not have permission to perform this action.";
+        exit();
+    }
+
     if (isset($_POST["archive"])) {
         $sql = "UPDATE persondb SET archive = 1, archiveDate = CURRENT_DATE() WHERE username = '$pp_username'";
         $action_success = mysqli_query($conn, $sql);
@@ -255,42 +267,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <title><?php echo $pp_username; ?>'s Profile</title>
 
 
-        <div id="content">
-            <div class="profile-container">
-                <div class="profile-pic">
-                    <img src="images/cvhrIMG.png" alt="Profile Picture">
-                </div>
-                <div class="profile-name">
-                    <h1><?php echo $firstName . " " . $lastName; ?>'s Profile</h1>
-                </div>
-                <div class="profile-details">
-                    <p><?php echo $pp_username; ?> : Username</p>
-                    <p><?php echo $firstName . " " . $lastName; ?> : Fullname</p>
-                    <p><?php echo $email; ?> : Email</p>
-                    <p><?php echo $phone; ?> : Phone</p>
-                    <p><?php echo $userType; ?> : User Type</p>
-                    <p><?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?> : Status</p>
-
-                    <?php
-                    if ($archive == NULL || $archive == 0) 
-                    {
-                        $buttonLabel = "Archive";
-                    }
-                    if ($archive == 1) 
-                    {
-                        $buttonLabel = "Activate";
-                    }
-                    ?>
-                    
-                    <form method="POST">
-                        <input type="hidden" name="username" value="<?php echo $pp_username; ?>" />
-                        <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> />
-                        <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> />
-                    </form>
-
-                                        
+            <div id="content">
+                <div class="profile-container">
+                    <div class="profile-pic">
+                        <img src="images/cvhrIMG.png" alt="Profile Picture">
                     </div>
-            </div>
+                    <div class="profile-name">
+                        <h1><?php echo $firstName . " " . $lastName; ?>'s Profile</h1>
+                    </div>
+                    <div class="profile-details">
+                        <p><?php echo $pp_username; ?> : Username</p>
+                        <p><?php echo $firstName . " " . $lastName; ?> : Fullname</p>
+                        <p><?php echo $email; ?> : Email</p>
+                        <p><?php echo $phone; ?> : Phone</p>
+                        <p><?php echo $userType; ?> : User Type</p>
+                        <p><?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?> : Status</p>
+
+                        <?php
+                        if ($archive == NULL || $archive == 0) {
+                            $buttonLabel = "Archive";
+                        }
+                        if ($archive == 1) {
+                            $buttonLabel = "Activate";
+                        }
+                        ?>
+                        
+                        <?php if ($permission_level == 3): ?>
+                            <form method="POST">
+                                <input type="hidden" name="username" value="<?php echo $pp_username; ?>" />
+                                <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> />
+                                <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> />
+                            </form>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
             <div class="notes-container">
                 <h2 style="text-align: center;">Notes</h2>
                 <?php if (mysqli_num_rows($result2) == 0): ?>

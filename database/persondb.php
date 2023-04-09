@@ -298,28 +298,19 @@ function remove_person($username) {
  *      false, a person with the name "$personName" doesn't exist.
  */
 function retrieve_person_by_username($username) {
-
-    //Create a database connection and retrieve a person with matching username.
-    $con=connect();
-    $query = "SELECT * FROM persondb WHERE username='" . $username . "';";
-    $result = mysqli_query($con,$query);
-
-    //If the person does NOT exist in the database,
-    if (mysqli_num_rows($result) != 1) {
-        mysqli_close($con);
-
-        //close the connection and return false.
-        return false;
+    global $db;
+    $sql = "SELECT * FROM persons WHERE username = :username";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+        return new Person($result);
+    } else {
+        return null;
     }
-
-    //Otherwise, make a Person object using the query result.
-    $result_row = mysqli_fetch_assoc($result);
-    $thePerson = make_a_person($result_row);
-
-    //Close the connection and return the Person object.
-    mysqli_close($con);
-    return $thePerson;
 }
+
    
 
 /*
@@ -505,7 +496,7 @@ function make_a_person($result_row) {
                 $result_row['fullName'],
                 $result_row['phone'],
                 $result_row['email'],
-                $username,
+                $result_row['username'],
                 $result_row['pass'],
                 $result_row['userType'],
                 $result_row['archive'],

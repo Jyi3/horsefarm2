@@ -1,3 +1,7 @@
+<?php
+    include('session.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +16,14 @@
         .intro {
             text-align: center;
             margin-bottom: 20px;
+        }
+        
+        .intro2 {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 10px;
+            z-index: 1000;
         }
         .intro img {
             margin-right: 10px;
@@ -61,15 +73,22 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Administration
+                    Horse Admin
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="personActions.php?formAction=addPerson">Add Trainer</a>
-                    <a class="dropdown-item" href="horseActions.php?formAction=addHorse">Add Horse</a>
-                    <a class="dropdown-item" href="personActions.php?formAction=selectPerson">Edit Trainers</a>
+                    <a class="dropdown-item" href="horseActions.php?formAction=addHorse">Create Horse</a>
                     <a class="dropdown-item" href="horseActions.php?formAction=selectHorse">Edit Horses</a>
-                    <a class="dropdown-item" href="archiveTrainers.php">Archive Trainer</a>
                     <a class="dropdown-item" href="archiveHorses.php">Archive Horse</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Trainer Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="personActions.php?formAction=addPerson">Create Trainer</a>
+                    <a class="dropdown-item" href="personActions.php?formAction=selectPerson">Edit Trainers</a>
+                    <a class="dropdown-item" href="archiveTrainers.php">Archive Trainers</a>
                 </div>
             </li>
         </ul>

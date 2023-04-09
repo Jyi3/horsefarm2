@@ -1,12 +1,7 @@
 <?php
-    /* 
-     * about.php: a PHP file for information about CVHR.
-     * Will hopefully contains pictures and links later.
-     */
-
-    session_start();
-    //session_cache_expire(30);
+    include('session.php');
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>

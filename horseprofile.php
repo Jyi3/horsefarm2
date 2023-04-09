@@ -1,4 +1,8 @@
 <?php
+    include('session.php');
+?>
+
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hp_horseID = $_POST["username"];
 

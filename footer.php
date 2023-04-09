@@ -1,4 +1,8 @@
 <?php
+    include('session.php');
+?>
+
+<?php
 /*
  * Copyright 2023 by Joon Yi. 
  * This program is part of CVHR Project, which is free software.  It comes with 

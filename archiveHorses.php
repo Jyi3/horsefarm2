@@ -1,4 +1,8 @@
 <?php
+    include('session.php');
+?>
+
+<?php
     include('database/dbinfo.php');
     include('domain/Horse.php');
     include('database/horsedb.php');

@@ -1,4 +1,8 @@
 <?php
+    include('session.php');
+?>
+
+<?php
 /*
  * Copyright 2015 by Allen Tucker. This program is part of RMHC-Homebase, which is free 
  * software.  It comes with absolutely no warranty. You can redistribute and/or 

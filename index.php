@@ -1,3 +1,7 @@
+<?php
+    include('session.php');
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -66,10 +70,10 @@
     </head>
     <body>
         <div id="container">
-            <?PHP include('header.php'); ?>
+            <?php include('header.php'); ?>
             <div id="content">
                 <div id="content-inner">
-                    <?PHP
+                    <?php
                     include_once('domain/Horse.php');
                     include_once('database/dbinfo.php');
                     include_once('database/horsedb.php');
@@ -81,7 +85,7 @@
                     </p>
                 </div>
             </div>
-            <?PHP include('footer.php'); ?>
+            <?php include('footer.php'); ?>
         </div>
     </body>
 </html>
