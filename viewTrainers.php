@@ -137,15 +137,12 @@
                         </tr>";
                 }
                 echo "</table>";
+                echo "<hr style='clear:both;'>";
+                echo "<hr style='clear:both;'>";
+        
                 
                 // Second table
                 $allPersons = getinactive_persondb();
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
                 echo "<h2><strong>List of Inactived People</strong></h2>";
                 echo "<br>";
                 echo "<table style='float: right;'>
@@ -168,6 +165,9 @@
                         </tr>";
                 }
                 echo "</table>";
+                echo "<hr style='clear:both;'>";
+                echo "<hr style='clear:both;'>";
+        
                 ?>
             </div>
         </div>

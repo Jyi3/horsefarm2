@@ -1,8 +1,8 @@
 <?php
     include('session.php');
 
-    // Check if the user has the necessary permissions (permissions level 3)
-    if ($_SESSION['permissions'] < 3) {
+    // Check if the user has the necessary permissions (permissions level 2)
+    if ($_SESSION['permissions'] < 2) {
         header("Location: index.php");
         exit;
     }
@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Create User | CVHR Horse Training Management System</title>
+        <title>Create Horse | CVHR Horse Training Management System</title>
         <script src="script.js"></script>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
@@ -127,40 +127,27 @@
             }
             </style> 
             <?php
-                include_once('domain/Person.php');
-                include_once('database/persondb.php');
+                include_once('database/horsedb.php');
                 include_once('database/dbinfo.php');
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $username = $_POST["username"];
-                    
-                    $hash = $_POST["pass"];
-                    $hash = password_hash($hash, PASSWORD_BCRYPT); // use bcrypt algorithm
+                    // create new Horse object
 
                     $conn = connect();
-                    // check if username already exists
-                    echo $username;
                     $sql = "SELECT username FROM persondb WHERE username='$username'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-                        echo "DUPLICATE FOUND";
-                        echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
+                    // insert new Horse data into the database
+                    $sql = "INSERT INTO horseDB (horseName, color, breed, pastureNum, colorRank, archive, archiveDate) VALUES ('" . $_POST["horseName"] . "', '" . $_POST["color"] . "', '" . $_POST["breed"] . "', '" . $_POST["pastureNum"] . "', '" . $_POST["colorRank"] . "', false, null)";
+
+                    // execute SQL query
+                    if (mysqli_query($conn, $sql)) {
+                        header("Location: createHorse.php");
                     } else {
-                        // insert new Person data into the database
-                        $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $hash . "', '" . $_POST["userType"] . "', false, null)";
-
-
-                        // execute SQL query
-                        if (mysqli_query($conn, $sql)) {
-                            echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
-                            header("Location: index.php");
-                        } else {
-                            echo "<p>Error adding new user: " . mysqli_error($conn) . "</p>";
-                        }
+                        echo "<p>Error adding new horse: " . mysqli_error($conn) . "</p>";
                     }
 
                     // close database connection
                     mysqli_close($conn);
+
                 }
             ?>
     </head>
@@ -169,45 +156,38 @@
     <?php include('header.php'); ?>
     <div id="content">
         <div id="content-inner">
-            <h1>Create User</h1>
+
+            <h1>Create Horse</h1>
             <br>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <div class="form-group">
-                    <label for="firstName">First Name:</label>
-                    <input type="text" name="firstName" class="form-control" value="<?php echo isset($_POST["firstName"]) ? htmlspecialchars($_POST["firstName"]) : ''; ?>">
+                    <label for="horseName">Horse Name:</label>
+                    <input type="text" name="horseName" class="form-control" value="<?php echo isset($_POST["horseName"]) ? htmlspecialchars($_POST["horseName"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="lastName">Last Name:</label>
-                    <input type="text" name="lastName" class="form-control" value="<?php echo isset($_POST["lastName"]) ? htmlspecialchars($_POST["lastName"]) : ''; ?>">
+                    <label for="color">Color:</label>
+                    <input type="text" name="color" class="form-control" value="<?php echo isset($_POST["color"]) ? htmlspecialchars($_POST["color"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone:</label>
-                    <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value="<?php echo isset($phone) ? htmlspecialchars($phone) : ''; ?>">
+                    <label for="breed">Breed:</label>
+                    <input type="text" name="breed" class="form-control" value="<?php echo isset($_POST["breed"]) ? htmlspecialchars($_POST["breed"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" class="form-control" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>">
+                    <label for="pastureNum">Pasture Number:</label>
+                    <input type="number" name="pastureNum" class="form-control" value="<?php echo isset($_POST["pastureNum"]) ? htmlspecialchars($_POST["pastureNum"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" name="username" class="form-control" value="<?php echo isset($_POST["username"]) ? htmlspecialchars($_POST["username"]) : ''; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="pass">Password:</label>
-                    <input type="password" name="pass" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="userType">User Type:</label>
-                    <select name="userType" class="form-control">
-                        <option value="Recruit">Recruit</option>
-                        <option value="Trainer">Trainer</option>
-                        <option value="Head Trainer">Head Trainer</option>
+                    <label for="colorRank">Color Rank:</label>
+                    <select name="colorRank" class="form-control">
+                        <option value="Green" <?php if(isset($_POST['colorRank']) && $_POST['colorRank'] == 'Green') echo 'selected'; ?>>Green</option>
+                        <option value="Yellow" <?php if(isset($_POST['colorRank']) && $_POST['colorRank'] == 'Yellow') echo 'selected'; ?>>Yellow</option>
+                        <option value="Red" <?php if(isset($_POST['colorRank']) && $_POST['colorRank'] == 'Red') echo 'selected'; ?>>Red</option>
                     </select>
                 </div>
-                <input type="submit" value="Create User" class="btn btn-primary">
+                <input type="submit" value="Create Horse" class="btn btn-primary">
             </form>
             <br>
-        </div>
+            </div>
         <?php include('footer.php'); ?>
     </div>
 </div>

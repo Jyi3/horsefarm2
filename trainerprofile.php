@@ -318,7 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result2)): ?>
                             <tr>
-                                <td class="horse-name"><?php echo $row['horseName']; ?></td>
+                                <td class="horse-name" ><a href='horseprofile.php?horseID=<?php echo $row['horseID']; ?>' style='color: blue;'><?php echo $row['horseName']; ?></a></td>
                                 <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
                                 <td class="note-date"><?php echo $row['noteDate']; ?></td>
                             </tr>

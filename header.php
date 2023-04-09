@@ -77,7 +77,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="horseActions.php?formAction=addHorse">Create Horse</a>
-                    <a class="dropdown-item" href="horseActions.php?formAction=selectHorse">Edit Horses</a>
+                    <a class="dropdown-item" href="editHorse.php">Edit Horses</a>
                     <a class="dropdown-item" href="archiveHorses.php">Archive Horse</a>
                 </div>
             </li>

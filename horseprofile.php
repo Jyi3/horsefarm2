@@ -235,7 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Use $_GET to get the userName parameter
             $hp_horseID = $_GET["horseID"];
             $sql = "SELECT * FROM horsedb WHERE horseID = '$hp_horseID'";
-            $notes = "SELECT n.horseID, t.firstName, t.lastName, n.note, n.noteDate 
+            $notes = "SELECT n.horseID, t.firstName, t.lastName, n.note, n.noteDate, t.username
                     FROM notesdb n
                     INNER JOIN horsedb h ON n.horseID = h.horseID 
                     INNER JOIN persondb t ON n.username = t.username
@@ -313,7 +313,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result2)): ?>
                             <tr>
-                                <td class="person-name"><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></td>
+                                <td class="person-name" ><a href='trainerprofile.php?userName=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a></td>
                                 <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
                                 <td class="note-date"><?php echo $row['noteDate']; ?></td>
                             </tr>
