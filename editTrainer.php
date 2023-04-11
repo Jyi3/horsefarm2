@@ -58,7 +58,6 @@
                 color: #333;
                 margin: 0;
             }
-
             #container {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -66,7 +65,9 @@
                 padding: 20px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 position: relative;
-                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                min-height: 500px;
             }
 
             #content {
@@ -235,8 +236,8 @@
                     ?>
             </div>
             <br>
-            <?php include('footer.php'); ?>
             </div>
+            <?php include('footer.php'); ?>
         </div>
     </body>
 

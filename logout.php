@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logged out of RMH Homebase</title>
     <style>
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #f3f3f3;
@@ -18,7 +19,9 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
-            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            min-height: 500px;
         }
         #appLink:visited {
             color: gray; 

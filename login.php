@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();
-        
+
         if ($stmt->num_rows > 0) {
             $stmt->bind_result($username, $hashed_password, $userType);
             $stmt->fetch();
@@ -143,7 +143,7 @@ if (isset($_POST['submit'])) {
         <p style="text-align: center;">Access to CVHR System requires a<br>Username and a Password.</p>
         <ul>
                 <li>If you accidentally came to this site instead of the Central Virginia Horse Rescue website, please <a href="https://centralvahorserescue.org/" target="_blank">click here</a> to visit their site.</li>
-                <li>If you are applying for a volunteer position, enter the Username 'guest' and a blank Password.</li>
+                <li>If you are applying for a volunteer position, create an account.</li>
                 <li>If you are a volunteer logging in for the first time, your Username is your first name followed by your ten digit phone number. After you have logged in, you can change your password.</li>
                 <li>If you are having difficulty logging in or have forgotten your Password, please contact either the
                     <a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
