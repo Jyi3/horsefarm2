@@ -69,6 +69,10 @@ CREATE TABLE personDB (
   PRIMARY KEY (username)
 );
 
+INSERT INTO personDB (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate)
+VALUES ('John', 'Doe', 'John Doe', '555-1234', 'johndoe@example.com', 'admin', 'admin', 'admin', false, NULL);
+
+
 
 CREATE TABLE personToHorseDB (
   horseID INT NOT NULL,
@@ -96,8 +100,22 @@ CREATE TABLE notesDB (
   username varchar(100) NOT NULL,
   primary key (horseID, noteDate, noteTimestamp, note(255), username),
   FOREIGN KEY (horseID) REFERENCES horseDB(horseID),
-  FOREIGN KEY (username) REFERENCES personDB(username)
+  FOREIGN KEY (username) REFERENCES personDB(username),
+  archive boolean,
+  archiveDate text
 );
+
+INSERT INTO horseDB (horseID, horseName, color, breed, pastureNum, colorRank, archive, archiveDate)
+VALUES
+(1, 'Thunder', 'Brown', 'Quarter Horse', 1, 'green', false, NULL),
+(2, 'Midnight', 'Black', 'Arabian', 1, 'yellow', false, NULL),
+(3, 'Silver', 'Gray', 'Andalusian', 2, 'green', false, NULL),
+(4, 'Blaze', 'Chestnut', 'Thoroughbred', 2, 'yellow', false, NULL),
+(5, 'Snowflake', 'White', 'Friesian', 3, 'green', false, NULL),
+(6, 'Cocoa', 'Bay', 'Morgan', 3, 'yellow', false, NULL),
+(7, 'Sunny', 'Palomino', 'Paint', 4, 'green', false, NULL),
+(8, 'Stormy', 'Dapple Gray', 'Lipizzaner', 4, 'red', false, NULL);
+
 
 
 

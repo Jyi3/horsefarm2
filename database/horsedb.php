@@ -474,7 +474,9 @@ function make_a_horse($result_row) {
         $result_row['color'],
         $result_row['breed'],
         $result_row['pastureNum'],
-        $result_row['colorRank']);
+        $result_row['colorRank'],
+        $result_row['archive'],
+        $result_row['archiveDate']);
     return $theHorse;
 }
 

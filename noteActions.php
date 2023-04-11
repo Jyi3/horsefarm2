@@ -108,6 +108,7 @@ function addNoteForm($formAction, $selectedHorse){
     //echo("<p>YEEEEEEEEEEEEEEHAWWWWWWWWW</p>");
     $horseName = $selectedHorse;
     $theHorse = retrieve_horse_by_name($horseName);
+    print_r($theHorse);
     $horseID = $theHorse->get_horseID();
 
     echo("
