@@ -75,7 +75,7 @@ function unassignBehavior($horseID, $behavior){
     }
     $con = connect();
 
-    $checkQuery = "SELECT * FROM horseToBehaviorDB WHERE horseid='" . $horseID . "' AND behavior='" . $behaviorName . "';";
+    $checkQuery = "SELECT * FROM horseToBehavior WHERE horseid='" . $horseID . "' AND behavior='" . $behaviorName . "';";
     $check = mysqli($con, $checkQuery)
     //Checks and make sure that the horse already has been assigned the given behavior. If it has, then it deletes it.
     if($check != null  || mysqli_num_rows($check) != 0){
