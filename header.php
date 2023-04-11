@@ -54,8 +54,8 @@
                     Database
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="horseActions.php?formAction=searchHorse">View All Horses</a>
-                    <a class="dropdown-item" href="personActions.php?formAction=searchPeople">View All Trainers</a>
+                    <a class="dropdown-item" href="viewHorses.php">View All Horses</a>
+                    <a class="dropdown-item" href="viewTrainers.php">View All Trainers</a>
                     <a class="dropdown-item" href="search.php">Search</a>
                 </div>
             </li>
@@ -64,9 +64,12 @@
                     Administration
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="personActions.php?formAction=addPerson">Add Trainer</a>
+                    <a class="dropdown-item" href="horseActions.php?formAction=addHorse">Add Horse</a>
                     <a class="dropdown-item" href="personActions.php?formAction=selectPerson">Edit Trainers</a>
-                    <a class="dropdown-item" href="personActions.php?formAction=searchPeople">Archive Trainer</a>
-                    <a class="dropdown-item" href="horseActions.php?formAction=searchHorse">Archive Horse</a>
+                    <a class="dropdown-item" href="horseActions.php?formAction=selectHorse">Edit Horses</a>
+                    <a class="dropdown-item" href="archiveTrainers.php">Archive Trainer</a>
+                    <a class="dropdown-item" href="archiveHorses.php">Archive Horse</a>
                 </div>
             </li>
         </ul>

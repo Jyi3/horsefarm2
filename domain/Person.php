@@ -22,7 +22,7 @@ class Person {
 		$this->fullName = $firstName . $lastName;
         $this->phone = $phone;
         $this->email = $email;
-        $this->username = $firstName . $lastName . str_replace('-', '', $phone);
+        $this->username = $username;
 		$this->pass = $pass;
         $this->userType = $userType;
 		$this->archive = false;
