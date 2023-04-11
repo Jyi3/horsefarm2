@@ -26,6 +26,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error updating record: " . mysqli_error($conn);
         }
         mysqli_close($conn);
+    } elseif (isset($_POST["AssignBehavior"])) {  
+        // create new Horse object
+
+                    $conn = connect();
+                    // conect and assign behavior
+                    $sql = "INSERT INTO horsetobehaviordb (horseID, title) VALUES ('$hp_horseID', '" . $_POST["title"] . "')";
+
+                    // execute SQL query
+                    if (mysqli_query($conn, $sql)) {
+                        header("Location: horseprofile.php");
+                    } else {
+                        echo "<p>Error assigning behavior: " . mysqli_error($conn) . "</p>";
+                    }
+
+                    // close database connection
+                    mysqli_close($conn);
     }
     
     echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?horseID=$hp_horseID';</script>";
@@ -218,6 +234,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     </style>
+    <?php
+                include_once('database/horsedb.php');
+                include_once('database/behaviordb.php');
+                include_once('database/dbinfo.php');
+
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    // create new Horse object
+
+                    $conn = connect();
+                    // conect and assign behavior
+                    $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('" . $_POST["behaviorName"] . "', '" . $_POST["colorRank"] . "')"; 
+
+                    // execute SQL query
+                    if (mysqli_query($conn, $sql)) {
+                        header("Location: horseprofile.php");
+                    } else {
+                        echo "<p>Error assigning behavior: " . mysqli_error($conn) . "</p>";
+                    }
+
+                    // close database connection
+                    mysqli_close($conn);
+
+                }
+            ?>
 
 </head>
 <body>
@@ -242,6 +282,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     WHERE n.horseID = '$hp_horseID'";
             $result = mysqli_query($conn, $sql);
             $result2 = mysqli_query($conn, $notes);
+				//fetches from behavior db            
+            $sql = "SELECT title FROM behaviordb";
+				$array = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) != 1) {
                 die("Error: Invalid username");
@@ -296,7 +339,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                         
                     </div>
+                    
+
             </div>
+            //The Following code allows a trainer to assign a behavior ot a horse 
+            <div class="notes-container">
+					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+						<div class="form-group">
+							<label for="Title">Title:</label>
+								<select name="title" class="form-control">
+  								<?php
+  								  
+    							  while ($row = mysqli_fetch_assoc($array)) {
+      							$selected = "";
+     							   if (isset($_POST['colorRank']) && $_POST['colorRank'] == $row['title']) {
+        								$selected = 'selected';
+      							}
+      							echo "<option value=\"" . $row['title'] . "\" $selected>" . $row['title'] . "</option>";
+    								}
+  								?>
+						</select>
+						</div>
+						<input type="hidden" name="username" value="<?php echo $hp_horseID; ?>" />
+						<input type="submit" name="AssignBehavior" value="Assign Behavior" class="btn btn-primary">
+					</form>
+				</div>
             <div class="notes-container">
                 <h2 style="text-align: center;">Notes</h2>
                 <?php if (mysqli_num_rows($result2) == 0): ?>
