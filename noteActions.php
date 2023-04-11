@@ -38,14 +38,31 @@ function selectNote($formAction,$selectedHorse){
 
     //once we get the Horse, we can present the user with all the notes relating to that horse, and allow the user to act on them.
 
-    echo("yippee!");
 if($selectedHorse==NULL){return false;}
 
 else{
 
-if($formAction=="searchNote"){}
-if($formAction=="editNote"){}
-if($formAction=="removeNote"){}
+if($formAction=="searchNote"){
+
+    if($selectedHorse==NULL){return false;}
+    else{
+        $theHorse = retrieve_horse_by_name($selectedHorse);
+        $allNotes = 
+
+    }
+}
+if($formAction=="editNote"){
+    
+    if($selectedHorse==NULL){return false;}
+    else{}
+
+}
+if($formAction=="removeNote"){
+    
+    if($selectedHorse==NULL){return false;}
+    else{}
+
+}
 
 }
 
