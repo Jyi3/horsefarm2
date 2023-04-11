@@ -10,6 +10,7 @@
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f3f3f3;
@@ -26,7 +27,6 @@
                 display: flex;
                 flex-direction: column;
                 min-height: 500px;
-
             }
             #appLink:visited {
                 color: gray; 

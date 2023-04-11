@@ -131,8 +131,8 @@
                     for ($x = 0; $x < count($allPersons); $x++) {
                         $userName = $allPersons[$x]->get_userName();
                         echo "<tr>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
@@ -163,8 +163,8 @@
                     for ($x = 0; $x < count($allPersons); $x++) {
                         $userName = $allPersons[$x]->get_userName();
                         echo "<tr>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>

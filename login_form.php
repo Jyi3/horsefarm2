@@ -14,14 +14,20 @@ if (isset($_POST['submit'])) {
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $stmt = $conn->prepare("SELECT username, pass, userType FROM personDB WHERE username = ?");
+        $stmt = $conn->prepare("SELECT username, pass, userType, archive FROM personDB WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt->bind_result($username, $hashed_password, $userType);
+            $stmt->bind_result($username, $hashed_password, $userType, $archive);
             $stmt->fetch();
+
+            if ($archive == 1) {
+                echo "<script>alert('Your account has been inactivated.\nPlease contact an administrator for assistance.')</script>";
+                echo "<meta http-equiv='refresh' content='0'>";
+                exit;
+            }
 
             if (password_verify($password, $hashed_password)) {
                 $_SESSION['user_id'] = $username;
@@ -37,11 +43,9 @@ if (isset($_POST['submit'])) {
                 header("Location: index.php"); // Redirect to the main page
                 exit;
             } else {
-                echo "error with pass";
                 $error = "Invalid username or password";
             }
         } else {
-            echo "other error";
             $error = "Invalid username or password";
         }
 
