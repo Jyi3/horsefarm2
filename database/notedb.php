@@ -11,8 +11,8 @@ function get_next_note_id() {
     // create a database connection
     $con = connect();
 
-    // retrieve the maximum noteID value from the noteDB table
-    $query = "SELECT MAX(noteID) as max_id FROM noteDB";
+    // retrieve the maximum noteID value from the notesdb table
+    $query = "SELECT MAX(noteID) as max_id FROM notesdb";
     $result = mysqli_query($con, $query);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
@@ -43,7 +43,9 @@ $theNote = new Note(
     $inputRow['noteDate'],
     $inputRow['noteTimestamp'],
     $inputRow['note'],
-    $inputRow['username']);
+    $inputRow['username'],
+    $inputRow['archive'],
+    $inputRow['archiveDate']);
 
 return $theNote;
 }
@@ -58,7 +60,9 @@ function construct_note_now($horseID , $note , $username){
 $noteTimestamp = time();
 $noteDate = date('Y-m-d');
 $ID = get_next_note_id();
-$theNote = new Note($ID,$horseID,$noteDate,$noteTimestamp,$note,$username);
+$archive = 0;
+$archiveDate=null;
+$theNote = new Note($ID,$horseID,$noteDate,$noteTimestamp,$note,$username,$archive,$archiveDate);
 return $theNote;
 
 }
@@ -69,7 +73,7 @@ return $theNote;
 */
 function note_full($note){
 if(!$note instanceof Note){
-    die("Error, attempted to check for note in note_full() in notedb.php . Passed non-note variable.");
+    die("Error, attempted to check for note in note_full() in notesdb.php . Passed non-note variable.");
 
 }
 $status = true;
@@ -97,12 +101,14 @@ function add_note($note){
     //this means that there does exist such a horse.
     if($result != null){
     //go ahead and add the note to the database.
-    mysqli_query($con,'INSERT INTO noteDB VALUES("' .
+    mysqli_query($con,'INSERT INTO notesdb VALUES("' .
         $note->get_horseID() . '","' .
         $note->get_noteDate() . '","' .
         $note->get_noteTimestamp() . '","' .
         $note->get_note() . '","' .
-        $note->get_username() . '");');									        
+        $note->get_username() . '","' .
+        $note->get_archive() . '","' .
+        $note->get_archiveDate() . '");');									        
         
         //Close the connection and return true.
         mysqli_close($con);
@@ -125,7 +131,7 @@ function edit_note($noteText, $Note){
 
     //Create a database connection and update the existing note.
     $con=connect();
-    $query = "UPDATE noteDB SET note='" . $noteText . " WHERE noteID= " . $Note->get_note_ID() . "';";
+    $query = "UPDATE notesdb SET note='" . $noteText . " WHERE noteID= " . $Note->get_note_ID() . "';";
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
@@ -140,7 +146,7 @@ function retrieve_horse_notes($horseID){
 
     //Create a database connection and retrieve all of the note ID numbers.
     $con=connect();
-    $query = "SELECT * FROM noteDB WHERE horseID = '" . $horseID . "'ORDER BY noteDate DESC";
+    $query = "SELECT * FROM notesdb WHERE horseID = '" . $horseID . "'ORDER BY noteDate DESC";
     $result = mysqli_query($con,$query);
 
     //If the note table is empty,

@@ -6,11 +6,10 @@ include_once('database/horsedb.php');
 
 
 //global variables here.
-
 if( isset($_POST["formAction"])){
 $formAction = $_POST["formAction"]; 
 }
-else{$formAction=null;}
+else{$formAction=NULL;}
 
 //HARDCODE THE FORMACTION FOR TESTING.
 $formAction="addNote";
@@ -20,12 +19,12 @@ $formAction="addNote";
 if(isset($_POST["selectedHorse"])){
     $selectedHorse = $_POST["selectedHorse"];
 }
-else{$selectedHorse=null;}
+else{$selectedHorse=NULL;}
 
 if(isset($_POST["selectedNote"])){
 $selectedNote = $_POST["selectedNote"];
 }
-else{$selectedNote=null;}
+else{$selectedNote=NULL;}
 
 ?>
 
@@ -40,7 +39,7 @@ function selectNote($formAction,$selectedHorse){
     //once we get the Horse, we can present the user with all the notes relating to that horse, and allow the user to act on them.
 
     echo("yippee!");
-if($selectedHorse==null){return false;}
+if($selectedHorse==NULL){return false;}
 
 else{
 
@@ -59,7 +58,7 @@ function processForm($formAction, $selectedHorse,$selectedNote){
     //echo($selectedHorse);
     //echo($selectedNote);
 
-    if($selectedHorse==null && $selectedNote==null){
+    if($selectedHorse==NULL && $selectedNote==NULL){
         if($formAction=='searchNote'){
             echo("Here we want to search for a note, but we need to select a horse first.");
             selectHorse($formAction);
@@ -80,7 +79,7 @@ function processForm($formAction, $selectedHorse,$selectedNote){
             selectHorse($formAction);
         }
 }
-    if($formAction!=null && $selectedHorse!=null && $selectedNote==null){
+    if($formAction!=NULL && $selectedHorse!=NULL && $selectedNote==NULL){
         if($formAction=='searchNote'){
             echo("Here we want to search for a note, and we also have a selected horse. ('$selectedHorse')");
             selectNote($selectedHorse);
@@ -106,33 +105,32 @@ function processForm($formAction, $selectedHorse,$selectedNote){
 function addNoteForm($formAction, $selectedHorse){
     echo("<p>Please enter information that will be associated with " . $selectedHorse ."</p>");
     echo("</br>");
-
+    //echo("<p>YEEEEEEEEEEEEEEHAWWWWWWWWW</p>");
     $horseName = $selectedHorse;
     $theHorse = retrieve_horse_by_name($horseName);
-    echo($theHorse->get_horseID());
     $horseID = $theHorse->get_horseID();
-    echo("TEST:");
-    echo($horseID);
+
     echo("
 <form action='/horse/horsefarm2/noteActions.php?formAction='" . $formAction . "' method='POST'>
 <label for='horseID'>Horse ID:</label>
 <input type='text' id='horseID' name='horseID' value='" . $horseID . "' required readonly><br>
-
 <label for='note'>Note:</label><br>
-<textarea id='note' name='note' rows='4' cols='50' required></textarea><br>
-
+<textarea id='note' name='note' rows='4' cols='50' value='test' required></textarea><br>
 <label for='username'>Username:</label>
-<input type='text' id='username' name='username' required><br>
-
+<input type='text' id='username' name='username' value='admin' required><br>
 <input type='submit' value='Create Note'>
+<input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
+<input type='hidden' name='noteTimestamp' value='" . time() . "'>
+<input type='hidden' name='addNoteSubmit' value='1'>
 </form>
-</body>
-");
+</body>"
+);
+
 
 }
 
 function selectHorse($formAction){
-$theHorse = null;
+$theHorse = NULL;
 
 //present the user with a form to select a horse.
 echo("<form method='POST' action='/horse/horsefarm2/noteActions.php?formAction='" . $formAction . ">");
@@ -155,11 +153,11 @@ echo("<input type='submit' value='Select Horse'/>");
 echo("</form>");
 //once the user selects a horse, the form should(?) resubmit.
 
-    if($theHorse!=null){
+    if($theHorse!=NULL){
     return $theHorse;
 }
 
-return null;
+return NULL;
 
 }
 
@@ -248,6 +246,26 @@ return null;
                     date_default_timezone_set('America/New_York');
                     $formAction="addNote";
                     //selectHorse($formAction);
+
+                    //this means that we are ready to make and add a new note.
+                    //this means that all the information should be there
+                    print_r($_POST);
+                    if(isset($_POST['addNoteSubmit'])){
+                        $submissionSet = array();
+                        //yes this is weird, because this isn't what I think of when I think of an array, but this makes the right variable type for PHP.
+                        $submissionSet['noteID'] = get_next_note_id(); 
+                        $submissionSet['horseID'] = $_POST['horseID'];
+                        $submissionSet['noteDate'] = $_POST['noteDate'];
+                        $submissionSet['noteTimestamp'] = $_POST['noteTimestamp'];
+                        $submissionSet['note'] = $_POST['note'];
+                        $submissionSet['username'] = $_POST['username'];
+                        $submissionSet['archive'] = 0;
+                        $submissionSet['archiveDate'] = NULL;
+                        $theNote = construct_note($submissionSet);
+                        $status = add_note($theNote);
+                        print_r($theNote);
+                        echo("note addition status: ". (boolean)$status."<br>");
+                    }
                     processForm($formAction,$selectedHorse,$selectedNote);
                     
                     ?>

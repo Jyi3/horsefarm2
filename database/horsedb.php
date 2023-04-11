@@ -184,7 +184,6 @@ function retrieve_horse_by_name($horseName) {
         mysqli_close($con);
         return false;
     }
-
     //Otherwise, create a Horse object from the query row and return the object.
     $result_row = mysqli_fetch_assoc($result);
     $theHorse = make_a_horse($result_row);
@@ -449,10 +448,13 @@ function get_num_archiveHorses() {
  */
 function make_a_horse($result_row) {
     $theHorse = new Horse(
+                $result_row['horseID'],
                 $result_row['horseName'],
                 $result_row['color'],
                 $result_row['breed'],
                 $result_row['pastureNum'],
+                $result_row['archive'],
+                $result_row['archiveDate'],
                 $result_row['colorRank']);
     return $theHorse;
 }

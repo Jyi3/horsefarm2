@@ -14,17 +14,21 @@ class Note {
     private $noteTimestamp;
     private $note;
     private $username;
+    private $archive;
+    private $archiveDate;
     
-    function __construct($noteID,$horseID,$noteDate,$noteTimestamp,$note,$username) {
+    function __construct($noteID,$horseID,$noteDate,$noteTimestamp,$note,$username,$archive,$archiveDate) {
         $this->noteID = $noteID;
         $this->horseID = $horseID;
         $this->noteDate = $noteDate;
         $this->noteTimestamp = $noteTimestamp;
         $this->note = $note;
         $this->username = $username;
+        $this->archive = $archive;
+        $this->archiveDate = $archiveDate;
     }
 
-    function get_note_ID(){
+    function get_noteID(){
         return $this->noteID;
     }
     function get_horseID() {
@@ -33,7 +37,7 @@ class Note {
     function get_noteDate() {
         return $this->noteDate;
     }
-    function get_timestamp() {
+    function get_noteTimestamp() {
         return $this->noteTimestamp;
     }
     function get_note() {
@@ -42,4 +46,11 @@ class Note {
     function get_username() {
         return $this->username;
     }
+    function get_archive() {
+        return $this->archive;
+    }
+    function get_archiveDate() {
+        return $this->archiveDate;
+    }
+    
 }
