@@ -7,7 +7,7 @@
 //Include the MySQL connection and Horse class.
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Horse.php');
-include_once(dirname(__FILE__).'/../database/archiveHorseDb.php');
+//include_once(dirname(__FILE__).'/../database/archiveHorseDb.php');
 
 /*
  * Function name: add_horse($horse)
@@ -476,7 +476,7 @@ function make_a_horse($result_row) {
         $result_row['pastureNum'],
         $result_row['colorRank'],
         $result_row['archive'],
-        $result_row['archiveDate']);
+        $result_row['archiveDate'] );
     return $theHorse;
 }
 

@@ -93,8 +93,7 @@ function add_note($note){
     //create a database connection.
     $con=connect();
 
-    //attempt to see if the horse exists..
-    $query = "SELECT * FROM horsedb WHERE horseID='" . $note->get_noteID() . "';";
+    $query = "SELECT * FROM notesdb WHERE noteID='" . $note->get_noteID() . "';";
     $result = mysqli_query($con,$query);
 
     //if the query is null, this means that the horse we want to add a note under doesn't exist.
@@ -103,6 +102,7 @@ function add_note($note){
     //go ahead and add the note to the database.
     mysqli_query($con,'INSERT INTO notesdb VALUES("' .
         $note->get_horseID() . '","' .
+        $note->get_noteID() . '","' .
         $note->get_noteDate() . '","' .
         $note->get_noteTimestamp() . '","' .
         $note->get_note() . '","' .
@@ -131,7 +131,7 @@ function edit_note($noteText, $Note){
 
     //Create a database connection and update the existing note.
     $con=connect();
-    $query = "UPDATE notesdb SET note='" . $noteText . " WHERE noteID= " . $Note->get_note_ID() . "';";
+    $query = "UPDATE notesdb SET note='" . $noteText . " WHERE noteID= " . $Note->get_noteID() . "';";
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.

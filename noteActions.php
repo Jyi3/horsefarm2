@@ -250,7 +250,7 @@ return NULL;
 
                     //this means that we are ready to make and add a new note.
                     //this means that all the information should be there
-                    print_r($_POST);
+                    //print_r($_POST);
                     if(isset($_POST['addNoteSubmit'])){
                         $submissionSet = array();
                         //yes this is weird, because this isn't what I think of when I think of an array, but this makes the right variable type for PHP.
