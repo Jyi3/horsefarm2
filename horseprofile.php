@@ -28,17 +28,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_close($conn);
     } elseif (isset($_POST["AssignBehavior"])) {  
         // create new Horse object
+        
 
                     $conn = connect();
                     // conect and assign behavior
+                    $sql = "SELECT * FROM horsetobehaviordb WHERE horseID='$hp_horseID' AND title='{$_POST['title']}'";
+                    $action_success = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($action_success) > 0) {
+                        echo "DUPLICATE FOUND";
+                        header("Location: index.php");
+                    } 
                     $sql = "INSERT INTO horsetobehaviordb (horseID, title) VALUES ('$hp_horseID', '" . $_POST["title"] . "')";
-
+                    
+						  $action_success = mysqli_query($conn, $sql);
+						  
                     // execute SQL query
-                    if (mysqli_query($conn, $sql)) {
-                        header("Location: horseprofile.php");
-                    } else {
+                    if (!$action_success) {
                         echo "<p>Error assigning behavior: " . mysqli_error($conn) . "</p>";
-                    }
+      				  }
 
                     // close database connection
                     mysqli_close($conn);
@@ -342,7 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
 
             </div>
-            //The Following code allows a trainer to assign a behavior ot a horse 
+            
             <div class="notes-container">
 					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 						<div class="form-group">
