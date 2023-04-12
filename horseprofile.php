@@ -49,6 +49,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     // close database connection
                     mysqli_close($conn);
+    }elseif (isset($_POST["UnAssignBehavior"])) {  
+        // create new Horse object
+        
+
+                    $conn = connect();
+                    // conect and assign behavior
+                    
+                    $sql = "DELETE FROM horsetobehaviordb WHERE horseID='$hp_horseID' AND title='{$_POST['title']}'";
+                    
+						  $action_success = mysqli_query($conn, $sql);
+						  
+                    // execute SQL query
+                    if (!$action_success) {
+                        echo "<p>Error assigning behavior: " . mysqli_error($conn) . "</p>";
+      				  }
+
+                    // close database connection
+                    mysqli_close($conn);
     }
     
     echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?horseID=$hp_horseID';</script>";
@@ -292,6 +310,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				//fetches from behavior db            
             $sql = "SELECT title FROM behaviordb";
 				$array = mysqli_query($conn, $sql);
+				$sql = "SELECT title FROM horsetobehaviordb where horseID='hp_horseID'";
+				$array1 = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) != 1) {
                 die("Error: Invalid username");
@@ -369,6 +389,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 						</div>
 						<input type="hidden" name="username" value="<?php echo $hp_horseID; ?>" />
 						<input type="submit" name="AssignBehavior" value="Assign Behavior" class="btn btn-primary">
+					</form>
+				</div>
+				<div class="notes-container">
+					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+						<div class="form-group">
+							<label for="Title">Title:</label>
+								<select name="title" class="form-control">
+  								<?php
+  								  
+    							  while ($row = mysqli_fetch_assoc($array1)) {
+      							$selected = "";
+     							   if (isset($_POST['colorRank']) && $_POST['colorRank'] == $row['title']) {
+        								$selected = 'selected';
+      							}
+      							echo "<option value=\"" . $row['title'] . "\" $selected>" . $row['title'] . "</option>";
+    								}
+  								?>
+						</select>
+						</div>
+						<input type="hidden" name="username" value="<?php echo $hp_horseID; ?>" />
+						<input type="submit" name="UnAssignBehavior" value="UnAssign Behavior" class="btn btn-primary">
 					</form>
 				</div>
             <div class="notes-container">
