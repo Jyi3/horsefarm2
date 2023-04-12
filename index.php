@@ -1,3 +1,7 @@
+<?php
+include('session.php');
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,6 +10,7 @@
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f3f3f3;
@@ -19,7 +24,9 @@
                 padding: 20px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 position: relative;
-                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                min-height: 500px;
             }
             #appLink:visited {
                 color: gray; 
@@ -66,10 +73,10 @@
     </head>
     <body>
         <div id="container">
-            <?PHP include('header.php'); ?>
+            <?php include('header.php'); ?>
             <div id="content">
                 <div id="content-inner">
-                    <?PHP
+                    <?php
                     include_once('domain/Horse.php');
                     include_once('database/dbinfo.php');
                     include_once('database/horsedb.php');
@@ -81,7 +88,7 @@
                     </p>
                 </div>
             </div>
-            <?PHP include('footer.php'); ?>
+            <?php include('footer.php'); ?>
         </div>
     </body>
 </html>

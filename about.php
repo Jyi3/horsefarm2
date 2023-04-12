@@ -1,25 +1,20 @@
 <?php
-    /* 
-     * about.php: a PHP file for information about CVHR.
-     * Will hopefully contains pictures and links later.
-     */
-
-    session_start();
-    //session_cache_expire(30);
+    include('session.php');
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
         <title>About</title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f3f3f3;
                 color: #333;
                 margin: 0;
             }
-
             #container {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -27,7 +22,9 @@
                 padding: 20px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 position: relative;
-                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                min-height: 500px;
             }
 
             #content {

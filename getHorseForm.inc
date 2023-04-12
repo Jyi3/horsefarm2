@@ -16,7 +16,7 @@
         echo("<p>When finished, hit <b>Select Name</b> at the bottom of this page.</p>");
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/horse/horsefarm2/horseActions.php?formAction=editHorse'>"); //////////// Do this
+        echo("<form method='POST' action='/horseActions.php?formAction=editHorse'>"); //////////// Do this
     }
     else if($formAction == "editNote" || $formAction=="removeNote" || $formAction=="addNote"){
 
@@ -45,7 +45,7 @@
         echo("<p>When finished, hit <b>Remove Horse</b> at the bottom of this page.</p>");
         echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
        
-        echo("<form method='POST' action='/horse/horsefarm2/horseActions.php?formAction=confirmRemove'>");    //////////// Do this
+        echo("<form method='POST' action='/horseActions.php?formAction=confirmRemove'>");    //////////// Do this
     }
 ?>
 

@@ -1,3 +1,12 @@
+<?php
+    include('session.php');
+
+    // Check if the user has the necessary permissions (permissions level 3)
+    if ($_SESSION['permissions'] < 3) {
+        header("Location: index.php");
+        exit;
+    }
+?>
 
 <!DOCTYPE html>
 <html>
@@ -7,8 +16,7 @@
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
 
-            
-body {
+            body {
                 font-family: Arial, sans-serif;
                 background-color: #f3f3f3;
                 color: #333;
@@ -125,9 +133,7 @@ body {
                 include_once('database/dbinfo.php');
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    // create new Person object
-                    $username = str_replace("-", "", $_POST["phone"]); // remove dashes from phone number
-                    $username = $_POST["firstName"] . $_POST["lastName"] . $username; // combine name and phone number
+                    $username = $_POST["username"];
                     
                     $hash = $_POST["pass"];
                     $hash = password_hash($hash, PASSWORD_BCRYPT); // use bcrypt algorithm
@@ -142,12 +148,13 @@ body {
                         echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
                     } else {
                         // insert new Person data into the database
-                        $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $hash . "', 'Recruit', false, null)";
+                        $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $hash . "', '" . $_POST["userType"] . "', false, null)";
+
 
                         // execute SQL query
                         if (mysqli_query($conn, $sql)) {
                             echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
-                            header("Location: login_form.php");
+                            header("Location: index.php");
                         } else {
                             echo "<p>Error adding new user: " . mysqli_error($conn) . "</p>";
                         }
@@ -159,40 +166,53 @@ body {
             ?>
     </head>
     <body>
-        <div id="container">
-            <?php include('header-no-menu.php'); ?>
-            <div id="content">
-                <div id="content-inner">
-                    <h1>Create User</h1>
-                    <br>
-                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                        <div class="form-group">
-                            <label for="firstName">First Name:</label>
-                            <input type="text" name="firstName" class="form-control" value="<?php echo isset($_POST["firstName"]) ? htmlspecialchars($_POST["firstName"]) : ''; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name:</label>
-                            <input type="text" name="lastName" class="form-control" value="<?php echo isset($_POST["lastName"]) ? htmlspecialchars($_POST["lastName"]) : ''; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone:</label>
-                            <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value="<?php echo isset($phone) ? htmlspecialchars($phone) : ''; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" name="email" class="form-control" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="pass">Password:</label>
-                            <input type="password" name="pass" class="form-control">
-                        </div>
-                        <input type="submit" value="Create User" class="btn btn-primary">
-                    </form>
-                    <br>
+    <div id="container">
+    <?php include('header.php'); ?>
+    <div id="content">
+        <div id="content-inner">
+            <h1>Create User</h1>
+            <br>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" name="firstName" class="form-control" value="<?php echo isset($_POST["firstName"]) ? htmlspecialchars($_POST["firstName"]) : ''; ?>">
                 </div>
-            </div>
-            <?php include('footer-no-session.php'); ?>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" name="lastName" class="form-control" value="<?php echo isset($_POST["lastName"]) ? htmlspecialchars($_POST["lastName"]) : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value="<?php echo isset($phone) ? htmlspecialchars($phone) : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" class="form-control" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" class="form-control" value="<?php echo isset($_POST["username"]) ? htmlspecialchars($_POST["username"]) : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="pass">Password:</label>
+                    <input type="password" name="pass" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="userType">User Type:</label>
+                    <select name="userType" class="form-control">
+                        <option value="Recruit">Recruit</option>
+                        <option value="Trainer">Trainer</option>
+                        <option value="Head Trainer">Head Trainer</option>
+                    </select>
+                </div>
+                <input type="submit" value="Create User" class="btn btn-primary">
+            </form>
+            <br>
         </div>
+        </div>
+        <?php include('footer.php'); ?>
+    </div>
+
     </body>
 </html>
  

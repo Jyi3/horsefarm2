@@ -1,5 +1,8 @@
 <?php
-session_start();
+    include('session.php');
+?>
+
+<?php
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the search parameters from the form
@@ -97,13 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
+            
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f3f3f3;
                 color: #333;
                 margin: 0;
             }
-            
             #container {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -111,7 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 padding: 20px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 position: relative;
-                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                min-height: 500px;
             }
             
             #appLink:visited {
@@ -409,7 +414,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <?php if ($type == "horsedb "): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($row['horseName']); ?></td>
+                                <td><a href='horseprofile.php?horseID=<?php echo htmlspecialchars($row['horseID']); ?>' style='color: blue;'><?php echo htmlspecialchars($row['horseName']); ?></a></td>
                                 <td><?php echo htmlspecialchars($row['color']); ?></td>
                                 <td><?php echo htmlspecialchars($row['breed']); ?></td>
                                 <td><?php echo htmlspecialchars($row['pastureNum']); ?></td>
@@ -435,9 +440,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </br>
         </div>
     <?php endif; ?>
+</div>
 <?php include('footer.php'); ?>
 </div>
 </body>
-
 </html>
 

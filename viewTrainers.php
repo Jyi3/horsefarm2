@@ -1,3 +1,7 @@
+<?php
+    include('session.php');
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -108,62 +112,71 @@
                 include_once('database/dbinfo.php');
                 include_once('database/persondb.php');
                 $allPersons = getall_persondb();
-                
-                echo "<br>";
-                echo "<br>";
+
+                echo "<hr style='clear:both;'>";
                 echo "<h2><strong>List of Active People</strong></h2>";
                 echo "<br>";
-                echo "<table style='float: left; margin-right: 20px;'>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                        </tr>";
-                
-                for ($x = 0; $x < count($allPersons); $x++) {
-                    $userName = $allPersons[$x]->get_userName();
-                    echo "<tr>
-                            <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
-                            <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
-                            <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
-                            <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
-                            <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
-                        </tr>";
+                if (empty($allPersons)) {
+                    echo "<tr><td colspan='5' style='text-align:center'>There are no trainers in this category.</td></tr>";
+                } else {
+                    echo "<table style='float: left; margin-right: 20px;'>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>";
+                    
+                    for ($x = 0; $x < count($allPersons); $x++) {
+                        $userName = $allPersons[$x]->get_userName();
+                        echo "<tr>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                            </tr>";
+                    }
+                    echo "</table>";
                 }
-                echo "</table>";
+                echo "<hr style='clear:both;'>";
+                echo "<hr style='clear:both;'>";
+        
                 
                 // Second table
                 $allPersons = getinactive_persondb();
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
                 echo "<h2><strong>List of Inactived People</strong></h2>";
                 echo "<br>";
-                echo "<table style='float: right;'>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                        </tr>";
+                if (empty($allPersons)) {
+                    echo "<tr><td colspan='5' style='text-align:center'>There are no trainers in this category.</td></tr>";
+                } else {
+                    echo "<table style='float: right;'>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>";
+                    
+                    for ($x = 0; $x < count($allPersons); $x++) {
+                        $userName = $allPersons[$x]->get_userName();
+                        echo "<tr>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
+                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                            </tr>";
+                    }
+                    echo "</table>";
                 
-                for ($x = 0; $x < count($allPersons); $x++) {
-                    $userName = $allPersons[$x]->get_userName();
-                    echo "<tr>
-                            <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
-                            <td style='border-left: 1px solid black'><a href='trainerprofile.php?userName=$userName' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
-                            <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
-                            <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
-                            <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
-                        </tr>";
                 }
-                echo "</table>";
+                
+                echo "<hr style='clear:both;'>";
+                echo "<hr style='clear:both;'>";
+        
                 ?>
             </div>
         </div>
