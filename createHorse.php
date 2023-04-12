@@ -179,10 +179,9 @@
                 <div class="form-group">
                     <label for="colorRank">Color Rank:</label>
                     <select name="colorRank" class="form-control">
-                        foreach ($colorRankOptions as $option) {
-        							$array = isset($_POST['colorRank']) && $_POST['colorRank'] == $option ? 'selected' : '';
-        							echo "<option value='$option' $selected>$option</option>";
-    }							}
+                        <option value="Green" <?php if(isset($_POST['colorRank']) && $_POST['colorRank'] == 'Green') echo 'selected'; ?>>Green</option>
+                        <option value="Yellow" <?php if(isset($_POST['colorRank']) && $_POST['colorRank'] == 'Yellow') echo 'selected'; ?>>Yellow</option>
+                        <option value="Red" <?php if(isset($_POST['colorRank']) && $_POST['colorRank'] == 'Red') echo 'selected'; ?>>Red</option>
                     </select>
                 </div>
                 <input type="submit" value="Create Horse" class="btn btn-primary">
