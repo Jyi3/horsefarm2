@@ -20,7 +20,7 @@
         WHERE p.archive != 1";
 
     $sql = "SELECT * FROM horsedb WHERE horseID = '$hp_horseID'";
-    $notes = "SELECT n.horseID, t.firstName, t.lastName, n.note, n.noteDate, t.username
+    $notes = "SELECT n.horseID, n.noteID, t.firstName, t.lastName, n.note, n.noteDate, t.username
             FROM notesdb n
             INNER JOIN horsedb h ON n.horseID = h.horseID 
             INNER JOIN persondb t ON n.username = t.username
@@ -338,7 +338,7 @@
             
             <div class="notes-container">
                 <h2 style="text-align: center;">Notes
-                <form method="POST" action = "noteAddForm.php">
+                <form method="POST" action = "addNotePage.php">
                 <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>"> 
                 <input type="submit" name="add_note" value="Add Note" class="archive-form-button" /></form></h2>
                     
@@ -359,6 +359,25 @@
                                 <td class="person-name" ><a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a></td>
                                 <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
                                 <td class="note-date"><?php echo $row['noteDate']; ?></td>
+                                <td>
+                                    <form method ="POST" action="editNotePage.php">
+                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>"></input>
+                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>"></input>
+                                        <input type="submit" name="editNote" value="Edit"></input>
+                                    </form>
+                                </td>
+                                <?php if($_SESSION['permissions']>2){
+                                echo("
+                                <td>
+                                <form method ='POST' action='editNotePage.php'>
+                                    <input type='hidden' name='horseID' value='" .$hp_horseID ."'></input>
+                                    <input type='hidden' name='noteID' value='" . $row["noteID"] . "'></input>
+                                    <input type='submit' name='editNote' value='Remove'></input>
+                                </form>
+                                </td>
+                            ");
+                                }
+                                ?>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

@@ -60,7 +60,7 @@ $username=$TLRrow['username'];
         $horseID = $theHorse->get_horseID();
 
         echo("
-    <form action='/horse/horsefarm2/noteAddForm.php' method='POST'>
+    <form action='/horse/horsefarm2/addNotePage.php' method='POST'>
     <label for='horseID'>Horse ID:</label>
     <input type='text' id='horseID' name='horseID' value='" . $horseID . "' required readonly><br>
     <label for='note'>Note:</label><br>
@@ -88,13 +88,8 @@ $username=$TLRrow['username'];
             $submissionSet['username'] = $_POST['username'];
             $submissionSet['archive'] = 0;
             $submissionSet['archiveDate'] = NULL;
-            $theNote = construct_note($submissionSet);
+            $theNote = construct_next_note($submissionSet);
             $status = add_note($theNote);
-            echo("\n\n");
-            echo("LETS LOOK FOR A SPACE");
-            //print_r($theNote);
-            //echo("\n\n");
-
             echo("note addition status: ". (boolean)$status."<br>");
         }
 
@@ -185,18 +180,17 @@ $username=$TLRrow['username'];
                     </p>
 
                 <?php
-                print_r($_POST);
+                //print_r($_POST);
                 ?>
-
-                <br><br>
                 <?php
                 handleNoteSubmission();
                 addNoteForm($theHorse,$username);
                 ?>
 
                 <form method="GET" action = "horseprofile.php">
-                <input type="submit" name="horseID" value = <?php echo $horseID; ?>>Return to horse profile</input>
-                        </form>
+                <input type="hidden" name="horseID" value="<?php echo $horseID; ?>"></input>
+                <input type="submit" name="return" value="return">Return to horse profile</input>
+                </form>
 
                 </div>
             </div>

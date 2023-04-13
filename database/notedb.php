@@ -36,9 +36,8 @@ function get_next_note_id() {
 * returns NULL if not all parameters are present.
 */
 function construct_note($inputRow){
-$ID = get_next_note_id();
 $theNote = new Note(
-    $ID,
+    $inputRow['noteID'],
     $inputRow['horseID'],
     $inputRow['noteDate'],
     $inputRow['noteTimestamp'],
@@ -49,6 +48,22 @@ $theNote = new Note(
 
 return $theNote;
 }
+
+
+function construct_next_note($inputRow){
+    $ID = get_next_note_id();
+    $theNote = new Note(
+        $ID,
+        $inputRow['horseID'],
+        $inputRow['noteDate'],
+        $inputRow['noteTimestamp'],
+        $inputRow['note'],
+        $inputRow['username'],
+        $inputRow['archive'],
+        $inputRow['archiveDate']);
+    
+    return $theNote;
+    }
 
 
 /*construct_note_now allows us to seemlessly construct a note without having to collect the time in other pages.
@@ -110,7 +125,7 @@ function add_note($note){
             $note->get_archive() . '","' .
             $note->get_archiveDate() . '");';
 
-        echo($query);
+        //echo($query);
             
         mysqli_query($con,$query);									        
             
@@ -138,7 +153,8 @@ function edit_note($noteText, $Note){
 
     //Create a database connection and update the existing note.
     $con=connect();
-    $query = "UPDATE notesdb SET note='" . $noteText . " WHERE noteID= " . $Note->get_noteID() . "';";
+    $query = "UPDATE notesdb SET note='" . $noteText . "' WHERE noteID= '" . $Note->get_noteID() . "';";
+    //echo($query);
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
