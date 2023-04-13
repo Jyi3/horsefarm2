@@ -337,7 +337,11 @@
             </div>
             
             <div class="notes-container">
-                <h2 style="text-align: center;">Notes<input type="submit" name="add_note" value="Add Note" class="archive-form-button" /></h2>
+                <h2 style="text-align: center;">Notes
+                <form method="POST" action = "noteAddForm.php">
+                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>"> 
+                <input type="submit" name="add_note" value="Add Note" class="archive-form-button" /></form></h2>
+                    
                 <?php if (mysqli_num_rows($result2) == 0): ?>
                     <p style="text-align: center;">No notes available for <?php echo $horseName; ?></p>
                 <?php else: ?>

@@ -99,20 +99,27 @@ function add_note($note){
     //if the query is null, this means that the horse we want to add a note under doesn't exist.
     //this means that there does exist such a horse.
     if($result != null){
-    //go ahead and add the note to the database.
-    mysqli_query($con,'INSERT INTO notesdb VALUES("' .
-        $note->get_horseID() . '","' .
-        $note->get_noteID() . '","' .
-        $note->get_noteDate() . '","' .
-        $note->get_noteTimestamp() . '","' .
-        $note->get_note() . '","' .
-        $note->get_username() . '","' .
-        $note->get_archive() . '","' .
-        $note->get_archiveDate() . '");');									        
-        
-        //Close the connection and return true.
-        mysqli_close($con);
-        return true;
+        //go ahead and add the note to the database.
+        $query='INSERT INTO notesdb VALUES("' .
+            $note->get_horseID() . '","' .
+            $note->get_noteID() . '","' .
+            $note->get_noteDate() . '","' .
+            $note->get_noteTimestamp() . '","' .
+            $note->get_note() . '","' .
+            $note->get_username() . '","' .
+            $note->get_archive() . '","' .
+            $note->get_archiveDate() . '");';
+
+        echo($query);
+            
+        mysqli_query($con,$query);									        
+            
+            //Close the connection and return true.
+            //echo("THIS HAPPENED.\n");
+            //print_r($note);
+            //echo("\n\n\n");
+            return true;
+            
     }
     mysqli_close($con);
 return false;
@@ -171,5 +178,43 @@ function retrieve_horse_notes($horseID){
     return $notes;
 }
 
+function get_num_horse_notes($horseID){
+    $con=connect();
+    $query = "SELECT COUNT(*) as num_notes FROM notesdb WHERE archive IS NULL OR archive=0";    $result = mysqli_query($con,$query);
+    $result = mysqli_query($con,$query);
+
+    if ($result == null || mysqli_num_rows($result) == 0) {
+        mysqli_close($con);
+        return 0;
+    }
+
+    //Otherwise, extract the count from the first (and only) row of the result set and return it.
+    $row = mysqli_fetch_assoc($result);
+    $count = $row['num_notes'];
+
+    //Close the connection and return the count.
+    mysqli_close($con);
+    return $count;
+    
+}
+
+
+function retrieve_note_by_id($noteID){
+$con=connect();
+$query = "SELECT * FROM notesdb WHERE noteID='" . $noteID . "';";
+$result = mysqli_query($con,$query);
+
+if($result == NULL || mysqli_num_rows($result)==0){
+    mysqli_close($con);
+
+    return false;
+}
+
+else{
+    $result_row = mysqli_fetch_assoc($result);
+    $theNote = construct_note($result_row);
+    return $theNote;
+}
+}
 
 ?>

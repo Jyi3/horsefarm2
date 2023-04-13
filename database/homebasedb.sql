@@ -98,11 +98,12 @@ CREATE TABLE notesDB (
   noteTimestamp timestamp,
   note text,
   username varchar(100) NOT NULL,
+  archive boolean,
+  archiveDate text,
   primary key (horseID, noteDate, noteTimestamp, note(255), username),
   FOREIGN KEY (horseID) REFERENCES horseDB(horseID),
-  FOREIGN KEY (username) REFERENCES personDB(username),
-  archive boolean,
-  archiveDate text
+  FOREIGN KEY (username) REFERENCES personDB(username)
+
 );
 
 INSERT INTO horseDB (horseID, horseName, color, breed, pastureNum, colorRank, archive, archiveDate)

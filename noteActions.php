@@ -6,13 +6,13 @@ include_once('database/horsedb.php');
 
 
 //global variables here.
-if( isset($_POST["formAction"])){
-$formAction = $_POST["formAction"]; 
+if( isset($_GET["formAction"])){
+$formAction = $_GET["formAction"]; 
 }
 else{$formAction=NULL;}
 
 //HARDCODE THE FORMACTION FOR TESTING.
-$formAction="addNote";
+//$formAction="addNote";
 //THIS CAN NOT BE NULL
 
 
@@ -25,6 +25,10 @@ if(isset($_POST["selectedNote"])){
 $selectedNote = $_POST["selectedNote"];
 }
 else{$selectedNote=NULL;}
+
+if(isset ($_POST["horseID"])){
+$horseID = $_POST["horseID"];
+}
 
 ?>
 
@@ -47,7 +51,6 @@ if($formAction=="searchNote"){
     if($selectedHorse==NULL){return false;}
     else{
         $theHorse = retrieve_horse_by_name($selectedHorse);
-        $allNotes = 
 
     }
 }
@@ -284,7 +287,8 @@ return NULL;
                         print_r($theNote);
                         echo("note addition status: ". (boolean)$status."<br>");
                     }
-                    processForm($formAction,$selectedHorse,$selectedNote);
+                    echo($horseID);
+                    //processForm($formAction,$selectedHorse,$selectedNote);
                     
                     ?>
 
