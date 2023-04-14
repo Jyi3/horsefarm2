@@ -28,6 +28,9 @@
     $result = mysqli_query($conn, $sql);
     $result2 = mysqli_query($conn, $notes);
     $trainerListResult = mysqli_query($conn, $trainerListSql);
+    //this is the array used in assignBehavior
+     $sql = "SELECT title FROM behaviordb";
+	  $array = mysqli_query($conn, $sql);
 
     $row = mysqli_fetch_assoc($result);
     $horseName = $row["horseName"];
@@ -79,6 +82,30 @@
             }
             mysqli_close($conn);
         }
+        elseif (isset($_POST["AssignBehavior"])) {  
+        // create new Horse object
+        
+
+                    $conn = connect();
+                    // conect and assign behavior
+                    $sql = "SELECT * FROM horsetobehaviordb WHERE horseID='$hp_horseID' AND title='{$_POST['title']}'";
+                    $action_success = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($action_success) > 0) {
+                        echo "DUPLICATE FOUND";
+                        header("Location: index.php");
+                    } 
+                    $sql = "INSERT INTO horsetobehaviordb (horseID, title) VALUES ('$hp_horseID', '" . $_POST["title"] . "')";
+                    
+						  $action_success = mysqli_query($conn, $sql);
+						  
+                    // execute SQL query
+                    if (!$action_success) {
+                        echo "<p>Error assigning behavior: " . mysqli_error($conn) . "</p>";
+      				  }
+
+                    // close database connection
+                    mysqli_close($conn);
+    }
         
         echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?horseID=$hp_horseID';</script>";
         exit();
@@ -304,7 +331,27 @@
                 </div>
                 
             </div>
-            
+            <div class="notes-container">
+					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+						<div class="form-group">
+							<label for="Title">Title:</label>
+								<select name="title" class="form-control">
+  								<?php
+  								  
+    							  while ($row = mysqli_fetch_assoc($array)) {
+      							$selected = "";
+     							   if (isset($_POST['colorRank']) && $_POST['colorRank'] == $row['title']) {
+        								$selected = 'selected';
+      							}
+      							echo "<option value=\"" . $row['title'] . "\" $selected>" . $row['title'] . "</option>";
+    								}
+  								?>
+						</select>
+						</div>
+						<input type="hidden" name="username" value="<?php echo $hp_horseID; ?>" />
+						<input type="submit" name="AssignBehavior" value="Assign Behavior" class="btn btn-primary">
+					</form>
+				</div>
             <!-- Add the new Trainer List form container -->
             <div class="trainer-list-container">
                 <h2 style="text-align: left;">Trainer List</h2>
