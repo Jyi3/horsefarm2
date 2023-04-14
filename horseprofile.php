@@ -294,7 +294,27 @@
                             <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
                         </form>
                     </div>
-
+						  <div class="notes-container">
+					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+						<div class="form-group">
+							<label for="Title">Title:</label>
+								<select name="title" class="form-control">
+  								<?php
+  								  
+    							  while ($row = mysqli_fetch_assoc($array)) {
+      							$selected = "";
+     							   if (isset($_POST['colorRank']) && $_POST['colorRank'] == $row['title']) {
+        								$selected = 'selected';
+      							}
+      							echo "<option value=\"" . $row['title'] . "\" $selected>" . $row['title'] . "</option>";
+    								}
+  								?>
+						</select>
+						</div>
+						<input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>" />
+						<input type="submit" name="AssignBehavior" value="Assign Behavior" class="btn btn-primary">
+					</form>
+				</div>
 
                     <?php
                     if ($archive == NULL || $archive == 0) 
@@ -331,27 +351,7 @@
                 </div>
                 
             </div>
-            <div class="notes-container">
-					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-						<div class="form-group">
-							<label for="Title">Title:</label>
-								<select name="title" class="form-control">
-  								<?php
-  								  
-    							  while ($row = mysqli_fetch_assoc($array)) {
-      							$selected = "";
-     							   if (isset($_POST['colorRank']) && $_POST['colorRank'] == $row['title']) {
-        								$selected = 'selected';
-      							}
-      							echo "<option value=\"" . $row['title'] . "\" $selected>" . $row['title'] . "</option>";
-    								}
-  								?>
-						</select>
-						</div>
-						<input type="hidden" name="username" value="<?php echo $hp_horseID; ?>" />
-						<input type="submit" name="AssignBehavior" value="Assign Behavior" class="btn btn-primary">
-					</form>
-				</div>
+            
             <!-- Add the new Trainer List form container -->
             <div class="trainer-list-container">
                 <h2 style="text-align: left;">Trainer List</h2>
