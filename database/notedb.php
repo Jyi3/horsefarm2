@@ -141,6 +141,40 @@ return false;
 }
 
 
+function archive_note($Note){
+    if (!$Note instanceof Note) {
+        die("Errors: archive_note type mismatch");
+    }
+
+    //Create a database connection and update the existing note.
+    $con=connect();
+    $date = date("Y-m-d");
+    $query = "UPDATE notesdb SET archive='1', archiveDate='" . $date ."' WHERE noteID= '" . $Note->get_noteID() . "';";
+    //echo($query);
+    $result = mysqli_query($con,$query);
+    
+    //Close the connection and return true.
+    mysqli_close($con);
+    return true;
+}
+
+function dearchive_note($Note){
+    if (!$Note instanceof Note) {
+        die("Errors: dearchive_note type mismatch");
+    }
+
+    //Create a database connection and update the existing note.
+    $con=connect();
+    $date = date("Y-m-d");
+    $query = "UPDATE notesdb SET archive='0', archiveDate='" . $date ."' WHERE noteID= '" . $Note->get_noteID() . "';";
+    //echo($query);
+    $result = mysqli_query($con,$query);
+    
+    //Close the connection and return true.
+    mysqli_close($con);
+    return true;
+}
+
 /* edit_note($noteText, $Note) is a function that allows you to edit a given note.
 *  $noteText is the text that will inside of the note.
 *  $Note is the actual Note object that is being edited.
@@ -220,17 +254,17 @@ $con=connect();
 $query = "SELECT * FROM notesdb WHERE noteID='" . $noteID . "';";
 $result = mysqli_query($con,$query);
 
-if($result == NULL || mysqli_num_rows($result)==0){
-    mysqli_close($con);
+    if($result == NULL || mysqli_num_rows($result)==0){
+        mysqli_close($con);
 
-    return false;
-}
+        return false;
+    }
 
-else{
-    $result_row = mysqli_fetch_assoc($result);
-    $theNote = construct_note($result_row);
-    return $theNote;
-}
+    else{
+        $result_row = mysqli_fetch_assoc($result);
+        $theNote = construct_note($result_row);
+        return $theNote;
+    }
 }
 
 ?>

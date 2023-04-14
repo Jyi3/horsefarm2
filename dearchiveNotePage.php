@@ -18,11 +18,13 @@ $theNote;
 $theHorseNotes;
 $numNotes;
 $username;
+$status=0;
 
 if(isset($_POST['horseID'])){$horseID=$_POST['horseID'];}
 if(isset($_POST['noteID'])){
     $noteID=$_POST['noteID'];
     $theNote = retrieve_note_by_id($noteID);
+    $archive = $theNote->get_archive();
 }
 if(isset($_POST['username'])){$username=$_POST['username'];}
 if(isset($_POST['editText'])){$editText=$_POST['editText'];}
@@ -56,7 +58,7 @@ $username=$TLRrow['username'];
 
     //auxillary note related funcitons here.
 
-    function editNoteForm($theHorse,$username,$noteText,$noteID){
+    function archiveNoteForm($theHorse,$username,$noteText,$noteID){
         echo("<p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
         echo("</br>");
         //echo("<p>YEEEEEEEEEEEEEEHAWWWWWWWWW</p>");
@@ -64,30 +66,28 @@ $username=$TLRrow['username'];
         if(isset($_POST['editText'])){$noteText=$_POST['editText'];}
 
         echo("
-    <form action='/horse/horsefarm2/editNotePage.php' method='POST'>
+    <form action='/horse/horsefarm2/dearchiveNotePage.php' method='POST'>
     <label for='horseID'>Horse ID:</label>
     <input type='text' id='horseID' name='horseID' value='" . $horseID . "' required readonly><br>
     <label for='note'>Note:</label><br>
-    <textarea id='note' name='editText' rows='4' cols='50' value='test' required>$noteText</textarea><br>
+    <textarea id='note' name='editText' rows='4' cols='50' value='test' required readonly>$noteText</textarea><br>
     <label for='username'>Username:</label>
     <input type='text' id='username' name='username' value='". $username ."' required readonly><br>
-    <input type='submit' value='Edit Note'>
+    <input type='submit' value='De-Archive Note'>
     <input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
     <input type='hidden' name='noteTimestamp' value='" . time() . "'>
     <input type='hidden' name='horseID' value='". $horseID . "'>
     <input type='hidden' name='noteID' value='". $noteID . "'>
-    <input type='hidden' name='addNoteSubmit' value='1'>
+    <input type='hidden' name='archiveNoteSubmit' value='1'>
     </form>
     </body>"
     );
 }
 
-    function handleNoteSubmission($editText,$theNote){
-        if(isset($_POST['addNoteSubmit'])){
-            $status = edit_note($editText,$theNote);
-            echo("note edit status: ". (boolean)$status."<br>");
+    function handleNoteSubmission($theNote){
+        if(isset($_POST['archiveNoteSubmit'])){
+            return dearchive_note($theNote);
         }
-
     }
 
 ?>
@@ -178,9 +178,19 @@ $username=$TLRrow['username'];
                 <br><br>
                 <?php
                     if(isset($_POST['editText'])){
-                    handleNoteSubmission($editText,$theNote);
+                    $status = handleNoteSubmission($theNote);
                     }
-                    editNoteForm($theHorse,$username,$noteText,$noteID);
+                    if($_SESSION['permissions']>2){
+                    archiveNoteForm($theHorse,$username,$noteText,$noteID);
+                    }
+                    else{echo("You do not have the necessary permissions to remove a training note. Please contact the head trainer.");}
+                
+                    if(isset($status)){
+                        if($status==1){echo("This note has been <b>de-archived</b>.");}
+                        if($status==0){echo("This note is <b>not</b> yet <b>de-archived</b>.");}
+
+                    }
+
                 ?>
 
                 <form method="GET" action = "horseprofile.php">
