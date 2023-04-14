@@ -405,4 +405,7 @@ function get_all_red_behaviors(){
     }
 }
 
+//Will add a function in addBehaviors.php  that takes in a horseID, and depending on their rank automatically add the right behaviors of the same color rank and below
+
+
 ?>
