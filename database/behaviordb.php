@@ -313,7 +313,7 @@ function get_all_green_behaviors(){
  * 
  * The function calls get_all_green_behaviors to add them to the array thats returned.
  */
-function get_all_green_behaviors(){
+function get_all_yellow_behaviors(){
     //Creates an array (which in php is kinda like a python dictionary) which will hold the behaviors title as its key, and that behaviors color rank as its value
     $behaviors = array();
     $behaviors = get_all_green_behaviors();
