@@ -82,7 +82,7 @@
             }
             mysqli_close($conn);
         }
-        elseif (isset($_POST["AssignBehavior"])) {  
+        elseif (isset($_POST["assign"])) {  
         // create new Horse object
         
 
@@ -295,7 +295,7 @@
                         </form>
                     </div>
 						  <div class="notes-container">
-					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+					<form method="POST" class="assign-form" style="display: flex; align-items: center; margin-left: 10px;">
 						<div class="form-group">
 							<label for="Title">Title:</label>
 								<select name="title" class="form-control">
