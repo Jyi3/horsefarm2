@@ -58,8 +58,14 @@
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $hp_horseID = $_POST["horseID"];
-        $username = $_POST["username"];
+
+        if(isset($_POST["horseID"])) {
+            $hp_horseID = $_POST["horseID"];
+        }
+        
+        if(isset($_POST["username"])) {
+            $username = $_POST["username"];
+        }        
 
         include_once('database/dbinfo.php');
 
@@ -82,30 +88,29 @@
             }
             mysqli_close($conn);
         }
-        elseif (isset($_POST["assign"])) {  
-        // create new Horse object
-        
+        elseif (isset($_POST["assign-form"])) 
+        {  
+            // create new Horse object
+            $conn = connect();
+            $behavior = $_POST['title'];
 
-                    $conn = connect();
-                    // conect and assign behavior
-                    $sql = "SELECT * FROM horsetobehaviordb WHERE horseID='$hp_horseID' AND title='{$_POST['title']}'";
-                    $action_success = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($action_success) > 0) {
-                        echo "DUPLICATE FOUND";
-                        header("Location: index.php");
-                    } 
-                    $sql = "INSERT INTO horsetobehaviordb (horseID, title) VALUES ('$hp_horseID', '" . $_POST["title"] . "')";
-                    
-						  $action_success = mysqli_query($conn, $sql);
-						  
-                    // execute SQL query
-                    if (!$action_success) {
-                        echo "<p>Error assigning behavior: " . mysqli_error($conn) . "</p>";
-      				  }
+            // conect and assign behavior
+            $sql = "SELECT * FROM horsetobehaviordb WHERE horseID='$hp_horseID' AND title='$behavior'";
+            $action_success = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($action_success) > 0) {
+                echo "DUPLICATE FOUND";
+                header("Location: index.php");
+            } 
+            $sql = "INSERT INTO `horsetobehaviordb` (`horseID`, `title`) VALUES ('$hp_horseID', '$behavior')";
 
-                    // close database connection
-                    mysqli_close($conn);
-    }
+            $action_success = mysqli_query($conn, $sql);
+            if (!$action_success) {
+                echo "<p>Error assigning behavior: " . mysqli_error($conn) . "</p>";
+            }
+
+            // close database connection
+            mysqli_close($conn);
+        }
         
         echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?horseID=$hp_horseID';</script>";
         exit();
