@@ -7,6 +7,8 @@
     include('domain/person.php');
     include('database/person.php');
 
+//Will add a function here that takes in a horseID, and depending on their rank automatically add the right behaviors of the same color rank and below
+
 /*
 Function name: assignBehavior
 Description: Assigns abehvaior to a horse. It does this in the horsetobehaviordb. 
