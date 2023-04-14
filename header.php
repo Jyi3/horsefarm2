@@ -71,7 +71,7 @@
                         <a class="dropdown-item" href="search.php">Search</a>
                     </div>
                 </li>
-                <?php if (isset($_SESSION['permissions']) && isset($_SESSION['permissions']) >= 3) { ?>
+                <?php if (isset($_SESSION['permissions']) && $_SESSION['permissions'] >= 3) { ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Horse Admin
@@ -93,14 +93,14 @@
                         </div>
                     </li>
                 <?php } ?>
-
-
             </ul>
+
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item ml-auto">
                     <a class="nav-link" href="logout.php">Logout</a>
                 </li>
             </ul>
+
 
         </div>
 
