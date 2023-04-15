@@ -92,17 +92,6 @@
                 margin: 0 auto;
             }
 
-            form {
-                max-width: 500px;
-                width: 90%;
-                padding: 20px;
-                background-color: #ffffff;
-                border: 1px solid #cccccc;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                margin: 0 auto;
-            }
-
             label {
                 display: inline-block;
                 margin-bottom: 5px;
@@ -175,7 +164,7 @@
             <div id="content-inner">
                 <h1>Edit Horse</h1>
                 <br>
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;">
                     <div class="form-group">
                         <label for="horse">Select Horse:</label>
                         <select name="horseID" class="form-control" onchange="this.form.submit()">
@@ -192,7 +181,8 @@
                 </form>
                 <?php if (isset($_POST["horseID"]) && $_POST["horseID"] != "") {
                     $horse = retrieve_horse($_POST["horseID"]); ?>
-                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;">
+
                         <div class="form-group">
                             <label for="horseName">Horse Name:</label>
                             <input type="text" name="horseName" class="form-control" value="<?php echo $horse->get_horseName(); ?>">

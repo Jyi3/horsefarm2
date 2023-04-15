@@ -63,17 +63,6 @@
                 margin: 0 auto;
             }
 
-            form {
-                max-width: 500px;
-                width: 90%;
-                padding: 20px;
-                background-color: #ffffff;
-                border: 1px solid #cccccc;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                margin: 0 auto; /* add this line to center the content horizontally */
-            }
-
             label {
                 display: inline-block;
                 margin-bottom: 5px;
@@ -172,7 +161,7 @@
         <div id="content-inner">
             <h1>Create User</h1>
             <br>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;">
                 <div class="form-group">
                     <label for="firstName">First Name:</label>
                     <input type="text" name="firstName" class="form-control" value="<?php echo isset($_POST["firstName"]) ? htmlspecialchars($_POST["firstName"]) : ''; ?>">

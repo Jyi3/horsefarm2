@@ -26,7 +26,6 @@
                 display: flex;
                 flex-direction: column;
                 min-height: 500px;
-
             }
             #appLink:visited {
                 color: gray; 
