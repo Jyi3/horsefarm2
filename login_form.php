@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
             }
 
             if (password_verify($password, $hashed_password)) {
-                $_SESSION['user_id'] = $username;
+                $_SESSION['username'] = $username;
 
                 $permissions = 1; // Default permissions for Tier 1 (Recruit)
                 if ($userType == 'Trainer') {

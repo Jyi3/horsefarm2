@@ -7,10 +7,10 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the search parameters from the form
     $type = $_POST['type'];
-    $search1 = $_POST['search1'];
-    $search2 = $_POST['search2'];
-    $search3 = $_POST['search3'];
-    $search4 = $_POST['search4'];
+    $search1 = isset($_POST['search1']) ? $_POST['search1'] : '';
+    $search2 = isset($_POST['search2']) ? $_POST['search2'] : '';
+    $search3 = isset($_POST['search3']) ? $_POST['search3'] : '';
+    $search4 = isset($_POST['search4']) ? $_POST['search4'] : '';
     $search5 = isset($_POST['search5']) ? $_POST['search5'] : [];
 
     //Include MySQL connection file, horse database functions, and horse class.
@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $conditions[] = "colorRank IN ('" . implode("','", $search5) . "')";
             }
         }
+        $conditions[] = "(archive = 0 OR archive IS NULL)"; // Add archive condition for horse search
     }
     elseif ($type == "persondb ") 
     {
@@ -81,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     if (!empty($conditions)) {
-        $sql .= " WHERE " . implode(" AND ", $conditions);
+        $sql .= " WHERE (" . implode(" AND ", $conditions) . ")";
     }
 
     // Execute the query
@@ -90,15 +91,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Close the database connection
     $conn->close();
 }
+
 ?>
 
 <html>
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+
         <title>
             Search
         </title>
-        <link rel="stylesheet" href="styles.css" type="text/css" />
+    <link rel="stylesheet" href="search-style.css">
         <style>
             
             body {
@@ -107,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 color: #333;
                 margin: 0;
             }
+            
             #container {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -129,19 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 align-items: center;
                 justify-content: center;
                 text-align: center;
-            }
-
-            form {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                align-items: center;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                background-color: #fff;
             }
 
             label {
@@ -176,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 margin-right: 10px;
             }
 
-            button[type="submit"] {
+            .form-submit {
                 flex-basis: 100%;
                 margin-top: 10px;
                 padding: 10px;
@@ -192,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                width: 25%;
+                width: 30%;
                 max-width: 1400px;
                 margin: 0 auto;
                 padding: 20px;
@@ -206,7 +198,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 box-shadow: 0 0 5px #ccc;
                 overflow: auto;
                 z-index: 1;
-            }
+                transform: scale(0.8);
+                transform-origin: bottom right;
+                }
+
 
             #minimizeButton {
                 position: absolute;
@@ -276,9 +271,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?PHP include('header.php'); ?>
             
             <div id="content-search">
-                <button id="minimizeButton" onclick="toggleSearch()">Minimize</button>
+                <button id="minimizeButton" onclick="toggleSearch()" class="form-submit">Minimize</button>
 
-                <form action="search.php" method="post">
+                <form action="search.php" method="post" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #fff;">
                 <label for="type">Type:</label>
                 <select id="type" name="type" onchange="updateSearchCriteria()">
                     <option value="horse">Horse</option>
@@ -308,7 +303,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="none-checkbox">All</label>
                 </div2>
             
-                <button type="submit">Search</button>
+                <button type="submit" class="form-submit" class="form-submit">Search</button>
                 </form>
 
                 
