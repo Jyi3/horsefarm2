@@ -18,6 +18,26 @@
        
         echo("<form method='POST' action='/horseActions.php?formAction=editHorse'>"); //////////// Do this
     }
+    else if($formAction == "editNote" || $formAction=="removeNote" || $formAction=="addNote"){
+
+        echo("<p><strong>Select the horse you would like to view notes from.</strong></p>");
+        echo("<p>Please use the dropdown menu below to select the horse you want to edit.</p>");
+        echo("<p>When finished, hit <b>Select Name</b> at the bottom of this page.</p>");
+        echo("<p>(<span style='font-size:x-small;color:FF0000'>*</span> denotes required information).</p>");
+
+
+        if($formAction=="addNote"){        
+            echo("<form method='POST' action='/horse/horsefarm2/noteActions.php?formAction=addNote'>");
+        }
+
+        if($formAction=="editNote"){        
+            echo("<form method='POST' action='/horse/horsefarm2/noteActions.php?formAction=editNote'>");
+        }
+
+        if($formAction=="removeNote"){        
+            echo("<form method='POST' action='/horse/horsefarm2/noteActions.php?formAction=removeNote'>");
+        }
+    }
     else {
 
         echo("<p><strong>Select Horse to Remove</strong></p>");
@@ -39,7 +59,7 @@
 
         //Create an array of all of the existing behavior titles for the user to select from.
         $names = getall_horse_names();
-
+        var_dump($names);
         foreach ($names as $n) {
             echo("<option value='$n' >$n</option>");
         }

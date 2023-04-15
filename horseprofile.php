@@ -20,7 +20,7 @@
         WHERE p.archive != 1";
 
     $sql = "SELECT * FROM horsedb WHERE horseID = '$hp_horseID'";
-    $notes = "SELECT n.horseID, t.firstName, t.lastName, n.note, n.noteDate, t.username
+    $notes = "SELECT n.horseID, n.noteID, t.firstName, t.lastName, n.note, n.noteDate, t.username, n.archive, n.archiveDate
             FROM notesdb n
             INNER JOIN horsedb h ON n.horseID = h.horseID 
             INNER JOIN persondb t ON n.username = t.username
@@ -337,7 +337,11 @@
             </div>
             
             <div class="notes-container">
-                <h2 style="text-align: center;">Notes<input type="submit" name="add_note" value="Add Note" class="archive-form-button" /></h2>
+                <h2 style="text-align: center;">Notes
+                <form method="POST" action = "addNotePage.php">
+                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>"> 
+                <input type="submit" name="add_note" value="Add Note" class="archive-form-button" /></form></h2>
+                    
                 <?php if (mysqli_num_rows($result2) == 0): ?>
                     <p style="text-align: center;">No notes available for <?php echo $horseName; ?></p>
                 <?php else: ?>
@@ -352,9 +356,54 @@
                     <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result2)): ?>
                             <tr>
+                                <?php
+                                //makes it such that archived notes no longer appear. For non head-trainer accounts.
+                                 if($row['archive']==1 && $_SESSION['permissions']<2){continue;}
+                                 else{}
+                                 ?>
                                 <td class="person-name" ><a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a></td>
                                 <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
                                 <td class="note-date"><?php echo $row['noteDate']; ?></td>
+                                <td>
+                                    <form method ="POST" action="editNotePage.php">
+                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>"></input>
+                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>"></input>
+                                        <input type="submit" name="editNote" value="Edit"></input>
+                                    </form>
+                                </td>
+                                <?php if($_SESSION['permissions']>2){
+                                if($row['archive']!=1){echo("
+                                <td>
+                                <form method ='POST' action='archiveNotePage.php'>
+                                    <input type='hidden' name='horseID' value='" .$hp_horseID ."'></input>
+                                    <input type='hidden' name='noteID' value='" . $row["noteID"] . "'></input>
+                                    <input type='submit' name='removeNote' value='Remove'></input>
+                                </form>
+                                </td>
+                            ");}
+                                else{
+                                    echo("
+                                    <td>
+                                    <form method ='POST' action='dearchiveNotePage.php'>
+                                        <input type='hidden' name='horseID' value='" .$hp_horseID ."'></input>
+                                        <input type='hidden' name='noteID' value='" . $row["noteID"] . "'></input>
+                                        <input type='submit' name='unremoveNote' value='De-Archive'></input>
+                                    </form>
+                                    </td>
+                                ");
+                                    
+                                }
+                                if($row['archive']==1 && $_SESSION['permissions']>2){
+                                    echo("
+                                    <td class='note-cell'>Archived</td>
+                                    <td class='note-cell'> ");
+                                    echo($row['archiveDate']);
+                                    echo("</td>");
+                                }
+
+                                }
+                                ?>
+
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

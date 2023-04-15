@@ -11,7 +11,7 @@ class Horse {
     private $breed; //string - can be null if not known
     private $pastureNum; //int
     private $colorRank; //string
-    private $archive; //string
+    private $archive; //boolean
     private $archiveDate; //string
     
     function __construct( $horseID, $horseName, $color, $breed, $pastureNum, $colorRank, $archive,$archiveDate) {
