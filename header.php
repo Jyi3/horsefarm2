@@ -134,10 +134,21 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="viewHorses.php">View All Horses</a>
                     <a class="dropdown-item" href="viewTrainers.php">View All Trainers</a>
+                    <a class="dropdown-item" href="createNotes.php">Create Notes</a>
                     <a class="dropdown-item" href="search.php">Search</a>
                     </div>
                 </li>
                 <?php if (isset($_SESSION['permissions']) && $_SESSION['permissions'] >= 3) { ?>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="header-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Behavior Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="createHorse.php">Create Behavior</a>
+                        <a class="dropdown-item" href="archiveHorses.php">Edit Behavior</a>
+                        <a class="dropdown-item" href="editHorse.php">Remove Horses</a>
+                    </div>
+                    </li>
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="header-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Horse Admin

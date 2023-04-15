@@ -3,6 +3,9 @@
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Note.php');
 
+function addNoteForm($theHorse, $username)
+{
+}
 /*get_next_note_id() returns the next available noteID.
 *
 *
