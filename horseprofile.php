@@ -381,9 +381,8 @@
                 <?php endif; ?>
             </div>
             
-            <div class="notes-container">
                 <h2 style="text-align: center;">Notes
-                    <form method="POST" action="addNotePage.php">
+                    <form method="POST" class="archive-form" action="addNotePage.php">
                         <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
                         <input type="submit" name="add_note" value="Add Note" class="archive-form-button" />
                     </form>
@@ -413,35 +412,30 @@
                                         <a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a>
                                     </td>
                                     <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
-                                    <td class="note-date">
-                                        <a href="editNotePage.php?horseID=<?php echo $hp_horseID; ?>&noteID=<?php echo $row['noteID']; ?>">
-                                            <?php echo $row['noteDate']; ?>
-                                        </a>
+                                    <td>
+                                        <form method="POST" class="archive-form" action="editNotePage.php">
+                                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                            <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                            <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
+                                        </form>
                                     </td>
                                     <?php if ($row['archive'] == 1): ?>
                                         <td class="note-cell">Archived</td>
                                         <td class="note-cell"><?php echo $row['archiveDate']; ?></td>
                                     <?php endif; ?>
-                                    <td>
-                                        <form method="POST" action="editNotePage.php">
-                                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                            <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                            <input type="submit" name="editNote" value="Edit">
-                                        </form>
-                                    </td>
-                                    <?php if ($_SESSION['permissions'] > 2): ?>
+                                    <?php if ($_SESSION['permissions'] == 3): ?>
                                         <td>
                                             <?php if ($row['archive'] != 1): ?>
-                                                <form method="POST" action="archiveNotePage.php">
+                                                <form class="archive-form" method="POST" action="archiveNotePage.php">
                                                     <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
                                                     <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
                                                     <input type="submit" name="removeNote" value="Archive">
                                                 </form>
                                             <?php else: ?>
-                                                <form method="POST" action="dearchiveNotePage.php">
+                                                <form class="archive-form" method="POST" action="dearchiveNotePage.php">
                                                     <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
                                                     <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                                    <input type="submit" name="unremoveNote" value="De-Archive">
+                                                    <input type="submit" name="unremoveNote" value="Activate">
                                                 </form>
                                             <?php endif; ?>
                                         </td>
@@ -451,81 +445,74 @@
                         </tbody>
                     </table>
                 <?php endif; ?>
-            </div>
+                <br>
 
-
-            <div class="notes-container">
-                <h2 style="text-align: center;">Archived Notes
-                    <form method="POST" action="addNotePage.php">
-                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                        <input type="submit" name="add_note" value="Add Note" class="archive-form-button" />
-                    </form>
-                </h2>
-
-                <?php if (mysqli_num_rows($archiveNotes) == 0): ?>
-                    <p style="text-align: center;">No archived notes available for <?php echo $horseName; ?></p>
-                <?php else: ?>
-                    <table class="notes-table">
-                        <thead>
-                            <tr>
-                                <th class="person-name">Trainer Name</th>
-                                <th>Note</th>
-                                <th class="note-date">Note Date</th>
-                                <th class="note-date">Archive</th>
-                                <th class="note-date">Archived Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($archiveNotes)): ?>
+                <?php if ($_SESSION['permissions'] == 3): ?>
+                   
+                    <?php if (mysqli_num_rows($archiveNotes) == 0): ?>
+                        <p style="text-align: center;">No archived notes available for <?php echo $horseName; ?></p>
+                    <?php else: ?>
+                        <table class="notes-table">
+                            <thead>
                                 <tr>
-                                    <?php
-                                    // Hides archived notes for non head-trainer accounts
-                                    if ($row['archive'] == 1 && $_SESSION['permissions'] < 2) {
-                                        continue;
-                                    }
-                                    ?>
-                                    <td class="person-name">
-                                        <a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a>
-                                    </td>
-                                    <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
-                                    <td class="note-date"><?php echo $row['noteDate']; ?></td>
-                                    <?php if ($row['archive'] == 1): ?>
-                                        <td class="note-cell">Archived</td>
-                                        <td class="note-cell"><?php echo $row['archiveDate']; ?></td>
-                                    <?php endif; ?>
-                                    <td>
-                                        <form method="POST" action="editNotePage.php">
-                                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                            <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                            <input type="submit" name="editNote" value="Edit">
-                                        </form>
-                                    </td>
-                                    <?php if ($_SESSION['permissions'] > 2): ?>
-                                        <td>
-                                            <?php if ($row['archive'] != 1): ?>
-                                                <form method="POST" action="archiveNotePage.php">
-                                                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                                    <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                                    <input type="submit" name="removeNote" value="Archive">
-                                                </form>
-                                            <?php else: ?>
-                                                <form method="POST" action="dearchiveNotePage.php">
-                                                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                                    <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                                    <input type="submit" name="unremoveNote" value="De-Archive">
-                                                </form>
-                                            <?php endif; ?>
-                                        </td>
-                                    <?php endif; ?>
+                                    <th class="person-name">Trainer Name</th>
+                                    <th>Note</th>
+                                    <th class="note-date">Note Date</th>
+                                    <th class="note-date">Archive</th>
+                                    <th class="note-date">Archived Date</th>
                                 </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_assoc($archiveNotes)): ?>
+                                    <tr>
+                                        <?php
+                                        // Hides archived notes for non head-trainer accounts
+                                        if ($row['archive'] == 1 && $_SESSION['permissions'] < 2) {
+                                            continue;
+                                        }
+                                        ?>
+                                        <td class="person-name">
+                                            <a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a>
+                                        </td>
+                                        <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
+                                        <td>
+                                            <form class="archive-form" method="POST" action="editNotePage.php">
+                                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
+                                            </form>
+                                        </td>
+                                        <?php if ($row['archive'] == 1): ?>
+                                            <td class="note-cell">Archived</td>
+                                            <td class="note-cell"><?php echo $row['archiveDate']; ?></td>
+                                        <?php endif; ?>
+                                        <?php if ($_SESSION['permissions'] == 3): ?>
+                                            <td>
+                                                <?php if ($row['archive'] != 1): ?>
+                                                    <form class="archive-form" method="POST" action="archiveNotePage.php">
+                                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                        <input type="submit" name="removeNote" value="Archive">
+                                                    </form>
+                                                <?php else: ?>
+                                                    <form class="archive-form" method="POST" action="dearchiveNotePage.php">
+                                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                        <input type="submit" name="unremoveNote" value="Activate">
+                                                    </form>
+                                                <?php endif; ?>
+                                            </td>
+                                        <?php endif; ?>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                            <br>
+                        <?php endif; ?>
                 <?php endif; ?>
-            </div>
-
-
         </div>
+
+
         <?php include('footer.php'); ?>
     </div>
     
