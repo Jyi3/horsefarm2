@@ -118,6 +118,40 @@ $username=$TLRrow['username'];
                 margin: 0 auto;
             }
 
+                
+            .editNote-form input[type="submit"] {
+                background-color: #4b6c9e;
+                color: #fff;
+                border: none;
+                padding: 8px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+
+            .editNote-form input[type="submit"]:hover {
+                background-color: #fff;
+                color: #4b6c9e;
+                border: 2px solid #4b6c9e;
+            }
+            
+            .editNote-form-button {
+                background-color: #4b6c9e;
+                color: #fff;
+                border: none;
+                padding: 8px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+
+            .editNote-form-button:hover {
+                background-color: #fff;
+                color: #4b6c9e;
+                border: 2px solid #4b6c9e;
+            }
+
+
             @media (max-width: 768px) {
                 h1 {
                     font-size: 28px;
@@ -145,7 +179,9 @@ $username=$TLRrow['username'];
                     include_once('database/horsedb.php');
                     date_default_timezone_set('America/New_York');
 
-                    echo("<p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
+                    
+                    echo("<br><p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
+                    echo("<p>After you have updated your note with additional information, please select 'Edit Note'.<br>Your page will refresh and then return to the horse profile.</p>");
                     echo("</br>");
                     $horseID = $theHorse->get_horseID();
                     $horseName = $theHorse->get_horseName();
@@ -154,7 +190,7 @@ $username=$TLRrow['username'];
                     }
                     ?>
 
-                    <form action='editNotePage.php' method='POST'>
+                    <form class="editNote-form" action='editNotePage.php' method='POST'>
                         <label>Edit <?php echo $horseName ?>'s note:</label><br>
                         <input type='hidden' name='horseID' value='<?php echo $horseID; ?>'>
                         <textarea id='note' name='editText' rows='4' cols='50' value='test' required><?php echo $noteText; ?></textarea><br>
@@ -166,7 +202,7 @@ $username=$TLRrow['username'];
                         <input type='hidden' name='addNoteSubmit' value='1'>
                     </form>
                     <br>
-                    <form method="GET" action="horseprofile.php">
+                    <form class="editNote-form" method="GET" action="horseprofile.php">
                         <input type="hidden" name="horseID" value="<?php echo $horseID; ?>">
                         <input type="submit" name="return" value="Return to horse profile">
                     </form>
