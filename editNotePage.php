@@ -57,35 +57,11 @@ $username=$TLRrow['username'];
     //auxillary note related funcitons here.
 
     function editNoteForm($theHorse,$username,$noteText,$noteID){
-        echo("<p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
-        echo("</br>");
-        //echo("<p>YEEEEEEEEEEEEEEHAWWWWWWWWW</p>");
-        $horseID = $theHorse->get_horseID();
-        if(isset($_POST['editText'])){$noteText=$_POST['editText'];}
-
-        echo("
-    <form action='/horse/horsefarm2/editNotePage.php' method='POST'>
-    <label for='horseID'>Horse ID:</label>
-    <input type='text' id='horseID' name='horseID' value='" . $horseID . "' required readonly><br>
-    <label for='note'>Note:</label><br>
-    <textarea id='note' name='editText' rows='4' cols='50' value='test' required>$noteText</textarea><br>
-    <label for='username'>Username:</label>
-    <input type='text' id='username' name='username' value='". $username ."' required readonly><br>
-    <input type='submit' value='Edit Note'>
-    <input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
-    <input type='hidden' name='noteTimestamp' value='" . time() . "'>
-    <input type='hidden' name='horseID' value='". $horseID . "'>
-    <input type='hidden' name='noteID' value='". $noteID . "'>
-    <input type='hidden' name='addNoteSubmit' value='1'>
-    </form>
-    </body>"
-    );
-}
+    }
 
     function handleNoteSubmission($editText,$theNote){
         if(isset($_POST['addNoteSubmit'])){
             $status = edit_note($editText,$theNote);
-            echo("note edit status: ". (boolean)$status."<br>");
         }
 
     }
@@ -160,37 +136,46 @@ $username=$TLRrow['username'];
     </head>
     <body>
         <div id="container">
-            <?PHP include('header.php'); ?>
+            <?php include('header.php'); ?>
             <div id="content">
                 <div id="content-inner">
-                    <?PHP
+                    <?php
                     include_once('domain/Horse.php');
                     include_once('database/dbinfo.php');
                     include_once('database/horsedb.php');
                     date_default_timezone_set('America/New_York');
-                    ?>
-                    <h1>Welcome to the</br>Central Virginia Horse Rescue</br>Database</h1>
-                    <p>
-                        This is the CVHR Horse Training Management System, designed to help manage horses, trainers, and training activities at the Central Virginia Horse Rescue organization. Use the navigation menu to explore the system and manage records for horses, trainers, and training sessions. If you are not a registered user, recruit, trainer, or head admin, please visit the primary Central Virginia Horse Rescue website at <a href="https://centralvahorserescue.org/" target="_blank">https://centralvahorserescue.org/</a>.
-                    </p>
 
-
-                <br><br>
-                <?php
-                    if(isset($_POST['editText'])){
-                    handleNoteSubmission($editText,$theNote);
+                    echo("<p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
+                    echo("</br>");
+                    $horseID = $theHorse->get_horseID();
+                    $horseName = $theHorse->get_horseName();
+                    if(isset($_POST['editText'])) {
+                        $noteText = $_POST['editText'];
                     }
-                    editNoteForm($theHorse,$username,$noteText,$noteID);
-                ?>
+                    ?>
 
-                <form method="GET" action = "horseprofile.php">
-                <input type="hidden" name="horseID" value="<?php echo $horseID; ?>"></input>
-                <input type="submit" name="return" value="return">Return to horse profile</input>
-                </form>
+                    <form action='editNotePage.php' method='POST'>
+                        <label>Edit <?php echo $horseName ?>'s note:</label><br>
+                        <input type='hidden' name='horseID' value='<?php echo $horseID; ?>'>
+                        <textarea id='note' name='editText' rows='4' cols='50' value='test' required><?php echo $noteText; ?></textarea><br>
+                        <input type='hidden' name='username' value='<?php echo $username; ?>' required readonly><br>
+                        <input type='submit' value='Edit Note'>
+                        <input type='hidden' name='noteDate' value='<?php echo date('Y-m-d'); ?>'>
+                        <input type='hidden' name='noteTimestamp' value='<?php echo time(); ?>'>
+                        <input type='hidden' name='noteID' value='<?php echo $noteID; ?>'>
+                        <input type='hidden' name='addNoteSubmit' value='1'>
+                    </form>
+                    <br>
+                    <form method="GET" action="horseprofile.php">
+                        <input type="hidden" name="horseID" value="<?php echo $horseID; ?>">
+                        <input type="submit" name="return" value="Return to horse profile">
+                    </form>
+                    <br>
 
                 </div>
             </div>
-            <?PHP include('footer.php'); ?>
+            <?php include('footer.php'); ?>
         </div>
     </body>
+
 </html>
