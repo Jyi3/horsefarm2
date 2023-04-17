@@ -214,7 +214,10 @@
         }
 
         .notes-container {
-            padding-bottom: 3%;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            min-height: 500px;
         }
         
         .horse-list-container {
@@ -242,12 +245,11 @@
 <body>
     <div id="container">
         <?PHP include('header.php'); ?>
-        
-        
             <title><?php echo $pp_username; ?>'s Profile</title>
-
-
             <div id="content">
+                <h1 class="profile-name" style="justify-content: right; align-items: right; margin-top: 3%;">
+                        <?php echo $firstName . " " . $lastName; ?>'s Profile
+                    </h1>
                 <div class="profile-container">
                     <div class="profile-details">
                         <p>Username : <?php echo $pp_username; ?></p>
@@ -257,30 +259,25 @@
                         <p>User Type : <?php echo $userType; ?></p>
                         <div style="display: flex; align-items: center;">
                         <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
-
-                        <?php
-                        if ($archive == NULL || $archive == 0) {
-                            $buttonLabel = "Archive";
-                        }
-                        if ($archive == 1) {
-                            $buttonLabel = "Activate";
-                        }
-                        ?>
-                        
-                        <?php if ($permission_level == 3): ?>
-                            <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
-                            <input type="hidden" name="username" value="<?php echo $hp_horseID; ?>" />
+                        <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
+                            <input type="hidden" name="username" value="<?php echo $username; ?>" />
                             <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
                             <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
-                            </form>
-                            <?php endif; ?>
-                        </div>
+                        </form>
                     </div>
+                      
+                    <?php
+                    if ($archive == NULL || $archive == 0) 
+                    {
+                        $buttonLabel = "Archive";
+                    }
+                    if ($archive == 1) 
+                    {
+                        $buttonLabel = "Activate";
+                    }
+                    ?>
 
-                    <div class="profile-name" style="justify-content: center; align-items: center; margin-top: 3%; ">
-                        <h1><?php echo $firstName . " " . $lastName; ?>'s Profile</h1>
                     </div>
-                         
         </div>
         
         <!-- Add the new Horse List form container -->
@@ -325,20 +322,20 @@
                         <th>Note</th>
                         <th class="note-date">NoteDate</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($result2)): ?>
-                        <tr>
-                            <td class="horse-name" ><a href='horseprofile.php?horseID=<?php echo $row['horseID']; ?>' style='color: blue;'><?php echo $row['horseName']; ?></a></td>
-                            <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
-                            <td class="note-date"><?php echo $row['noteDate']; ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($result2)): ?>
+                            <tr>
+                                <td class="horse-name" ><a href='horseprofile.php?horseID=<?php echo $row['horseID']; ?>' style='color: blue;'><?php echo $row['horseName']; ?></a></td>
+                                <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
+                                <td class="note-date"><?php echo $row['noteDate']; ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
 
-                </table>
-            <?php endif; ?>
-        </div>
+                    </table>
+                <?php endif; ?>
+            </div>
         </div>
         <?PHP include('footer.php'); ?>
     </div>
