@@ -249,22 +249,23 @@ function get_num_horse_notes($horseID){
 }
 
 
-function retrieve_note_by_id($noteID){
-$con=connect();
-$query = "SELECT * FROM notesdb WHERE noteID='" . $noteID . "';";
-$result = mysqli_query($con,$query);
+function retrieve_note_by_id($noteID)
+{
+    $con=connect();
+    $query = "SELECT * FROM notesdb WHERE noteID='" . $noteID . "';";
+    $result = mysqli_query($con,$query);
 
-    if($result == NULL || mysqli_num_rows($result)==0){
-        mysqli_close($con);
+        if($result == NULL || mysqli_num_rows($result)==0){
+            mysqli_close($con);
 
-        return false;
+            return false;
+        }
+
+        else{
+            $result_row = mysqli_fetch_assoc($result);
+            $theNote = construct_note($result_row);
+            return $theNote;
+        }
     }
-
-    else{
-        $result_row = mysqli_fetch_assoc($result);
-        $theNote = construct_note($result_row);
-        return $theNote;
-    }
-}
 
 ?>
