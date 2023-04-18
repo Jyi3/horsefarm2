@@ -31,6 +31,10 @@ function add_horse($horse) {
             
     mysqli_query($con, $query);
     
+    //autoassign proper behaviors to the horse based on its color rank
+    $horseID = $horse->get_horseID();
+    autoAssignBehavior($horseID);
+
     //Close the connection and return true.
     mysqli_close($con);
     return true;
@@ -47,7 +51,8 @@ function edit_horse($horseID, $horse) {
     $con=connect();
     $query = "UPDATE horsedb SET horseName='" . $horse->get_horseName() . "', diet='" . $horse->get_diet() . "', color='" . $horse->get_color() . "', breed='" . $horse->get_breed() . "', pastureNum='" . $horse->get_pastureNum() . "', colorRank='" . $horse->get_colorRank() . "' WHERE horseID='" . $horseID . "';";
     $result = mysqli_query($con,$query);
-    
+    //autoassign proper behaviors to the horse based on its color rank
+    autoAssignBehavior($horseID);
     //Close the connection and return true.
     mysqli_close($con);
     return true;
