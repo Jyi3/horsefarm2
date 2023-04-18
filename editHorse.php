@@ -15,6 +15,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_horse"])) {
         $horseID = $_POST["horseID"];
         $horseName = $_POST["horseName"];
+        $diet = $_POST["diet"];
         $color = $_POST["color"];
         $breed = $_POST["breed"];
         $colorRank = $_POST["colorRank"];
@@ -25,7 +26,7 @@
 
         // update Horse data in the database
         $conn = connect();
-        $sql = "UPDATE horseDB SET horseName='$horseName', color='$color', breed='$breed', pastureNum='$pastureNum', colorRank='$colorRank', archive='$status' WHERE horseID='$horseID'";
+        $sql = "UPDATE horseDB SET horseName='$horseName', diet='$diet', color='$color', breed='$breed', pastureNum='$pastureNum', colorRank='$colorRank', archive='$status' WHERE horseID='$horseID'";
 
         // execute SQL query
         if (mysqli_query($conn, $sql)) {
@@ -36,6 +37,34 @@
 
         // close database connection
         mysqli_close($conn);
+    } else if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["horseID"])) {
+        $horseID = $_GET["horseID"];
+        
+        $horseName = $_POST["horseName"];
+        $diet = $_POST["diet"];
+        $color = $_POST["color"];
+        $breed = $_POST["breed"];
+        $colorRank = $_POST["colorRank"];
+        $pastureNum = $_POST["pastureNum"];
+        $archive = $_POST["archive"];
+        $archiveDate = $_POST["archiveDate"];
+        $status = $_POST["status"];
+
+        // update Horse data in the database
+        $conn = connect();
+        $sql = "UPDATE horseDB SET horseName='$horseName', diet='$diet', color='$color', breed='$breed', pastureNum='$pastureNum', colorRank='$colorRank', archive='$status' WHERE horseID='$horseID'";
+
+        // execute SQL query
+        if (mysqli_query($conn, $sql)) {
+            header("Location: editHorse.php");
+        } else {
+            echo "<p>Error updating horse: " . mysqli_error($conn) . "</p>";
+        }
+
+        // close database connection
+        mysqli_close($conn);
+    } else {
+        $horseID = "";
     }
 ?>
 
@@ -179,13 +208,18 @@
                         </select>
                     </div>
                 </form>
-                <?php if (isset($_POST["horseID"]) && $_POST["horseID"] != "") {
-                    $horse = retrieve_horse($_POST["horseID"]); ?>
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;">
-
+                <?php
+                if (isset($_REQUEST['horseID']) && $_REQUEST['horseID'] != "") {
+                    $horseID = $_REQUEST['horseID'];
+                    $horse = retrieve_horse_by_id($horseID); ?>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;">
                         <div class="form-group">
                             <label for="horseName">Horse Name:</label>
                             <input type="text" name="horseName" class="form-control" value="<?php echo $horse->get_horseName(); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="diet">Diet:</label>
+                            <input type="text" name="diet" class="form-control" value="<?php echo $horse->get_diet(); ?>">
                         </div>
                         <div class="form-group">
                             <label for="color">Color:</label>

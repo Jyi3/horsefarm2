@@ -26,15 +26,6 @@
         LEFT JOIN persontohorsedb pt ON pt.horseID = h.horseID AND pt.username = '$pp_username'
         WHERE h.archive != 1";
 
-    $sql = "SELECT * FROM persondb WHERE username = '$pp_username'";
-    $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate 
-    FROM notesdb n
-    INNER JOIN horsedb h ON n.horseID = h.horseID 
-    WHERE n.username = '$pp_username'";
-    $result = mysqli_query($conn, $sql);
-    $result2 = mysqli_query($conn, $notes);
-    $horseListResult = mysqli_query($conn, $sql_horse_list);
-
     // Query for associated horses
     $sql_associated_horses = 
         "SELECT h.horseID, h.horseName
@@ -53,12 +44,19 @@
     // Use $_GET to get the username parameter
     $pp_username = $_GET["username"];
     $sql = "SELECT * FROM persondb WHERE username = '$pp_username'";
-    $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate 
-    FROM notesdb n
-    INNER JOIN horsedb h ON n.horseID = h.horseID 
-    WHERE n.username = '$pp_username'";
+    $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate, n.archive 
+          FROM notesdb n
+          INNER JOIN horsedb h ON n.horseID = h.horseID 
+          WHERE n.username = '$pp_username' AND (n.archive = 0 OR n.archive IS NULL)";
+
+    $archiveNotes = "SELECT n.horseID, h.horseName, n.note, n.noteDate, n.archive, n.archiveDate, p.firstName, p.lastName, p.username 
+                    FROM notesdb n 
+                    INNER JOIN horsedb h ON n.horseID = h.horseID 
+                    INNER JOIN persondb p ON n.username = p.username 
+                    WHERE n.username = '$pp_username' AND n.archive = 1";
     $result = mysqli_query($conn, $sql);
     $result2 = mysqli_query($conn, $notes);
+    $result3 = mysqli_query($conn, $archiveNotes);
     $horseListResult = mysqli_query($conn, $sql_horse_list);
 
 
@@ -148,6 +146,7 @@
             color: gray; 
         }
 
+       
         #content {
             display: flex;
             flex-direction: column;
@@ -159,7 +158,6 @@
             text-align: center;
             max-width: 800px;
             width: 100%;
-            margin: 3% auto 0 auto; /* 3% from the top, centered horizontally */
         }
 
         h1 {
@@ -169,13 +167,26 @@
             text-align: center;
             margin: 0 auto;
         }
-
         p {
             font-size: 18px;
             line-height: 1.6;
             margin: 0 auto;
         }
-
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #4b6c9e;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
         .profile-container {
             display: flex;
             flex-direction: row;
@@ -326,20 +337,24 @@
             <?php endif; ?>
         </div>
 
-        <div class="notes-container">
-            <h2 style="text-align: center;">Notes</h2>
-            <?php if (mysqli_num_rows($result2) == 0): ?>
-                <p style="text-align: center;">No notes available by user</p>
-            <?php else: ?>
-                <table class="notes-table">
-                <thead>
-                    <tr>
-                        <th class="horse-name">Horse Name</th>
-                        <th>Note</th>
-                        <th class="note-date">NoteDate</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+        <div style="display: flex; justify-content: center; align-items: center;">
+                <div id="content-inner" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <h2 style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Notes
+                    </h2>
+                    <br>
+
+                <?php if (mysqli_num_rows($result2) == 0): ?>
+                    <p style="text-align: center;">No notes available by user</p>
+                <?php else: ?>
+                    <table class="notes-table">
+                        <thead>
+                            <tr>
+                                <th class="horse-name">Horse Name</th>
+                                <th>Note</th>
+                                <th class="note-date">NoteDate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         <?php while ($row = mysqli_fetch_assoc($result2)): ?>
                             <tr>
                                 <td class="horse-name" ><a href='horseprofile.php?horseID=<?php echo $row['horseID']; ?>' style='color: blue;'><?php echo $row['horseName']; ?></a></td>
@@ -352,6 +367,67 @@
                     </table>
                 <?php endif; ?>
             </div>
+        </div>
+        <br>
+        
+        <div style="display: flex; justify-content: center; align-items: center;">
+                <div id="content-inner" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <h2 style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Notes
+                    </h2>
+                    <br>
+
+                <?php if (mysqli_num_rows($result3) == 0): ?>
+                    <p style="text-align: center;">No notes available by user</p>
+                <?php else: ?>
+                    <table class="notes-table">
+                        <thead>
+                            <tr>
+                                <th class="horse-name">Horse Name</th>
+                                <th>Note</th>
+                                <th class="note-date">NoteDate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($result3)): ?>
+                            <tr>
+                                <td class="horse-name" ><a href='horseprofile.php?horseID=<?php echo $row['horseID']; ?>' style='color: blue;'><?php echo $row['horseName']; ?></a></td>
+                                <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
+                                
+                                <td>
+                                    <form class="archive-form" method="POST" action="editNotePage.php">
+                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                        <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
+                                    </form>
+                                </td>
+                                <td class="note-cell" style="text-align: center;" ><?php echo $row['archiveDate']; ?></td>
+                                <?php if ($_SESSION['permissions'] == 3): ?>
+                                    <td>
+                                        <?php if ($row['archive'] != 1): ?>
+                                            <form class="archive-form" method="POST" action="archiveNotePage.php">
+                                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                <input type="submit" name="removeNote" value="Archive">
+                                            </form>
+                                        <?php else: ?>
+                                            <form class="archive-form" method="POST" action="dearchiveNotePage.php">
+                                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                <input type="submit" name="unremoveNote" value="Activate">
+                                            </form>
+                                        <?php endif; ?>
+                                    </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+
+                    </table>
+                <?php endif; ?>
+            </div>
+        </div>
+        <br>
+
         </div>
         <?PHP include('footer.php'); ?>
     </div>

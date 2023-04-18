@@ -7,6 +7,7 @@
 class Horse {
     private $horseID; //string
     private $horseName; //string
+    private $diet; //string
     private $color; //string
     private $breed; //string - can be null if not known
     private $pastureNum; //int
@@ -14,9 +15,10 @@ class Horse {
     private $archive; //boolean
     private $archiveDate; //string
     
-    function __construct( $horseID, $horseName, $color, $breed, $pastureNum, $colorRank, $archive,$archiveDate) {
+    function __construct( $horseID, $horseName, $diet, $color, $breed, $pastureNum, $colorRank, $archive,$archiveDate) {
         $this->horseID = $horseID;
         $this->horseName = $horseName;
+        $this->diet = $diet;
         $this->color = $color;
         $this->breed = $breed;
         $this->pastureNum = $pastureNum;
@@ -30,6 +32,9 @@ class Horse {
     }
     function get_horseName() {
         return $this->horseName;
+    }
+    function get_diet() {
+        return $this->diet;
     }
     function get_color() {
         return $this->color;

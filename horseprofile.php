@@ -26,7 +26,7 @@
             INNER JOIN persondb t ON n.username = t.username
         WHERE n.horseID = '$hp_horseID' AND (n.archive = 0 OR n.archive IS NULL)";
 
-    $arNotes = "SELECT n.horseID, n.noteID, t.firstName, t.lastName, n.note, n.noteDate, t.username, n.archive, n.archiveDate
+    $arNotes = "SELECT n.horseID, n.noteID, t.firstName, t.lastName, n.note, n.noteDate, t.username, n.archive, n.archiveDate, h.diet
         FROM notesdb n
         INNER JOIN horsedb h ON n.horseID = h.horseID 
         INNER JOIN persondb t ON n.username = t.username
@@ -39,6 +39,7 @@
     $row = mysqli_fetch_assoc($result);
     $horseName = $row["horseName"];
     $hp_horseID = $row["horseID"];
+    $diet = $row["diet"];
     $color = $row["color"];
     $breed = $row["breed"];
     $pastureNum = $row["pastureNum"];
@@ -101,6 +102,7 @@
     <link rel="stylesheet" href="styles.css" type="text/css" />
     <style>
         
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #f3f3f3;
@@ -120,50 +122,64 @@
         }
 
         #appLink:visited {
-        color: gray; 
+            color: gray; 
         }
 
+       
         #content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: left;
         }
 
         #content-inner {
-        text-align: center;
-        max-width: 800px;
-        width: 100%;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
         }
 
         h1 {
-        color: #4b6c9e;
-        font-size: 36px;
-        margin-bottom: 20px;
-        text-align: center;
-        margin: 0 auto;
+            color: #4b6c9e;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-align: center;
+            margin: 0 auto;
         }
-
         p {
-        font-size: 18px;
-        line-height: 1.6;
-        margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 0 auto;
         }
-
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #4b6c9e;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
         .profile-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
         }
 
         .profile-name {
             text-align: center;
-            padding-top: 2%;
+            margin-top: 3vh;
             align-items: center;
         }
-        
+
         .profile-details {
             display: left;
             flex-direction: column;
@@ -173,25 +189,6 @@
             padding-top: 5%;    
         }
 
-        .profile-behaviors {
-        display: flex;
-        flex-direction: row;
-        align-items: right;
-        padding-top: 5%;    
-        }
-
-        .profile-behaviors h2 {
-        list-style-type: none;
-        text-align: right;
-        margin-left: auto;
-        }
-
-        .profile-behaviors li {
-        list-style-type: none;
-        text-align: right;
-        margin-left: auto;
-        }
-        
         .archive-form input[type="submit"] {
             background-color: #4b6c9e;
             color: #fff;
@@ -201,13 +198,13 @@
             cursor: pointer;
             margin-left: 20px;
         }
-
+        
         .archive-form input[type="submit"]:hover {
             background-color: #fff;
             color: #4b6c9e;
             border: 2px solid #4b6c9e;
         }
-        
+
         .archive-form-button {
             background-color: #4b6c9e;
             color: #fff;
@@ -229,40 +226,6 @@
             max-width: 800px;
             width: 100%;
             min-height: 500px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .notes-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .notes-table th,
-        .notes-table td {
-            padding: 12px;
-            border: 1px solid #ccc;
-        }
-
-        .notes-table th {
-            font-weight: bold;
-            background-color: #f3f3f3;
-            color: #333;
-        }
-
-
-        .notes-table tr:hover {
-            background-color: #e8e8e8;
-        }
-
-        .horse-name {
-            width: 20%;
-        }
-
-        .note-date {
-            width: 20%;
         }
 
         
@@ -284,6 +247,19 @@
             margin-right: auto;
         }
 
+        /* Footer */
+        .footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+            color: #6c757d;
+        }
         
     </style>
 
@@ -301,6 +277,7 @@
                 <div class="profile-details">
                     <p>Horse Name : <?php echo $horseName; ?></p>
                     <p>Difficulty : <?php echo $colorRank; ?> </p>
+                    <p>Diet: <?php echo $diet; ?></p>
                     <p>Pasture : <?php echo $pastureNum; ?></p>
                     <p>Breed : <?php echo $breed; ?></p>
                     <p>Color : <?php echo $color; ?></p>
@@ -332,6 +309,10 @@
 
                 <div class="profile-name">
                 <h1><?php echo $horseName; ?>'s Profile</h1>
+                <form method="POST" action="editHorse.php">
+                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                    <button type="submit" class="archive-form-button">Edit Horse Profile</button>
+                </form>
                 </div>
 
                 <div class="profile-behaviors">
@@ -351,7 +332,7 @@
             </div>
             
             <!-- Add the new Trainer List form container -->
-            <div class="trainer-list-container">
+            <div class="trainer-list-container;">
                 <h2 style="text-align: left;">Trainer List</h2>
                 <div class="trainer-list-container">
                     <select id="trainer-dropdown">
@@ -380,77 +361,18 @@
                     </ul>
                 <?php endif; ?>
             </div>
-            
-                <h2 style="text-align: center;">Notes
-                    <form method="POST" class="archive-form" action="addNotePage.php">
-                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                        <input type="submit" name="add_note" value="Add Note" class="archive-form-button" />
-                    </form>
-                </h2>
 
-                <?php if (mysqli_num_rows($activeNotes) == 0): ?>
-                    <p style="text-align: center;">No notes available for <?php echo $horseName; ?></p>
-                <?php else: ?>
-                    <table class="notes-table">
-                        <thead>
-                            <tr>
-                                <th class="person-name">Trainer Name</th>
-                                <th>Note</th>
-                                <th class="note-date">Note Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($activeNotes)): ?>
-                                <tr>
-                                    <?php
-                                    // Hides archived notes for non head-trainer accounts
-                                    if ($row['archive'] == 1 && $_SESSION['permissions'] < 2) {
-                                        continue;
-                                    }
-                                    ?>
-                                    <td class="person-name">
-                                        <a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a>
-                                    </td>
-                                    <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
-                                    <td>
-                                        <form method="POST" class="archive-form" action="editNotePage.php">
-                                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                            <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                            <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
-                                        </form>
-                                    </td>
-                                    <?php if ($row['archive'] == 1): ?>
-                                        <td class="note-cell">Archived</td>
-                                        <td class="note-cell"><?php echo $row['archiveDate']; ?></td>
-                                    <?php endif; ?>
-                                    <?php if ($_SESSION['permissions'] == 3): ?>
-                                        <td>
-                                            <?php if ($row['archive'] != 1): ?>
-                                                <form class="archive-form" method="POST" action="archiveNotePage.php">
-                                                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                                    <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                                    <input type="submit" name="removeNote" value="Archive">
-                                                </form>
-                                            <?php else: ?>
-                                                <form class="archive-form" method="POST" action="dearchiveNotePage.php">
-                                                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                                    <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                                    <input type="submit" name="unremoveNote" value="Activate">
-                                                </form>
-                                            <?php endif; ?>
-                                        </td>
-                                    <?php endif; ?>
-                                </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
-                <?php endif; ?>
-                <br>
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <div id="content-inner" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <h2 style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Notes
+                        <form method="POST" class="archive-form" action="addNotePage.php">
+                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                            <input type="submit" name="add_note" value="Add Note" class="archive-form-button" />
+                        </form>
+                    </h2>
 
-                <?php if ($_SESSION['permissions'] == 3): ?>
-                   
-                    <?php if (mysqli_num_rows($archiveNotes) == 0): ?>
-                        <p style="text-align: center;">No archived notes available for <?php echo $horseName; ?></p>
+                    <?php if (mysqli_num_rows($activeNotes) == 0): ?>
+                        <p style="text-align: center;">No notes available for <?php echo $horseName; ?></p>
                     <?php else: ?>
                         <table class="notes-table">
                             <thead>
@@ -458,12 +380,10 @@
                                     <th class="person-name">Trainer Name</th>
                                     <th>Note</th>
                                     <th class="note-date">Note Date</th>
-                                    <th class="note-date">Archive</th>
-                                    <th class="note-date">Archived Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php while ($row = mysqli_fetch_assoc($archiveNotes)): ?>
+                                <?php while ($row = mysqli_fetch_assoc($activeNotes)): ?>
                                     <tr>
                                         <?php
                                         // Hides archived notes for non head-trainer accounts
@@ -476,7 +396,7 @@
                                         </td>
                                         <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
                                         <td>
-                                            <form class="archive-form" method="POST" action="editNotePage.php">
+                                            <form method="POST" class="archive-form" action="editNotePage.php">
                                                 <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
                                                 <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
                                                 <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
@@ -507,9 +427,74 @@
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <br>
+            <div style="display: flex; justify-content: center; align-items: center;">
+            <div id="content-inner" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <?php if ($_SESSION['permissions'] == 3): ?>
+                    <h2 style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Archived Notes
+                    <?php if (mysqli_num_rows($archiveNotes) == 0): ?>
+                        <p style="text-align: center;">No archived notes available for <?php echo $horseName; ?></p>
+                    <?php else: ?>
+                        <table class="notes-table">
+                            <thead>
+                                <tr>
+                                    <th class="person-name" style="text-align: center;">Trainer Name</th>
+                                    <th class="note-date" style="text-align: center;">Note</th>
+                                    <th class="note-date" style="text-align: center;">Note Date</th>
+                                    <th class="note-date" style="text-align: center;">Archived Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_assoc($archiveNotes)): ?>
+                                    <tr>
+                                        <?php
+                                        // Hides archived notes for non head-trainer accounts
+                                        if ($row['archive'] == 1 && $_SESSION['permissions'] < 2) {
+                                            continue;
+                                        }
+                                        ?>
+                                        <td class="person-name" style="text-align: center;">
+                                            <a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a>
+                                        </td>
+                                        <td class="note-cell" style="text-align: center;"><?php echo nl2br($row['note']); ?></td>
+                                        <td>
+                                            <form class="archive-form" method="POST" action="editNotePage.php">
+                                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
+                                            </form>
+                                        </td>
+                                        <td class="note-cell" style="text-align: center;" ><?php echo $row['archiveDate']; ?></td>
+                                        <?php if ($_SESSION['permissions'] == 3): ?>
+                                            <td>
+                                                <?php if ($row['archive'] != 1): ?>
+                                                    <form class="archive-form" method="POST" action="archiveNotePage.php">
+                                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                        <input type="submit" name="removeNote" value="Archive">
+                                                    </form>
+                                                <?php else: ?>
+                                                    <form class="archive-form" method="POST" action="dearchiveNotePage.php">
+                                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                        <input type="submit" name="unremoveNote" value="Activate">
+                                                    </form>
+                                                <?php endif; ?>
+                                            </td>
+                                        <?php endif; ?>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
                             <br>
                         <?php endif; ?>
                 <?php endif; ?>
+            </div>
+            </div>
+            <br>
         </div>
 
 

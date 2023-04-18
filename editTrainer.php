@@ -5,7 +5,7 @@
     include_once('domain/Person.php');
 
     // Check if the user has the necessary permissions (permissions level 2)
-    if ($_SESSION['permissions'] < 2) {
+    if ($_SESSION['permissions'] < 3) {
         header("Location: index.php");
         exit;
     }
@@ -20,6 +20,7 @@
         $phoneNumber = htmlspecialchars(trim($_POST["phone"]));
         $username = htmlspecialchars(trim($_POST["username"]));
         $oldUsername = $_POST['oldUsername'];
+        $userType = $_POST['userType'];
     
         // update Trainer data in the database
         $conn = connect();
@@ -27,9 +28,9 @@
         if ($pass != '') { // check if pass is not null
             $pass = htmlspecialchars(trim($_POST["pass"]));
             $pass = password_hash($pass, PASSWORD_BCRYPT);
-            $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', pass='$pass' WHERE username='$oldUsername'";
+            $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', pass='$pass', userType='$userType' WHERE username='$oldUsername'";
         } else {
-            $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username' WHERE username='$oldUsername'";
+            $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', userType='$userType' WHERE username='$oldUsername'";
         }
     
         // execute SQL query
@@ -215,6 +216,14 @@
                         <div class="form-group">
                             <label for="pass">Password:</label>
                             <input type="password" name="pass" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="userType">User Type:</label>
+                            <select name="userType" class="form-control">
+                                <option value="Recruit" <?php if ($trainer->get_userType() == 'Recruit') echo 'selected'; ?>>Recruit</option>
+                                <option value="Trainer" <?php if ($trainer->get_userType() == 'Trainer') echo 'selected'; ?>>Trainer</option>
+                                <option value="Head Trainer" <?php if ($trainer->get_userType() == 'Head Trainer') echo 'selected'; ?>>Head Trainer</option>
+                            </select>
                         </div>
                         <input type="hidden" name="oldUsername" value="<?php echo $oldUsername; ?>">
                         <button type="submit" name="update_trainer" class="btn btn-default">Update Trainer</button>

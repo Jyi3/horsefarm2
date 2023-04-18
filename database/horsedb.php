@@ -20,8 +20,9 @@ function add_horse($horse) {
     $con=connect();
     
     //Add the new horse to the database.
-    $query = "INSERT INTO horsedb (horseName, color, breed, pastureNum, colorRank) VALUES ('" .
+    $query = "INSERT INTO horsedb (horseName, diet, color, breed, pastureNum, colorRank) VALUES ('" .
             $horse->get_horseName() . "','" .
+            $horse->get_diet() . "','" .
             $horse->get_color() . "','" .
             $horse->get_breed() . "','" .
             $horse->get_pastureNum() . "','" .
@@ -44,7 +45,7 @@ function edit_horse($horseID, $horse) {
 
     //Create a database connection and update the existing horse.
     $con=connect();
-    $query = "UPDATE horsedb SET horseName='" . $horse->get_horseName() . "', color='" . $horse->get_color() . "', breed='" . $horse->get_breed() . "', pastureNum='" . $horse->get_pastureNum() . "', colorRank='" . $horse->get_colorRank() . "' WHERE horseID='" . $horseID . "';";
+    $query = "UPDATE horsedb SET horseName='" . $horse->get_horseName() . "', diet='" . $horse->get_diet() . "', color='" . $horse->get_color() . "', breed='" . $horse->get_breed() . "', pastureNum='" . $horse->get_pastureNum() . "', colorRank='" . $horse->get_colorRank() . "' WHERE horseID='" . $horseID . "';";
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
@@ -142,6 +143,7 @@ function getall_horseDB() {
         $theHorse = new Horse(
             $result_row['horseID'],
             $result_row['horseName'],
+            $result_row['diet'],
             $result_row['color'],
             $result_row['breed'],
             $result_row['pastureNum'],
@@ -178,6 +180,7 @@ function getallInactive_horses() {
         $theHorse = new Horse(
             $result_row['horseID'],
             $result_row['horseName'],
+            $result_row['diet'],
             $result_row['color'],
             $result_row['breed'],
             $result_row['pastureNum'],
@@ -273,6 +276,7 @@ function make_a_horse($result_row) {
     $theHorse = new Horse(
         $result_row['horseID'],
         $result_row['horseName'],
+        $result_row['diet'],
         $result_row['color'],
         $result_row['breed'],
         $result_row['pastureNum'],

@@ -1,5 +1,6 @@
 <?php
     include('session.php');
+
     // Check if the user has the necessary permissions (permissions level 2)
     if ($_SESSION['permissions'] < 2) {
         header("Location: index.php");
@@ -21,6 +22,7 @@
                 color: #333;
                 margin: 0;
             }
+
             #container {
                 max-width: 1200px;
                 margin: 0 auto;
@@ -32,6 +34,18 @@
                 flex-direction: column;
                 min-height: 500px;
             }
+
+            .my-form {
+                max-width: 500px;
+                width: 90%;
+                padding: 20px;
+                background-color: #ffffff;
+                border: 1px solid #cccccc;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin: 0 auto;
+            }
+
 
             #content {
                 display: flex;
@@ -61,7 +75,6 @@
                 line-height: 1.6;
                 margin: 0 auto;
             }
-
 
             label {
                 display: inline-block;
@@ -115,7 +128,7 @@
                     max-width: 100%;
                 }
             }
-            </style> 
+        </style> 
             <?php
                 include_once('database/horsedb.php');
                 include_once('database/dbinfo.php');
@@ -149,10 +162,14 @@
 
             <h1>Create Horse</h1>
             <br>
-            <form style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
                 <div class="form-group">
                     <label for="horseName">Horse Name:</label>
                     <input type="text" name="horseName" class="form-control" value="<?php echo isset($_POST["horseName"]) ? htmlspecialchars($_POST["horseName"]) : ''; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="diet">Diet:</label>
+                    <input type="text" name="diet" class="form-control" value="<?php echo isset($_POST["diet"]) ? htmlspecialchars($_POST["diet"]) : ''; ?>">
                 </div>
                 <div class="form-group">
                     <label for="color">Color:</label>
