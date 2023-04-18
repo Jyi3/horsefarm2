@@ -9,6 +9,39 @@
     }
 ?>
 
+<?php
+    include_once('database/persondb.php');
+    include_once('database/dbinfo.php');
+
+    $conn = connect();
+    $query = "SELECT COUNT(*) as count FROM personDB WHERE userType = 'Head Trainer' AND (archive = 0 OR archive IS NULL)";
+    $result = mysqli_query($conn, $query);
+
+    if (!$result) {
+        die('Error executing query: ' . mysqli_error($conn));
+    }
+
+    $activeHeadTrainers = mysqli_fetch_assoc($result);
+    mysqli_close($conn);
+?>
+
+
+<?php
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username']) && isset($_POST['status'])) {
+        $username = $_POST['username'];
+        $status = $_POST['status'];
+        $archive_date = ($status == 1) ? date('Y-m-d') : NULL;
+
+        $query = "UPDATE personDB SET archive = :status, archiveDate = :archive_date WHERE username = :username";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':status', $status);
+        $statement->bindValue(':archive_date', $archive_date);
+        $statement->bindValue(':username', $username);
+        $statement->execute();
+        $statement->closeCursor();
+    }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,9 +179,7 @@
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
-                                <td style='border-left: 1px solid black'> 
-                                    <button onclick=\"confirmArchive('" . $username . "')\">Archive</button> 
-                                </td>
+                                <td style='border-left: 1px solid black'><button class='archive-form-button' onclick=\"archivePerson('" . $allPersons[$x]->get_username() . "', '" . $allPersons[$x]->get_userType() . "')\">Archive</button></td>
                             </tr>";
                     }
                     echo "</table>";
@@ -184,6 +215,8 @@
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                                <td style='border-left: 1px solid black'> <button class='archive-form-button' onclick=\"activatePerson('" . $allPersons[$x]->get_username() . "')\">Activate</button> </td>
+
                             </tr>";
                     }
                     echo "</table>";
@@ -194,5 +227,38 @@
         </div>
         <?php include('footer.php'); ?>
     </div>
+    <script>
+        
+        const activeHeadTrainers = <?php echo $activeHeadTrainers['count']; ?>;
+
+        function archivePerson(username, userType) {
+            // If the person is a Head Trainer, check the number of active Head Trainers
+            if (userType == 'Head Trainer' && activeHeadTrainers <= 1) {
+                alert("There is only one active Head Trainer, please promote another head trainer and remove this head trainer.");
+            } else {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        location.reload(); // Reload the page after updating the person status
+                    }
+                };
+                xhttp.open("POST", "update_trainer_status.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("username=" + username + "&status=1"); // Pass 1 as the status to archive the person
+            }
+        }
+
+        function activatePerson(username) {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    location.reload(); // Reload the page after updating the person status
+                }
+            };
+            xhttp.open("POST", "update_trainer_status.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("username=" + username + "&status=0"); // Pass 1 as the status to archive the person
+        }
+    </script>
     </body>
 </html>

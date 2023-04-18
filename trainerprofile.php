@@ -13,6 +13,13 @@
     // Use $_GET to get the username parameter
     $pp_username = $_GET["username"];
     
+    // Fetch the count of active Head Trainers
+    $sql = "SELECT COUNT(*) as count FROM persondb WHERE userType = 'Head Trainer' AND (archive = 0 OR archive IS NULL)";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $activeHeadTrainers = $row['count'];
+
+    
     $sql_horse_list = 
         "SELECT h.horseID, h.horseName, IF(pt.username IS NULL, 0, 1) AS isConnected
         FROM horsedb h
@@ -78,14 +85,23 @@
             exit();
         }
 
+        
+
         if (isset($_POST["archive"])) {
+            // Fetch userType for the specific user
+            $sql = "SELECT userType FROM persondb WHERE username = '$pp_username'";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $userType = $row['userType'];
+        
             $sql = "UPDATE persondb SET archive = 1, archiveDate = CURRENT_DATE() WHERE username = '$pp_username'";
             $action_success = mysqli_query($conn, $sql);
             if (!$action_success) {
+
                 echo "Error updating record: " . mysqli_error($conn);
             }
             mysqli_close($conn);
-        } elseif (isset($_POST["activate"])) {  
+        } elseif (isset($_POST["activate"])) {
             $sql = "UPDATE persondb SET archive = 0 WHERE username = '$pp_username'";
             $action_success = mysqli_query($conn, $sql);
             if (!$action_success) {
@@ -93,6 +109,7 @@
             }
             mysqli_close($conn);
         }
+        
         
         echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?username=$pp_username';</script>";
         mysqli_close($conn);
@@ -106,6 +123,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" type="text/css" />
+    
     <style>
         
         body {
@@ -239,8 +257,6 @@
         }
         
     </style>
-
-
 </head>
 <body>
     <div id="container">
@@ -259,7 +275,7 @@
                         <p>User Type : <?php echo $userType; ?></p>
                         <div style="display: flex; align-items: center;">
                         <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
-                        <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
+                        <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;" onsubmit="return validateForm(<?php echo $activeHeadTrainers; ?>, '<?php echo $userType; ?>');">
                             <input type="hidden" name="username" value="<?php echo $username; ?>" />
                             <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
                             <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
@@ -341,6 +357,14 @@
     </div>
 
     <script>
+        function validateForm(activeHeadTrainers, userType) {
+            if (userType === 'Head Trainer' && activeHeadTrainers <= 1) {
+                alert("There is only one active Head Trainer, please promote another head trainer and remove this head trainer.");
+                return false;
+            }
+            return true;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const horseDropdown = document.getElementById('horse-dropdown');
             const selectedHorseInput = document.getElementById('selected_horse');

@@ -376,11 +376,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!-- Add this new div below the form to display search results -->
 <div id="content">
     <div id="contentSearches">
-        <h3>How to search for a horse or trainer:</h3>
+        <h3>How to search for active horses or trainers:</h3>
         <p>To search for a horse or trainer, select the appropriate search type from the dropdown menu above.</br>Enter your search criteria in the fields provided and click the "Search" button to retrieve matching results.</p>
         <p>For horse searches, you can search by name, color, breed, and pasture number.</br>You can also filter results by color rank by selecting one or more options from the checkboxes.</p>
         <p>For trainer searches, you can search by name, phone number, email, and role.</p>
         <p style="font-style: italic; color: #777;">Tip: Using more specific search criteria will result in more accurate and relevant search results.</p> 
+        <p style="font-style: italic; color: #777;">Note: Archived horses are only viewable through the view horses page.</p>
         </br>
     </div>
     <?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($result) && $result->num_rows > 0): ?>
