@@ -27,7 +27,7 @@ function autoAssignBehaviors($horseID){
     //Color of the inputted horse (defines what behaviors get assigned to it)
     $color = $horse->get_colorRank();
     //If the horse is has a green colorRank, then it gets all the green behaviors
-    if($color == "GREEN"){
+    if($color == "Green"){
 
         $behaviors = get_all_green_behaviors();
         //Gets the all the titles of all green behaviors (get it in a seperate array so we can call it by its index in the for loop below)
@@ -51,7 +51,7 @@ function autoAssignBehaviors($horseID){
         }
 
     }
-    elseif($color == "YELLOW"){
+    elseif($color == "Yellow"){
         $greens = get_all_green_behaviors();
         $yellows = get_all_yellow_behaviors();
         //One big array of all green and yellow behaviors
@@ -60,7 +60,7 @@ function autoAssignBehaviors($horseID){
         $behaviorTitles = array_keys($behaviors);
         //number of behaviors to be assigned
         $numBehaves = count($behaviors);
-        $con = connect()
+        $con = connect();
 
         //Loops through all the behaviors needed to be assigned
         for($i=0; $i < $numBehaves; $i++){
@@ -75,7 +75,7 @@ function autoAssignBehaviors($horseID){
         }
         return TRUE;
     }
-    elseif($color == "RED"){
+    elseif($color == "Red"){
 
         $greens = get_all_green_behaviors();
         $yellows = get_all_yellow_behaviors();
@@ -86,7 +86,7 @@ function autoAssignBehaviors($horseID){
         $behaviorTitles = array_keys($behaviors);
         //number of behaviors to be assigned
         $numBehaves = count($behaviors);
-        $con = connect()
+        $con = connect();
 
         //Loops through all the behaviors needed to be assigned
         for($i=0; $i < $numBehaves; $i++){
@@ -123,17 +123,17 @@ Return Value(s):
 
 function assignBehavior($horseID, $behavior){
     //makes sure the inputted behavior is actually a Behavior type (if not it returns false)
-        if($behavior != instanceof Behavior ){
+        if(!$behavior instanceof Behavior ){
+            return false;
+        }
+    //makes sure the horseID is an actual string (not an integer or something else)
+        elseif(is_string($horseID) == false){
             return false;
         }
         $behaviorName = $behavior->get_title();
-    //makes sure the horseID is an actual string (not an integer or something else)
-        elseif($horseID is_string == false){
-            return false;
-        }
         $con = connect();
         $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND behavior='" . $behaviorName . "';";
-        $check = mysqli($con, $checkQuery)
+        $check = mysqli($con, $checkQuery);
         //checks and makes sure that the horse does not already have that behavior assigned to it
         //If it does not, then add the horse and behavioe to the database. 
         if($check == null  || mysqli_num_rows($check) == 0){
@@ -167,18 +167,19 @@ Return Value(s):
 */
 function unassignBehavior($horseID, $behavior){
 //makes sure the inputted behavior is actually a Behavior type (if not it returns false)
-    if($behavior != instanceof Behavior ){
+    if(!$behavior instanceof Behavior ){
+        return false;
+    }
+    //makes sure the horseID is an actual string (not an integer or something else)
+    elseif(is_string($horseID) == false){
         return false;
     }
     $behaviorName = $behavior->get_title();
-//makes sure the horseID is an actual string (not an integer or something else)
-    elseif($horseID is_string == false){
-        return false;
-    }
+
     $con = connect();
 
     $checkQuery = "SELECT * FROM horseToBehaviorDB WHERE horseid='" . $horseID . "' AND behavior='" . $behaviorName . "';";
-    $check = mysqli($con, $checkQuery)
+    $check = mysqli($con, $checkQuery);
     //Checks and make sure that the horse already has been assigned the given behavior. If it has, then it deletes it.
     if($check != null  || mysqli_num_rows($check) != 0){
 
@@ -186,7 +187,7 @@ function unassignBehavior($horseID, $behavior){
         mysqli($con, $query);
         mysqli_close($con);
 
-        return true
+        return true;
     
     }
     //if the horse hasnt already been assigned the beavior, we simply close the mysqli connection and return false
@@ -205,7 +206,7 @@ Return Value(s):
             False --> Returns false if the horseID was not inputted in the correct format, or if the horse has no behaviors assigned to it
 */
 function get_a_Horses_Behaviors($horseID){
-    if($horseID is_string == false){
+    if(is_string($horseID) == FALSE){
         return false;
     }
 
