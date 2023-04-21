@@ -8,8 +8,6 @@
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Behavior.php');
 
-function assignBehavior()
-
 
 /*
  * Function name: add_behavior($behavior)
@@ -338,7 +336,7 @@ function get_all_yellow_behaviors(){
         //Loops through all of the yellow behaviors
         for($i = 0; $i < $numTitles; $i++){
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
-            $curTitle = $titles[i]
+            $curTitle = $titles[i];
             //Adds the current (ith) behavior to the behaviors array
             //Key: title of behavior
             //Value: Color rank of behavior
@@ -376,7 +374,7 @@ function get_all_red_behaviors(){
     //Array containing all yellow behaviors
     $yellows = get_all_yellow_behaviors();
     //Merges the green and yellow behaviors into one array, which will then have red behaviors added onto it
-    $behaviors = array_merge($greens, $yellows)
+    $behaviors = array_merge($greens, $yellows);
     $con = connect();
     //Quey that gets the title of every red behavior from behaviordb
     $titleQuery = "SELECT title FROM behaviorDB WHERE behaviorLevel=Red";
@@ -396,7 +394,7 @@ function get_all_red_behaviors(){
         //Loops through all of the red behaviors in the db
         for($i = 0; $i < $numTitles; $i++){
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
-            $curTitle = $titles[i]
+            $curTitle = $titles[i];
             //Adds the current (ith) behavior to the behaviors array
             //Key: title of behavior
             //Value: Color rank of behavior
