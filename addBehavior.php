@@ -1,11 +1,11 @@
 <?php
-    include('database/dbinfo.php');
-    include('domain/Horse.php');
-    include('database/horsedb.php');
-    include('domain/Behavior.php');
-    include('database/behaviordb.php');
-    include('domain/person.php');
-    include('database/person.php');
+    include_once('database/dbinfo.php');
+    include_once('domain/Horse.php');
+    include_once('database/horsedb.php');
+    include_once('domain/Behavior.php');
+    include_once('database/behaviordb.php');
+    include_once('domain/person.php');
+    include_once('database/person.php');
 
 
 /*
