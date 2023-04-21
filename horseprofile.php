@@ -31,6 +31,10 @@
         INNER JOIN horsedb h ON n.horseID = h.horseID 
         INNER JOIN persondb t ON n.username = t.username
         WHERE n.horseID = '$hp_horseID' AND n.archive = 1";
+
+
+
+    $hBehaviors = "SELECT n.horseID"
     $result = mysqli_query($conn, $sql);
     $activeNotes = mysqli_query($conn, $aNotes);
     $archiveNotes = mysqli_query($conn, $arNotes);

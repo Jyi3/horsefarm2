@@ -8,6 +8,8 @@
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Behavior.php');
 
+function assignBehavior()
+
 
 /*
  * Function name: add_behavior($behavior)
