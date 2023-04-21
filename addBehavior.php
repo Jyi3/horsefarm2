@@ -37,8 +37,7 @@ function assignBehavior($horseID, $behavior){
         //If it does not, then add the horse and behavioe to the database. 
         if($check == null  || mysqli_num_rows($check) == 0){
 
-            $query = 'INSERT INTO horsetobehaviordb (horseid, behavior) VALUES ("' .
-                $horseID . '","' .
+            $query = 'INSERT INTO horsetobehaviordb (horseid, title) VALUES ( $horseID ,"' .
                 $behaviorName . '");';
             mysqli($con, $query);
             mysqli_close($con);
