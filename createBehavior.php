@@ -130,11 +130,11 @@
             }
         </style> 
             <?php
-                include_once('database/horsedb.php');
+                include_once('database/behaviordb.php');
                 include_once('database/dbinfo.php');
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    // create new Horse object
+                    // create new Behavior 
 						  if("" == trim($_POST['BehaviorName'])){
     					      echo "<p>Error adding new behavior:</p>";
     					      
@@ -180,7 +180,7 @@
                         <option value="Misc" <?php if(isset($_POST['behaviorRank']) && $_POST['behaviorRank'] == 'Misc') echo 'selected'; ?>>Misc</option>
                     </select>
                 </div>
-                <input type="submit" value="Create Horse" class="btn btn-primary">
+                <input type="submit" value="Create Behavior" class="btn btn-primary">
             </form>
             <br>
             </div>
