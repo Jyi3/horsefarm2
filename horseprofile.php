@@ -41,7 +41,7 @@
     $activeNotes = mysqli_query($conn, $aNotes);
     $archiveNotes = mysqli_query($conn, $arNotes);
     $trainerListResult = mysqli_query($conn, $trainerListSql);
-    $assignedBehaviors = mysqli_query($con, $hBehaviors);
+    $assignedBehaviors = mysqli_query($conn, $hBehaviors);
 
     $row = mysqli_fetch_assoc($result);
     $horseName = $row["horseName"];
