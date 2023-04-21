@@ -34,11 +34,14 @@
 
 
 
-    $hBehaviors = "SELECT n.horseID"
+    $hBehaviors = "SELECT h.title 
+                    FROM horsetobehaviordb h 
+                    WHERE h.horseID = '$hp_horseID' ";  
     $result = mysqli_query($conn, $sql);
     $activeNotes = mysqli_query($conn, $aNotes);
     $archiveNotes = mysqli_query($conn, $arNotes);
     $trainerListResult = mysqli_query($conn, $trainerListSql);
+    $assignedBehaviors = mysqli_query($con, $hBehaviors);
 
     $row = mysqli_fetch_assoc($result);
     $horseName = $row["horseName"];
