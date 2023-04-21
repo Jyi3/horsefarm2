@@ -314,7 +314,11 @@
                         $buttonLabel = "Activate";
                     }
                     ?>
-                    <form method="POST" class="assign-form" style="display: flex; align-items: center; margin-left: 10px;">
+                    
+
+                                        
+                </div>
+                <form method="POST" class="assign-form" style="display: flex; align-items: center; margin-left: 10px;">
 						<div class="form-group">
 							<label for="Title">Title:</label>
 								<select name="title" class="form-control">
@@ -333,10 +337,6 @@
 						<input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>" />
 						<input type="submit" name="AssignBehavior" value="Assign Behavior" class="btn btn-primary">
 					</form>
-
-                                        
-                </div>
-                
 
 
                 <div class="profile-name">
