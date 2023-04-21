@@ -4,8 +4,8 @@
     include_once('database/horsedb.php');
     include_once('domain/Behavior.php');
     include_once('database/behaviordb.php');
-    include_once('domain/person.php');
-    include_once('database/person.php');
+    include_once('domain/Person.php');
+    include_once('database/persondb.php');
 
 
 /*
