@@ -163,7 +163,7 @@
     <div id="content">
         <div id="content-inner">
 
-            <h1>Create Horse</h1>
+            <h1>Create Behavior</h1>
             <br>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
                 <div class="form-group">

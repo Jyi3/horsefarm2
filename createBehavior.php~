@@ -136,7 +136,7 @@
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // create new Horse object
 						  if("" == trim($_POST['BehaviorName'])){
-    					      echo "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
+    					      echo "<p>Error adding new behavior:</p>";
     					      
 						  }      
                     $conn = connect();
