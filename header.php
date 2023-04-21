@@ -146,6 +146,7 @@
                         <a class="dropdown-item" href="createHorse.php">Create Horse</a>
                         <a class="dropdown-item" href="editHorse.php">Edit Horses</a>
                         <a class="dropdown-item" href="archiveHorses.php">Archive Horse</a>
+                        <a class="dropdown-item" href="createBehavior.php">Create Behavior</a>
                     </div>
                     </li>
                     <li class="nav-item dropdown">
