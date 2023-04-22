@@ -270,7 +270,7 @@
 </head>
 <body>
     <div id="container">
-        <?PHP include('header.php'); ?>
+        <?PHP #include('header.php'); ?>
         
             
         <title><?php echo $horseName; ?>'s Profile</title>
