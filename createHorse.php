@@ -144,7 +144,7 @@
 
                     // execute SQL query
                     if (mysqli_query($conn, $sql)) {
-                        $searchID = "SELECT horseID FROM horsedb WHERE horseName='". $_POST["horseName"] . "', color='" . $_POST["color"] . "', breed='" . $_POST["breed"] . "', pastureNum=" . $_POST["pastureNum"] . ", colorRank='" . $_POST["colorRank"] . "';" ;
+                        $searchID = "SELECT horseID FROM horsedb WHERE horseName='". $_POST["horseName"] . "' AND color='" . $_POST["color"] . "' AND breed='" . $_POST["breed"] . "' AND pastureNum=" . $_POST["pastureNum"] . " AND colorRank='" . $_POST["colorRank"] . "';" ;
                         $horseID = mysqli_query($conn, $searchID);
                         autoAssignBehaviors($horseID);
                         header("Location: createHorse.php");
