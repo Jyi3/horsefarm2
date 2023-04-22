@@ -281,11 +281,11 @@ function get_all_green_behaviors(){
 
     //If there are green behaviors then we add them all to the behaviors array
     else{
-        $i = 0;
+        #$i = 0;
         //Loops through all of the green behaviors
         while($row = mysqli_fetch_assoc($titles)){
-            $i += 1;
-            echo("<p> i = " . $i . "</p>");
+            #$i += 1;
+            #echo("<p> i = " . $i . "</p>");
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
             $curTitle = $row['title'];
             //Adds the current (ith) behavior to the behaviors array
@@ -339,9 +339,9 @@ function get_all_yellow_behaviors(){
     //If there are yellow behaviors then we add them all to the behaviors array
     else{
         //Loops through all of the yellow behaviors
-        for($i = 0; $i < $numTitles; $i++){
+        while($row = mysqli_fetch_assoc($titles)){
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
-            $curTitle = $titles[i];
+            $curTitle = $row['title'];
             //Adds the current (ith) behavior to the behaviors array
             //Key: title of behavior
             //Value: Color rank of behavior
@@ -397,9 +397,9 @@ function get_all_red_behaviors(){
     //If there are red behaviors then we add them all to the behaviors array
     else{
         //Loops through all of the red behaviors in the db
-        for($i = 0; $i < $numTitles; $i++){
+        while($row = mysqli_fetch_assoc($titles)){
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
-            $curTitle = $titles[i];
+            $curTitle = $row['title'];
             //Adds the current (ith) behavior to the behaviors array
             //Key: title of behavior
             //Value: Color rank of behavior

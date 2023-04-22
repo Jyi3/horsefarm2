@@ -39,7 +39,7 @@ function assignBehavior($horseID, $behavior){
 
             $query = 'INSERT INTO horsetobehaviordb (horseid, title) VALUES ( ' . $horseID . ' , "' .
                 $behaviorName . '" );';
-            echo("<p>" . $query . "</p>");
+            #echo("<p>" . $query . "</p>");
             mysqli_query($con, $query);
             mysqli_close($con);
 
@@ -78,12 +78,12 @@ function unassignBehavior($horseID, $behavior){
     $behaviorName = $behavior->get_title();
 
     $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $behaviorName . "';";
-    $check = mysqli($con, $checkQuery);
+    $check = mysqli_query($con, $checkQuery);
     //Checks and make sure that the horse already has been assigned the given behavior. If it has, then it deletes it.
     if($check != null  || mysqli_num_rows($check) != 0){
 
         $query = 'DELETE FROM horseyobehaviordb (horseid, title) WHERE horseID="' . $horseID . '" AND title="' .$behaviorName . '";';
-        mysqli($con, $query);
+        mysqli_query($con, $query);
         mysqli_close($con);
 
         return true;
@@ -129,7 +129,7 @@ function autoAssignBehaviors($horseID){
 
         //Loops through all the behaviors that need to be assigned to the inputted horse
         for($i=0; $i < $numBehaves; $i++){
-            echo("<p> numBehaves = " . $numBehaves . "</p>");
+            #echo("<p> numBehaves = " . $numBehaves . "</p>");
             //Title of the current behavior that the loop is on
             $behaveName = $behaviorTitles[$i];
             //Query that gets all the info of the current behavior so we can then make a behavior object out of it to then be asigned
@@ -161,7 +161,8 @@ function autoAssignBehaviors($horseID){
             //Query that gets all info of the current behavior to then make a behavior object out of it
             $query = "SELECT * FROM behaviorDB WHERE title='". $behaveName . "';";
             $result = mysqli_query($con,$query);
-            $curBehavior = make_a_behavior($result);
+            $newBehave = mysqli_fetch_assoc($result);
+            $curBehavior = make_a_behavior($newBehave);
             //assigns current behavior to the given horse
             assignBehavior($horseID, $curBehavior);
         }
@@ -187,7 +188,8 @@ function autoAssignBehaviors($horseID){
             //Query that gets all info of the current behavior to then make a behavior object out of it
             $query = "SELECT * FROM behaviorDB WHERE title='". $behaveName . "';";
             $result = mysqli_query($con,$query);
-            $curBehavior = make_a_behavior($result);
+            $newBehave = mysqli_fetch_assoc($result);
+            $curBehavior = make_a_behavior($newBehave);
             //assigns current behavior to the given horse
             assignBehavior($horseID, $curBehavior);
         }

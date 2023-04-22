@@ -149,7 +149,7 @@
                         $horseRow = mysqli_fetch_assoc($horseID);
                         #echo"<p>HorseID = '" . $horseRow["horseID"] . "'</p>";
                         autoAssignBehaviors($horseRow['horseID']);
-                        #header("Location: createHorse.php");
+                        header("Location: createHorse.php");
                     } else {
                         echo "<p>Error adding new horse: " . mysqli_error($conn) . "</p>";
                     }
