@@ -235,6 +235,7 @@ function get_numBehaviors() {
  *      $theBehavior, the Behavior object created from the MySQL row.
  */
 function make_a_behavior($result_row) {
+    echo("<p>Type: " . $result_row['title'] . " Color: " . $result_row['behaviorLevel'] . " </p>");
     $theBehavior = new Behavior(
                 $result_row['title'],
                 $result_row['behaviorLevel']);
@@ -265,6 +266,7 @@ function get_all_green_behaviors(){
     //Quey that gets the title of every green behavior from behaviordb
     $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Green'";
     $titles = mysqli_query($con,$titleQuery);
+
     //Gets the number of green behaviors in the db
     $numTitles = mysqli_num_rows($titles);
     //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
@@ -280,9 +282,9 @@ function get_all_green_behaviors(){
     //If there are green behaviors then we add them all to the behaviors array
     else{
         //Loops through all of the green behaviors
-        for($i = 0; $i < $numTitles; $i++){
+        while($row = mysqli_fetch_assoc($titles)){
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
-            $curTitle = $titles[i];
+            $curTitle = $row['title'];
             //Adds the current (ith) behavior to the behaviors array
             //Key: title of behavior
             //Value: Color rank of behavior
