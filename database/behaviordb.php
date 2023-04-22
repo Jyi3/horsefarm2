@@ -263,8 +263,8 @@ function get_all_green_behaviors(){
     $behaviors = array();
     $con = connect();
     //Quey that gets the title of every green behavior from behaviordb
-    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel=Green";
-    $titles = mysqli($con,$titleQuery);
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Green'";
+    $titles = mysqli_query($con,$titleQuery);
     //Gets the number of green behaviors in the db
     $numTitles = mysqli_num_rows($titles);
     //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
@@ -319,8 +319,8 @@ function get_all_yellow_behaviors(){
     $behaviors = get_all_green_behaviors();
     $con = connect();
     //Quey that gets the title of every yellow behavior from behaviordb
-    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel=Yellow";
-    $titles = mysqli($con,$titleQuery);
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Yellow'";
+    $titles = mysqli_query($con,$titleQuery);
     //Gets the number of yellow behaviors in the db
     $numTitles = mysqli_num_rows($titles);
     //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
@@ -377,8 +377,8 @@ function get_all_red_behaviors(){
     $behaviors = array_merge($greens, $yellows);
     $con = connect();
     //Quey that gets the title of every red behavior from behaviordb
-    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel=Red";
-    $titles = mysqli($con,$titleQuery);
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Red'";
+    $titles = mysqli_query($con,$titleQuery);
     //Gets the number of red behaviors in the db
     $numTitles = mysqli_num_rows($titles);
     //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
