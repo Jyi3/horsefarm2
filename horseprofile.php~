@@ -31,17 +31,10 @@
         INNER JOIN horsedb h ON n.horseID = h.horseID 
         INNER JOIN persondb t ON n.username = t.username
         WHERE n.horseID = '$hp_horseID' AND n.archive = 1";
-
-
-
-    $hBehaviors = "SELECT h.title 
-                    FROM horsetobehaviordb h 
-                    WHERE h.horseID = '$hp_horseID' ";  
     $result = mysqli_query($conn, $sql);
     $activeNotes = mysqli_query($conn, $aNotes);
     $archiveNotes = mysqli_query($conn, $arNotes);
     $trainerListResult = mysqli_query($conn, $trainerListSql);
-    $assignedBehaviors = mysqli_query($conn, $hBehaviors);
 
     $row = mysqli_fetch_assoc($result);
     $horseName = $row["horseName"];
@@ -277,7 +270,7 @@
 </head>
 <body>
     <div id="container">
-        <?PHP include('header.php'); ?>
+        <?PHP #include('header.php'); ?>
         
             
         <title><?php echo $horseName; ?>'s Profile</title>

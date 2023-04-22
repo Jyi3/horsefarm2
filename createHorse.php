@@ -132,6 +132,7 @@
             <?php
                 include_once('database/horsedb.php');
                 include_once('database/dbinfo.php');
+                include_once('./addBehavior.php');
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // create new Horse object
@@ -143,6 +144,11 @@
 
                     // execute SQL query
                     if (mysqli_query($conn, $sql)) {
+                        $searchID = "SELECT horseID FROM horsedb WHERE horseName='". $_POST["horseName"] . "' AND color='" . $_POST["color"] . "' AND breed='" . $_POST["breed"] . "' AND pastureNum=" . $_POST["pastureNum"] . " AND colorRank='" . $_POST["colorRank"] . "';" ;
+                        $horseID = mysqli_query($conn, $searchID);
+                        $horseRow = mysqli_fetch_assoc($horseID);
+                        #echo"<p>HorseID = '" . $horseRow["horseID"] . "'</p>";
+                        autoAssignBehaviors($horseRow['horseID']);
                         header("Location: createHorse.php");
                     } else {
                         echo "<p>Error adding new horse: " . mysqli_error($conn) . "</p>";

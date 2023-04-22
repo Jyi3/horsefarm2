@@ -235,11 +235,186 @@ function get_numBehaviors() {
  *      $theBehavior, the Behavior object created from the MySQL row.
  */
 function make_a_behavior($result_row) {
+    #echo("<p>Type: " . $result_row['title'] . " Color: " . $result_row['behaviorLevel'] . " </p>");
     $theBehavior = new Behavior(
                 $result_row['title'],
                 $result_row['behaviorLevel']);
     return $theBehavior;
 }
+
+
+/*
+ * Function name: get_all_green_behaviors()
+ * Description: Gets all green behaviors from behaviorDB and adds it to the $behaviors array. 
+ *              In the behaviors array the key is the title of the behavior and the value is the color rank of said behavior
+ * Parameters: 
+ *      None
+ * Return Values:
+ *      $behaviors --> An array containing all behaviors whose level = GREEN . 
+ *      It contains both the name (Key) and level (Value)
+ * 
+ * This should be used when creating a horse. It will call this function then in a seperate query 
+ * use the array returned by this to get all green behaviors and add assign this to a horse
+ * 
+ * This function is also called by get_all_yellow_behaviors and get_all_red_behaviors since a yellow horse
+ * gets all yellow and green behaviors automatically assigned to it. 
+ */
+function get_all_green_behaviors(){
+    //Creates an array (which in php is kinda like a python dictionary) which will hold the behaviors title as its key, and that behaviors color rank as its value
+    $behaviors = array();
+    $con = connect();
+    //Quey that gets the title of every green behavior from behaviordb
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Green'";
+    $titles = mysqli_query($con,$titleQuery);
+
+    //Gets the number of green behaviors in the db
+    $numTitles = mysqli_num_rows($titles);
+    //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
+    $rank = 'Green';
+    //Checks to make sure theres green behaviors in the DB. If there isnt, function returns an empty arrays and a warning is printed
+    if($numTitles == 0){
+        $error = "Warning: No Green behaviors to add!";
+        echo("<li><strong><font color=\"orange\">" . $error . "</font></string></li>\n");
+        mysqli_close($con);
+        return $behaviors;
+    }
+
+    //If there are green behaviors then we add them all to the behaviors array
+    else{
+        #$i = 0;
+        //Loops through all of the green behaviors
+        while($row = mysqli_fetch_assoc($titles)){
+            #$i += 1;
+            #echo("<p> i = " . $i . "</p>");
+            //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
+            $curTitle = $row['title'];
+            //Adds the current (ith) behavior to the behaviors array
+            //Key: title of behavior
+            //Value: Color rank of behavior
+            $behaviors[$curTitle] = $rank;
+        }
+        mysqli_close($con);
+        return $behaviors;
+    }
+}
+
+
+
+/*
+ * Function name: get_all_yellow_behaviors()
+ * Description: Gets all green behaviors from behaviorDB and adds it to the $behaviors array. 
+ *              In the behaviors array the key is the title of the behavior and the value is the color rank of said behavior.
+ * Parameters: 
+ *      None
+ * Return Values:
+ *      $behaviors --> An array containing all behaviors whose level = GREEN or YELLOW . 
+ *      It contains both the name (Key) and level (Value)
+ * 
+ * This should be used when creating a horse. It will call this function then in a seperate query 
+ * use the array returned by this to get all green and yellow behaviors and  assign them to a horse
+ * 
+ * This function is also called by get_all_red_behaviors and get_all_red_behaviors since a red horse
+ * gets all red, yellow and green behaviors automatically assigned to it. 
+ * 
+ * The function calls get_all_green_behaviors to add them to the array thats returned.
+ */
+function get_all_yellow_behaviors(){
+    //Creates an array (which in php is kinda like a python dictionary) which will hold the behaviors title as its key, and that behaviors color rank as its value
+    $behaviors = array();
+    $behaviors = get_all_green_behaviors();
+    $con = connect();
+    //Quey that gets the title of every yellow behavior from behaviordb
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Yellow'";
+    $titles = mysqli_query($con,$titleQuery);
+    //Gets the number of yellow behaviors in the db
+    $numTitles = mysqli_num_rows($titles);
+    //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
+    $rank = 'Yellow';
+    //Checks to make sure theres yellow behaviors in the DB. If there isnt, we just return behaviors since it has all green behaviors
+    if($numTitles == 0){
+        mysqli_close($con);
+        return $behaviors;
+    }
+
+    //If there are yellow behaviors then we add them all to the behaviors array
+    else{
+        //Loops through all of the yellow behaviors
+        while($row = mysqli_fetch_assoc($titles)){
+            //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
+            $curTitle = $row['title'];
+            //Adds the current (ith) behavior to the behaviors array
+            //Key: title of behavior
+            //Value: Color rank of behavior
+            $behaviors[$curTitle] = $rank;
+        }
+        mysqli_close($con);
+        return $behaviors;
+    }
+}
+
+
+
+/*
+ * Function name: get_all_red_behaviors()
+ * Description: Gets all red behaviors from behaviorDB and adds it to the $behaviors array. 
+ *              In the behaviors array the key is the title of the behavior and the value is the color rank of said behavior.
+ * Parameters: 
+ *      None
+ * Return Values:
+ *      $behaviors --> An array containing all behaviors whose level = GREEN or YELLOW or RED.  (Basically has all behaviors)
+ *      It contains both the name (Key) and level (Value)
+ * 
+ * This should be used when creating a horse. It will call this function then in a seperate query 
+ * use the array returned by this to get all behaviors and add assign this to a red horse
+ * 
+ * 
+ * 
+ * The function calls get_all_green_behaviors and get_all_yellow_behaviors() to add them to the array thats returned.
+ */
+function get_all_red_behaviors(){
+    //Creates an array (which in php is kinda like a python dictionary) which will hold the behaviors title as its key, and that behaviors color rank as its value
+    $behaviors = array();
+    //Array containing all green behaviors
+    $greens = get_all_green_behaviors();
+    //Array containing all yellow behaviors
+    $yellows = get_all_yellow_behaviors();
+    //Merges the green and yellow behaviors into one array, which will then have red behaviors added onto it
+    $behaviors = array_merge($greens, $yellows);
+    $con = connect();
+    //Quey that gets the title of every red behavior from behaviordb
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Red'";
+    $titles = mysqli_query($con,$titleQuery);
+    //Gets the number of red behaviors in the db
+    $numTitles = mysqli_num_rows($titles);
+    //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
+    $rank = 'Red';
+    //Checks to make sure theres red behaviors in the DB. If there isnt, we just return behaviors since it has all green and yellow behaviors
+    if($numTitles == 0){
+        mysqli_close($con);
+        return $behaviors;
+    }
+
+    //If there are red behaviors then we add them all to the behaviors array
+    else{
+        //Loops through all of the red behaviors in the db
+        while($row = mysqli_fetch_assoc($titles)){
+            //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
+            $curTitle = $row['title'];
+            //Adds the current (ith) behavior to the behaviors array
+            //Key: title of behavior
+            //Value: Color rank of behavior
+            $behaviors[$curTitle] = $rank;
+        }
+        mysqli_close($con);
+        return $behaviors;
+    }
+}
+
+//Will add a function in addBehaviors.php  that takes in a horseID, and depending on their rank automatically add the right behaviors of the same color rank and below
+
+
+?>
+
 
 
 ?>

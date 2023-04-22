@@ -53,6 +53,28 @@ CREATE TABLE `behaviordb` (
   `behaviorLevel` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+INSERT INTO `behaviordb` (`title`, `behaviorLevel`) VALUES
+('Walking', 'Green'),
+('Saddling', 'Green'),
+('Haltering','Green'),
+('Tying','Green'),
+('Walking with Lead', 'Green'),
+('Recognize Name', 'Green'),
+('Steering', 'Green'),
+('Interact with Horses', 'Green'),
+('Trot', 'Yellow'),
+('Gallop', 'Yellow'),
+('Basic Jumping', 'Yellow'),
+('Trailering', 'Yellow'),
+('Trail Riding', 'Yellow'),
+('Side Stepping', 'Yellow'),
+('Intense Steering/Handling', 'Red'),
+('Show Jumping', 'Red'),
+('Spanish Walk', 'Red'),
+('Rear-up', 'Red'),
+('Bowing','Red'),
+('Pulling/Driving', 'Red');
 -- --------------------------------------------------------
 
 --
@@ -76,14 +98,14 @@ CREATE TABLE `horsedb` (
 --
 
 INSERT INTO `horsedb` (`horseID`, `horseName`, `color`, `breed`, `pastureNum`, `colorRank`, `archive`, `archiveDate`) VALUES
-(1, 'Thunder', 'Brown', 'Quarter Horse', 1, 'green', 1, '2023-04-18'),
-(2, 'Midnight', 'Black', 'Arabian', 1, 'yellow', 0, ''),
-(3, 'Silver', 'Gray', 'Andalusian', 2, 'green', 0, ''),
-(4, 'Blaze', 'Chestnut', 'Thoroughbred', 2, 'yellow', 0, ''),
-(5, 'Snowflake', 'White', 'Friesian', 3, 'green', 0, ''),
-(6, 'Cocoa', 'Bay', 'Morgan', 3, 'yellow', 0, ''),
-(7, 'Sunny', 'Palomino', 'Paint', 4, 'green', 1, '2023-04-18'),
-(8, 'Stormy', 'Dapple Gray', 'Lipizzaner', 4, 'red', 0, '');
+(1, 'Thunder', 'Brown', 'Quarter Horse', 1, 'Green', 1, '2023-04-18'),
+(2, 'Midnight', 'Black', 'Arabian', 1, 'Yellow', 0, ''),
+(3, 'Silver', 'Gray', 'Andalusian', 2, 'Green', 0, ''),
+(4, 'Blaze', 'Chestnut', 'Thoroughbred', 2, 'Yellow', 0, ''),
+(5, 'Snowflake', 'White', 'Friesian', 3, 'Green', 0, ''),
+(6, 'Cocoa', 'Bay', 'Morgan', 3, 'Yellow', 0, ''),
+(7, 'Sunny', 'Palomino', 'Paint', 4, 'Green', 1, '2023-04-18'),
+(8, 'Stormy', 'Dapple Gray', 'Lipizzaner', 4, 'Red', 0, '');
 
 -- --------------------------------------------------------
 
