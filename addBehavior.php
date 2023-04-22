@@ -129,7 +129,7 @@ function autoAssignBehaviors($horseID){
 
         //Loops through all the behaviors that need to be assigned to the inputted horse
         for($i=0; $i < $numBehaves; $i++){
-            
+            echo("<p> numBehaves = " . $numBehaves . "</p>");
             //Title of the current behavior that the loop is on
             $behaveName = $behaviorTitles[$i];
             //Query that gets all the info of the current behavior so we can then make a behavior object out of it to then be asigned
@@ -139,9 +139,9 @@ function autoAssignBehaviors($horseID){
             $curBehavior = make_a_behavior($newBehave);
             //assigns the current behavior to the given horse
             assignBehavior($horseID,$curBehavior);
-            return TRUE;
+            
         }
-
+        return TRUE;
     }
     elseif($color == "Yellow"){
         $greens = get_all_green_behaviors();

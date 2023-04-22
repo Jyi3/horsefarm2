@@ -235,7 +235,7 @@ function get_numBehaviors() {
  *      $theBehavior, the Behavior object created from the MySQL row.
  */
 function make_a_behavior($result_row) {
-    echo("<p>Type: " . $result_row['title'] . " Color: " . $result_row['behaviorLevel'] . " </p>");
+    #echo("<p>Type: " . $result_row['title'] . " Color: " . $result_row['behaviorLevel'] . " </p>");
     $theBehavior = new Behavior(
                 $result_row['title'],
                 $result_row['behaviorLevel']);
@@ -281,8 +281,11 @@ function get_all_green_behaviors(){
 
     //If there are green behaviors then we add them all to the behaviors array
     else{
+        $i = 0;
         //Loops through all of the green behaviors
         while($row = mysqli_fetch_assoc($titles)){
+            $i += 1;
+            echo("<p> i = " . $i . "</p>");
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
             $curTitle = $row['title'];
             //Adds the current (ith) behavior to the behaviors array
