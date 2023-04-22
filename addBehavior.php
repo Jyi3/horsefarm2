@@ -110,6 +110,9 @@ Return Value(s):
 function autoAssignBehaviors($horseID){
     //Horse object that corresponds to the ID inputted
     $horse = retrieve_horse_by_id($horseID);
+    if($horse == FALSE){
+        die("Error No Horse Found to Auto Assign");
+    }
     //Color of the inputted horse (defines what behaviors get assigned to it)
     $color = $horse->get_colorRank();
     //If the horse is has a green colorRank, then it gets all the green behaviors
