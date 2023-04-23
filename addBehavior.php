@@ -250,13 +250,13 @@ function complete_behavior($horseID,$title){
     }
     $con = connect();
 
-    $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $check = mysqli_query($con, $checkQuery);
     if($check == null || mysqli_num_rows($check) == 0){
         die("No such behavior has been assigned to this horse.");
         return false;
     }
-    $query = "UPDATE horsetobehaviordb SET completion=0 WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $query = "UPDATE horsetobehaviordb SET completion=0 WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $update = mysqli_query($con, $query);
     return $update;
 }
@@ -282,13 +282,13 @@ function incomplete_behavior($horseID,$title){
     }
     $con = connect();
 
-    $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $check = mysqli_query($con, $checkQuery);
     if($check == null || mysqli_num_rows($check) == 0){
         die("No such behavior has been assigned to this horse.");
         return false;
     }
-    $query = "UPDATE horsetobehaviordb SET completion=1 WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $query = "UPDATE horsetobehaviordb SET completion=1 WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $update = mysqli_query($con, $query);
     return $update;
 }
