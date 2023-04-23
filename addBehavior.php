@@ -219,16 +219,79 @@ function get_a_Horses_Behaviors($horseID){
 
     $con = connect();
     
-    $query = "SELECT * FROM horseToBehaviorDB WHERE horseid='" . $horseID . "';";
-    $allBehaves = mysqli($con,$query);
+    $query = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "';";
+    $allBehaves = mysqli_query($con,$query);
 
     //If a horse has no behaviors assigned to it, we return false.
-    if($allBehaves == null || mysqli_num_rows($check) == 0){
+    if($allBehaves == null || mysqli_num_rows($allBehaves) == 0){
         return false;
     }
     mysqli_close($con);
     return $allBehaves;
 
 }
+
+
+/*
+Function name: complete_behavior()
+Description: Sets the behavior of a specific horse from incomplete (1) to COMPLETE (0). 
+Parameters: 
+            HorseID --> ID of the horse who we want mark their behavior as completed
+            Title -->  Title of the behavior to be marked as completed
+
+Return Value(s):
+            $update --> Returns True if the update statement was successful
+            False --> Returns false if the horseID was not inputted in the correct format, or if the horse does not have the given behavior assigned to it
+*/
+function complete_behavior($horseID,$title){
+
+    if(is_string($horseID) == FALSE){
+        return false;
+    }
+    $con = connect();
+
+    $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $check = mysqli_query($con, $checkQuery);
+    if($check == null || mysqli_num_rows($check) == 0){
+        die("No such behavior has been assigned to this horse.");
+        return false;
+    }
+    $query = "UPDATE horsetobehaviordb SET completion=0 WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $update = mysqli_query($con, $query);
+    return $update;
+}
+
+
+
+
+/*
+Function name: incomplete_behavior()
+Description: Sets the behavior of a specific horse from complete (0) to INCOMPLETE (1). 
+Parameters: 
+            HorseID --> ID of the horse who we want mark their behavior as incomplete
+            Title -->  Title of the behavior to be marked as incomplete
+
+Return Value(s):
+            $update --> Returns True if the update statement was successful
+            False --> Returns false if the horseID was not inputted in the correct format, or if the horse does not have the given behavior assigned to it
+*/
+function incomplete_behavior($horseID,$title){
+
+    if(is_string($horseID) == FALSE){
+        return false;
+    }
+    $con = connect();
+
+    $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $check = mysqli_query($con, $checkQuery);
+    if($check == null || mysqli_num_rows($check) == 0){
+        die("No such behavior has been assigned to this horse.");
+        return false;
+    }
+    $query = "UPDATE horsetobehaviordb SET completion=1 WHERE horseid='" . $horseID . "' AND title='" . $title "';";
+    $update = mysqli_query($con, $query);
+    return $update;
+}
+
 
 ?>
