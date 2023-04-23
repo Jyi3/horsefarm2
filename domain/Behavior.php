@@ -6,12 +6,10 @@
 class Behavior {
    private $title; //string
    private $behaviorLevel; //string
-   private $completed; //Boolean (0 = Completed, 1 = Incomplete)
    
-   function __construct($title, $behaviorLevel, $completed) {
+   function __construct($title, $behaviorLevel) {
        $this->title = $title;
        $this->behaviorLevel = $behaviorLevel;
-       $this->completed = $completed;
    }
    function get_title() {
        return $this->title;

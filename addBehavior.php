@@ -250,12 +250,23 @@ function complete_behavior($horseID,$title){
     }
     $con = connect();
 
+    //Query that checks to see if the behavior has been assigned to the horse
     $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $check = mysqli_query($con, $checkQuery);
+    //If the horse hasn't been assigned the behavior yet, then we can't mark it as complete since it doesnt exist. Thus an error has occured.
     if($check == null || mysqli_num_rows($check) == 0){
         die("No such behavior has been assigned to this horse.");
         return false;
     }
+
+    //Checks to see if the behaviors already been marked as complete. If so, we don't do anything and just return True
+    $alreadyMarked = "SELECT completion FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title . "' AND completion=0;";
+    $markCheck = mysqli_query($con,$alreadyMarked);
+    if($check == null || mysqli_num_rows($markCheck) == 0){
+        return true;
+    }
+    
+    //Updates the completion column to 0, marking the behavior as incomplete. Returns true
     $query = "UPDATE horsetobehaviordb SET completion=0 WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $update = mysqli_query($con, $query);
     return $update;
@@ -276,18 +287,29 @@ Return Value(s):
             False --> Returns false if the horseID was not inputted in the correct format, or if the horse does not have the given behavior assigned to it
 */
 function incomplete_behavior($horseID,$title){
-
+    //checks to see if the horseID is in proper format/type
     if(is_string($horseID) == FALSE){
         return false;
     }
     $con = connect();
 
+    //Query that checks to see if the behavior has been assigned to the horse
     $checkQuery = "SELECT * FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $check = mysqli_query($con, $checkQuery);
+    //If the horse hasn't been assigned the behavior yet, then we can't mark it as incomplete since it doesnt exist. Thus an error has occured.
     if($check == null || mysqli_num_rows($check) == 0){
         die("No such behavior has been assigned to this horse.");
         return false;
     }
+
+    //Checks to see if the behaviors already been marked as incomplete. If so, we don't do anything and just return True
+    $alreadyMarked = "SELECT completion FROM horsetobehaviordb WHERE horseid='" . $horseID . "' AND title='" . $title . "' AND completion=1;";
+    $markCheck = mysqli_query($con,$alreadyMarked);
+    if($check == null || mysqli_num_rows($markCheck) == 0){
+        return true;
+    }
+    
+    //Updates the completion column to 1, marking the behavior as incomplete. Returns true
     $query = "UPDATE horsetobehaviordb SET completion=1 WHERE horseid='" . $horseID . "' AND title='" . $title . "';";
     $update = mysqli_query($con, $query);
     return $update;

@@ -328,17 +328,25 @@
 
                 <div class="profile-behaviors">
                     <ul>
-                    <h2>
-                    <input type="submit" name="edit_behaviors" value="Edit Behaviors" class="archive-form-button" /> Behaviors</h2>
+                    <h2> Behaviors </h2>
+                    <form method="POST" name="Behavior">
                     <?php
+                        include('./addBehavior.php');
                         // Your code for retrieving behaviors here
-                       
+                       $i = 0;
+                       //Prints each beavhior assigned to a horse with a checkmark following it to tell if the behaviors complete (checked) or incomplete (unchecked)
                         foreach ($behave as $be) {
-     								
-          							echo "<li>" . $be['title'] . "</li>";
-     								
+          							echo "<li>" . $be['title'] . " <input type='checkbox' name=" . $i . "value=" . $be['title'] . "></li>";
+                                    if(isset($_POST['Behavior'][$i])){
+                                        complete_behavior($hp_horseID,$be['title']);
+                                    }
+                                    else {
+                                        incomplete_behavior($hp_horseID, $be['title']);
+                                    }
+     								$i++;
 								}
                     ?>
+                    </form>
                     </ul>
                 </div>
                 
