@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($search4)) {
             $conditions[] = "userType LIKE '%" . $search4 . "%'";
         }
+        $conditions[] = "userType NOT IN ('Viewer', 'Admin')"; // Exclude Viewer and Admin from trainer search
     }
 
 

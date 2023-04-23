@@ -37,6 +37,10 @@ if (isset($_POST['submit'])) {
                     $permissions = 2; // Tier 2
                 } elseif ($userType == 'Head Trainer') {
                     $permissions = 3; // Tier 3
+                }elseif ($userType == 'Viewer') {
+                    $permissions = 4; // Tier 3
+                }elseif ($userType == 'Admin') {
+                    $permissions = 5; // Tier 3
                 }
                 $_SESSION['permissions'] = $permissions;
 

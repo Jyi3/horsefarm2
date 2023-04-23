@@ -1,9 +1,9 @@
 <?php
     include('session.php');
-    // Check if the user has the necessary permissions (permissions level 3)
-    if ($_SESSION['permissions'] < 3) {
-        header("Location: index.php");
-        exit;
+    
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+        die("You do not have permission to access this page.");
     }
 ?>
 
@@ -11,6 +11,7 @@
     include('database/dbinfo.php');
     include('domain/Horse.php');
     include('database/horsedb.php');
+    // Check user permissions
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['horseID']) && isset($_POST['status'])) {
         $horseID = $_POST['horseID'];
@@ -247,28 +248,46 @@
             <?php include('footer.php'); ?>
         </div>
         <script>
+        // Check user permissions and show popup if necessary
+        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+            alert("You do not have permission to archive/activate a horse.");
+        }
         function archiveHorse(horseID) {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    location.reload(); // Reload the page after updating the horse status
-                }
-            };
-            xhttp.open("POST", "update_horse_status.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("horseID=" + horseID + "&status=1"); // Pass 1 as the status to archive the horse
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to archive a horse.");
+            }
+            else
+            {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        location.reload(); // Reload the page after updating the horse status
+                    }
+                };
+                xhttp.open("POST", "update_horse_status.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("horseID=" + horseID + "&status=1"); // Pass 1 as the status to archive the horse
+            }
         }
 
         function activateHorse(horseID) {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    location.reload(); // Reload the page after updating the horse status
-                }
-            };
-            xhttp.open("POST", "update_horse_status.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("horseID=" + horseID + "&status=0"); // Pass 0 as the status to activate the horse
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to activate a horse.");
+            }
+            else
+            {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        location.reload(); // Reload the page after updating the horse status
+                    }
+                };
+                xhttp.open("POST", "update_horse_status.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("horseID=" + horseID + "&status=0"); // Pass 0 as the status to activate the horse
+            }
         }
         </script>
     </body>

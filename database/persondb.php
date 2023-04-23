@@ -9,6 +9,11 @@ function add_person($person) {
         die("Error: add_person userType mismatch");
     }
     
+    // Check if the userType is Viewer or Admin and return false if it is.
+    if ($person->get_userType() === 'Viewer' || $person->get_userType() === 'Admin'|| $person->get_userType() === 'Administrator') {
+        return false;
+    }
+    
     //Create a database connection and check if the person to add already exists.
     $con=connect();
     $query = "SELECT * FROM persondb WHERE firstName='" . $person->get_firstName() . "' AND lastName='" . $person->get_lastName() . "' AND fullName='" . $person->get_fullName() . "' AND phone='" . $person->get_phone() . "' AND username='" . $person->get_username() . "';";
@@ -39,9 +44,15 @@ function add_person($person) {
     return false;
 }
 
+
 function delete_person($username) {
  
-    //Create a database connection and delete the person from the database based on their username.
+    //Create a database connection and check if the person to delete is "Viewer", "Admin", or "Administrator".
+    if ($username === "Viewer" || $username === "Admin" || $username === "Administrator") {
+        return false;
+    }
+
+    //Delete the person from the database based on their username.
     $con = connect();
     $query = "DELETE FROM persondb WHERE username='" . $username . "'";
     $result = mysqli_query($con, $query);
@@ -55,13 +66,16 @@ function delete_person($username) {
         return false;
     }
 }
-
 function edit_person($oldUsername, $person) 
 {
-
     //Legacy code check to ensure the parameter is a Person object.
     if (!$person instanceof Person) {
         die("Errors: edit_person userType mismatch");
+    }
+
+    // Prevent editing of Viewer, Admin, or Administrator usernames
+    if ($oldUsername == 'Viewer' || $oldUsername == 'Admin' || $oldUsername == 'Administrator') {
+        return false;
     }
 
     //Create a database connection and update the database.
@@ -85,13 +99,18 @@ function edit_person($oldUsername, $person)
 
 function remove_person($username) {
 
-    //Create a database connection and remove the trainer from the database.
+    //Check if the user to be removed is Viewer, Admin, or Administrator.
+    if ($username == 'Viewer' || $username == 'Admin' || $username == 'Administrator') {
+        return false;
+    }
+
+    //Create a database connection and remove the person from the database.
     $con=connect();
 
-    //Saves the trainer that is being deleted
+    //Saves the person that is being removed
     $archived = retrieve_person_by_username($username);
     
-    // Sets the archive boolean and archive date for the trainer being removed
+    // Sets the archive boolean and archive date for the person being removed
     $query = 'UPDATE persondb SET archive=true, archiveDate=CURDATE() WHERE username = "' . $username . '"';
     $result = mysqli_query($con,$query);
     
@@ -103,10 +122,10 @@ function remove_person($username) {
 function retrieve_person_by_username($username) {
     
     $con=connect();
-    $query = "SELECT * FROM persondb WHERE username = '$username'";
+    $query = "SELECT * FROM persondb WHERE username = '$username' AND userType NOT IN ('Viewer', 'Admin', 'Administrator')";
     $result = mysqli_query($con,$query);
 
-    //If the horse does NOT exist in the database,
+    //If the person does NOT exist in the database or is a Viewer or Admin or Administrator,
     if (mysqli_num_rows($result) != 1) {
 
         //close the connection and return false.
@@ -115,7 +134,7 @@ function retrieve_person_by_username($username) {
     }
     $result_row = mysqli_fetch_assoc($result);
     $thePerson = make_a_person($result_row);
-    //Otherwise, create a Horse object from the query row and return the object.
+    //Otherwise, create a Person object from the query row and return the object.
     return $thePerson;
 }
 
@@ -124,7 +143,7 @@ function getall_persondb() {
 
     //Create a connection and retrieve all the people information.
     $con = connect();
-    $query = "SELECT * FROM persondb WHERE archive IS NULL OR archive = 0 ORDER BY lastName, firstName";
+    $query = "SELECT * FROM persondb WHERE archive IS NULL OR archive = 0 AND userType NOT IN ('Viewer', 'Admin', 'Administrator') ORDER BY lastName, firstName";
     $result = mysqli_query($con, $query);
     
 
@@ -148,12 +167,11 @@ function getall_persondb() {
     mysqli_close($con);
     return $thePersons;
 }
-
 function getinactive_persondb() {
 
     //Create a connection and retrieve all the inactive people information.
     $con = connect();
-    $query = "SELECT * FROM persondb WHERE archive = 1 ORDER BY lastName, firstName";
+    $query = "SELECT * FROM persondb WHERE archive = 1 AND userType NOT IN ('Viewer', 'Admin', 'Administrator') ORDER BY lastName, firstName";
     $result = mysqli_query($con, $query);
     
 
@@ -181,9 +199,9 @@ function getinactive_persondb() {
 function getall_person_names() {
 
     //Create a database connection and retrieve all of the full names.
-    $con=connect();
-    $query = "SELECT fullName FROM persondb ORDER BY fullName";
-    $result = mysqli_query($con,$query);
+    $con = connect();
+    $query = "SELECT fullName FROM persondb WHERE userType NOT IN ('Viewer', 'Admin', 'Administrator') ORDER BY fullName";
+    $result = mysqli_query($con, $query);
 
     //If the person table is empty,
     if ($result == null || mysqli_num_rows($result) == 0) {
@@ -194,7 +212,6 @@ function getall_person_names() {
     }
 
     //Otherwise, create an array, and add each full name to the array.
-    $result = mysqli_query($con,$query); //This line might be redundant.
     $names = array();
     while ($result_row = mysqli_fetch_assoc($result)) {
         $names[] = $result_row['fullName'];
@@ -209,7 +226,7 @@ function getall_usernames() {
 
     //Create a connection and retrieve all the usernames.
     $con=connect();
-    $query = "SELECT username FROM persondb WHERE archive IS NULL OR archive = 0 ORDER BY username";
+    $query = "SELECT username FROM persondb WHERE archive IS NULL OR archive = 0 AND userType NOT IN ('Viewer', 'Admin', 'Administrator') ORDER BY username";
     $result = mysqli_query($con,$query);
     
 
@@ -232,12 +249,12 @@ function getall_usernames() {
     mysqli_close($con);
     return $usernames;
 }
-  
+
 function getall_usernames_inactive() {
 
     //Create a connection and retrieve all the usernames.
     $con=connect();
-    $query = "SELECT username FROM persondb WHERE archive = 1 ORDER BY username";
+    $query = "SELECT username FROM persondb WHERE archive = 1 AND userType NOT IN ('Viewer', 'Admin', 'Administrator') ORDER BY username";
     $result = mysqli_query($con,$query);
     
 
@@ -278,7 +295,6 @@ function make_a_person($result_row) {
     return $thePerson;
 }
 
-
 function get_numPersons() {
 
     //If "getall_behavior_titles()" yields an empty query,
@@ -290,5 +306,12 @@ function get_numPersons() {
 
     //Otherwise, save the returned array from "getall_person_names()" and return the count of that array.
     $numNames = getall_person_names();
-    return count($numNames);
+    $numPersons = 0;
+    foreach ($numNames as $name) {
+        $person = retrieve_person_by_username($name);
+        if ($person->get_userType() !== 'Viewer' && $person->get_userType() !== 'Admin' && $person->get_userType() !== 'Administrator') {
+            $numPersons++;
+        }
+    }
+    return $numPersons;
 }
