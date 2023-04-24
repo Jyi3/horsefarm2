@@ -1,11 +1,11 @@
 <?php
-    include('session.php');
+    include_once('session.php');
 ?>
 
 <?php
     include_once('database/dbinfo.php');
-
     $conn = connect();
+
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
@@ -54,10 +54,13 @@
     $colorRank = $row["colorRank"];
     $archive = $row["archive"];
     $archiveDate = $row["archiveDate"];
-	 $behaviorsql = "SELECT title FROM horsetobehaviordb WHERE horseID = '$hp_horseID'";
-	 $behave = mysqli_query($conn, $behaviorsql);
-	 $behaviorlist = mysqli_fetch_array($behave);
-    
+    $behaviorsql = "SELECT b.title 
+        FROM behaviordb b 
+        JOIN horsetobehaviordb hb ON b.title = hb.title 
+        WHERE hb.horseID = '$hp_horseID'";
+    $behave = mysqli_query($conn, $behaviorsql);
+    $behaviorlist = mysqli_fetch_array($behave);
+
 
     // Query for associated horses
     $sql_associated_trainer = 
@@ -77,9 +80,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hp_horseID = $_POST["horseID"];
 
-        include_once('database/dbinfo.php');
 
-        $conn = connect();
         if (!$conn) {
             die("Connection failed: " . mysqli_connect_error());
         }
@@ -260,6 +261,10 @@
             margin-right: auto;
         }
 
+        li {
+            list-style-type: none;
+            align-items: center;
+        }
         /* Footer */
         .footer {
             background-color: #f8f9fa;
@@ -273,7 +278,26 @@
             font-size: 14px;
             color: #6c757d;
         }
-        
+        .behavior-column {
+            display: inline-block;
+            width: 30%;
+            vertical-align: top;
+            padding-right: 20px;
+            box-sizing: border-box;
+        }
+        .behavior-list ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .behavior-column li {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .behavior-column li:nth-child(3n+1) {
+            clear: left;
+        }
+
         @media (max-width: 768px) {
             #container {
                 padding: 10px;
@@ -298,6 +322,11 @@
             .trainer-list-container {
                 align-items: center;
                 text-align: center;
+            }
+            .behavior-column {
+                display: block;
+                width: 100%;
+                padding-right: 0;
             }
         }
 
@@ -355,60 +384,50 @@
                 </form>
                 </div>
 
-                <div class="profile-behaviors">
-                    <ul>
-                    <h2> Behaviors </h2>
-                    
-                    <?php
-                        
-                       $i = 0;
-                       include('./addBehavior.php');
-                       // Your code for retrieving behaviors here
-           
-                       //start session to store checked behaviors so they dont fucking disapper after being checked...
-                       #session_start();
-           
-                       //Array that stores all behaviors that have been checked
-                       $checkedBehaviors=array();
-           
-                        if($_Server['REQUEST_METHOD'] == 'POST'){
-                            //Loop through all behaviors and add all checked ones to the $checkedBehaviors array
-                            foreach($behave as $be){
-                                //Behavior has been checked as complete
-                                if(isset($_POST[$be['title']])){
-                                    //Add to checkedBehaviors array 
-                                    array_push($checkedBehaviors, $be['title']);
-                                    //Call complete behavior function to update the completion column to 0 (in horsetobehaviordb)
-                                    complete_behavior($be['title'],$hp_horseID);
-                                }
-                                //Behaviors is unchecked
-                                else{
-                                    //Call incomplete behavior function to set completion column to 1 
-                                    incomplete_behavior($be['title'], $hp_horseID);
-                                }
-                            }
-                            //Store all the checked behaviors in current session so they dont just disappear when the page is refreshed
-                            $_SESSION['checkedBehaviors'] = $checkedBehaviors;
-                        }
-                        else{
-                            //Checks to see if theres any checked behaviors in the current session
-                            if(isset($_SESSION['checkedBehaviors'])){
-                                //Get checked behaviors from session to be used in below loop
-                                $checkedBehaviors = $_SESSION['checkedBehaviors'];
-                            }
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                    <div class="behavior-list">
+                        <h2>Add Behaviors</h2>
+                        <?php
+                        include_once('database/dbinfo.php');
+                        $conn = connect();
+
+                        if (!$conn) {
+                            die("Connection failed: " . mysqli_connect_error());
                         }
 
-                       //Prints each beavhior assigned to a horse with a checkmark following it to tell if the behaviors complete (checked) or incomplete (unchecked)
-                        foreach ($behave as $be) {
-                                    //Boolean value that tells if the current behavior is checked off or not
-                                    $isChecked = in_array($be['title'], $checkedBehaviors);
-                                    //Print the behavior w a checkbox thats checked if the horse has completed the behavior, and is unchecked if the horse hasn't
-          							echo "<li>" . $be['title'] . " <input type='checkbox' name='" . $be['title'] . "' value='" . $be['title'] . "'" . ($isChecked ? " checked" : "") . "></li>";
-								}
-                    ?>
-                    </ul>
-                </div>
-                
+                        // Use $_GET to get the horseid parameter
+                        $hp_horseID = $_GET["horseID"];
+
+                        $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID FROM behaviordb b LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID' ORDER BY b.behaviorLevel ASC";
+
+                        $behaviorResult = mysqli_query($conn, $behaviorSql);
+
+                        $current_behaviorLevel = "";
+                        while ($behaviorRow = mysqli_fetch_assoc($behaviorResult)) {
+                            if ($current_behaviorLevel != $behaviorRow['behaviorLevel']) {
+                                if ($current_behaviorLevel != "") {
+                                    echo "</div>"; // close previous behavior-column div
+                                }
+                                $current_behaviorLevel = $behaviorRow['behaviorLevel'];
+                                echo "<h3>" . ucfirst($current_behaviorLevel) . "</h3>";
+                                echo '<div class="behavior-column">'; // open new behavior-column div
+                                echo "<ul>"; // add ul tag
+                            }
+                            $color = isset($behaviorRow['horseID']) ? 'green' : 'red';
+                            echo '<li style="color:'.$color.';"><input type="checkbox" name="behaviors[]" value="' . $behaviorRow['title'] . '"> ' . $behaviorRow['title'] . '</li>';
+                        }
+                        if ($current_behaviorLevel != "") {
+                            echo "</ul>"; // close ul tag
+                            echo "</div>"; // close last behavior-column div
+                        }
+
+                        mysqli_close($conn);
+                        ?>
+                    </div>
+                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                    <input type="submit" value="Add Behaviors">
+                </form>
+
             </div>
             
             <!-- Add the new Trainer List form container -->

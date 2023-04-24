@@ -1,5 +1,5 @@
 <?php
-    include('session.php');
+    include_once('session.php');
     function customErrorHandler($errno, $errstr, $errfile, $errline) {
         header("Location: index.php");
         exit;
