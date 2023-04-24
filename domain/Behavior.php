@@ -17,4 +17,7 @@ class Behavior {
    function get_behaviorLevel() {
        return $this->behaviorLevel;
    }
+   function get_completion(){
+        return $this->behaviorLevel;
+   }
 }
