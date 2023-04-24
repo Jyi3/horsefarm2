@@ -98,7 +98,7 @@
             }
             mysqli_close($conn);
         }
-        
+
         echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?horseID=$hp_horseID';</script>";
         exit();
     }
@@ -329,24 +329,56 @@
                 <div class="profile-behaviors">
                     <ul>
                     <h2> Behaviors </h2>
-                    <form method="POST" name="Behavior">
+                    
                     <?php
-                        include('./addBehavior.php');
-                        // Your code for retrieving behaviors here
+                        
                        $i = 0;
+                       include('./addBehavior.php');
+                       // Your code for retrieving behaviors here
+           
+                       //start session to store checked behaviors so they dont fucking disapper after being checked...
+                       session_start();
+           
+                       //Array that stores all behaviors that have been checked
+                       $checkedBehaviors=array();
+           
+                       //Makes sure the POST form has been submitted to check behavior checkboxes
+                       if($Server['REQUEST_METHOD'] == 'POST'){
+           
+                            //Loop through all behaviors and add all checked ones to the $checkedBehaviors array
+                           foreach($behave as $be){
+                                //Behavior has been checked as complete
+                               if(isset($_POST[$be['title']])){
+                                    //Add to checkedBehaviors array 
+                                   array_push($checkedBehaviors, $be['title']);
+                                   //Call complete behavior function to update the completion column to 0 (in horsetobehaviordb)
+                                   complete_behavior($be['title'],$hp_horseID);
+                               }
+                               //Behaviors is unchecked
+                               else{
+                                    //Call incomplete behavior function to set completion column to 1 
+                                   incomplete_behavior($be['title'], $hp_horseID);
+                               }
+                           }
+                           //Store all the checked behaviors in current session so they dont just disappear when the page is refreshed
+                           $_SESSION['checkedBehaviors'] = $checkedBehaviors;
+                       }
+                       else {
+                        //Checks to see if theres any checked behaviors in the current session
+                        if(isset($_SESSION['checkedBehaviors'])){
+                            //Get checked behaviors from session to be used in below loop
+                            $checkedBehaviors = $_SESSION['checkedBehaviors'];
+                        }
+                       }
+
                        //Prints each beavhior assigned to a horse with a checkmark following it to tell if the behaviors complete (checked) or incomplete (unchecked)
                         foreach ($behave as $be) {
-          							echo "<li>" . $be['title'] . " <input type='checkbox' name=" . $i . "value=" . $be['title'] . "></li>";
-                                    if(isset($_POST['Behavior'][$i])){
-                                        complete_behavior($hp_horseID,$be['title']);
-                                    }
-                                    else {
-                                        incomplete_behavior($hp_horseID, $be['title']);
-                                    }
-     								$i++;
+                                    //Boolean value that tells if the current behavior is checked off or not
+                                    $isChecked = in_array($be['title'], $checkedBehaviors);
+                                    //Print the behavior w a checkbox thats checked if the horse has completed the behavior, and is unchecked if the horse hasn't
+          							echo "<li>" . $be['title'] . " <input type='checkbox' name='" . $be['title'] . "' value='" . $be['title'] . "'" . ($isChecked ? " checked" : "") . "></li>";
 								}
                     ?>
-                    </form>
                     </ul>
                 </div>
                 
