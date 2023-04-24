@@ -17,7 +17,8 @@
     $trainerListSql = "SELECT p.username, p.firstName, p.lastName, p.archive, IF(pt.horseID IS NULL, 0, 1) AS isConnected
         FROM persondb p
         LEFT JOIN persontohorsedb pt ON p.username = pt.username AND pt.horseID = '$hp_horseID'
-        WHERE p.archive != 1";
+        WHERE p.archive != 1 AND p.userType NOT IN ('Viewer', 'Admin')";
+
 
     $sql = "SELECT * FROM horsedb WHERE horseID = '$hp_horseID'";
     $aNotes = "SELECT n.horseID, n.noteID, t.firstName, t.lastName, n.note, n.noteDate, t.username, n.archive, n.archiveDate
@@ -75,7 +76,6 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hp_horseID = $_POST["horseID"];
-        $username = $_POST["username"];
 
         include_once('database/dbinfo.php');
 
@@ -83,7 +83,11 @@
         if (!$conn) {
             die("Connection failed: " . mysqli_connect_error());
         }
-        if (isset($_POST["archive"])) {
+        
+        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+            echo '<script>alert("You do not have permission to archive or activate a  horse.");</script>';
+        }
+        else if (isset($_POST["archive"])) {
             $sql = "UPDATE horsedb SET archive = 1, archiveDate = CURRENT_DATE() WHERE horseID = '$hp_horseID'";
             $action_success = mysqli_query($conn, $sql);
             if (!$action_success) {
@@ -530,19 +534,28 @@
         });
 
         document.getElementById("add-remove-button").addEventListener("click", function() {
-            const trainerDropdown = document.getElementById("trainer-dropdown");
-            const selectedTrainer = trainerDropdown.value;
-            const horseId = "<?php echo $hp_horseID; ?>";
+            
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to add a trainer to the horse.");
+            }
+            else
+            {
+                const trainerDropdown = document.getElementById("trainer-dropdown");
+                const selectedTrainer = trainerDropdown.value;
+                const horseId = "<?php echo $hp_horseID; ?>";
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "add_remove_trainer.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    location.reload(); // Reload the page to update the trainer list
-                }
-            };
-            xhr.send("horseID=" + horseId + "&username=" + selectedTrainer);
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "add_remove_trainer.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        location.reload(); // Reload the page to update the trainer list
+                    }
+                };
+                xhr.send("horseID=" + horseId + "&username=" + selectedTrainer);
+
+            }
         });
 
         // Get the archive and de-archive forms

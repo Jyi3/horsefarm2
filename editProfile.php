@@ -6,6 +6,11 @@
 
 
     
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+        die("You do not have permission to access this page.");
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
         $firstName = htmlspecialchars(trim($_POST["firstName"]));
         $lastName = htmlspecialchars(trim($_POST["lastName"]));

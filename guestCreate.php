@@ -127,7 +127,7 @@ body {
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // create new Person object
                     $username = str_replace("-", "", $_POST["phone"]); // remove dashes from phone number
-                    $username = $_POST["firstName"] . $_POST["lastName"] . $username; // combine name and phone number
+                    $username = $_POST["username"]; // combine name and phone number
                     
                     $hash = $_POST["pass"];
                     $hash = password_hash($hash, PASSWORD_BCRYPT); // use bcrypt algorithm
@@ -181,6 +181,10 @@ body {
                         <div class="form-group">
                             <label for="email">Email:</label>
                             <input type="email" name="email" class="form-control" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="username" name="username" class="form-control" value="<?php echo isset($_POST["username"]) ? htmlspecialchars($_POST["username"]) : ''; ?>">
                         </div>
                         <div class="form-group">
                             <label for="pass">Password:</label>

@@ -3,16 +3,20 @@
     include_once('database/dbinfo.php');
     include_once('database/horsedb.php');
     include_once('domain/Horse.php');
-
-    // Check if the user has the necessary permissions (permissions level 2)
-    if ($_SESSION['permissions'] < 2) {
-        header("Location: index.php");
-        exit;
+    
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+        die("You do not have permission to access this page.");
     }
 
     $horses = getAll_horseDB();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_horse"])) {
+            // Check user permissions
+        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+            header("Location: editHorse.php");
+            exit();
+        }
         $horseID = $_POST["horseID"];
         $horseName = $_POST["horseName"];
         $diet = $_POST["diet"];
@@ -261,6 +265,12 @@
             </div>
             <?PHP include('footer.php'); ?>
         </div>
+    <script>
+        // Check user permissions and show popup if necessary
+        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+            alert("You do not have permission to edit a horse.");
+        }
+    </script>
     </body>
 
 </html>

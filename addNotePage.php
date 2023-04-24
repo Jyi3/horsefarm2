@@ -54,46 +54,57 @@ $username=$TLRrow['username'];
     //auxillary note related funcitons here.
 
     function addNoteForm($theHorse,$username){
+
         echo("<p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
         echo("</br>");
         //echo("<p>YEEEEEEEEEEEEEEHAWWWWWWWWW</p>");
         $horseID = $theHorse->get_horseID();
+        $horseName = $theHorse->get_horseName();
 
         echo("
-    <form action='/horse/horsefarm2/addNotePage.php' method='POST'>
-    <label for='horseID'>Horse ID:</label>
-    <input type='text' id='horseID' name='horseID' value='" . $horseID . "' required readonly><br>
-    <label for='note'>Note:</label><br>
-    <textarea id='note' name='note' rows='4' cols='50' value='test' required></textarea><br>
-    <label for='username'>Username:</label>
-    <input type='text' id='username' name='username' value='". $username ."' required readonly><br>
-    <input type='submit' value='Create Note'>
-    <input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
-    <input type='hidden' name='noteTimestamp' value='" . time() . "'>
-    <input type='hidden' name='addNoteSubmit' value='1'>
-    </form>
-    </body>"
-    );
+        <form action='/horse/horsefarm2/addNotePage.php' method='POST'>
+        <label>Add a new note for $horseName:</label><br>
+        <input type='hidden' name='horseID' value='<?php echo $horseID; ?>'>
+        <textarea id='note' name='note' rows='4' cols='50' value='test' required></textarea><br>
+        <label for='username'>Username:</label>
+        <input type='hidden' name='username' value='<?php echo $username; ?>' required readonly><br>
+        <input type='submit' value='Create Note'>
+        <input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
+        <input type='hidden' name='noteTimestamp' value='" . time() . "'>
+        <input type='hidden' name='addNoteSubmit' value='1'>
+        </form>
+        </body>"
+        
+        );
+        
 }
 
-    function handleNoteSubmission(){
+function handleNoteSubmission(){
+    $permissions = isset($_SESSION['permissions']) ? $_SESSION['permissions'] : null;
+
+    if ($permissions !== 3 && $permissions !== 5) {
+        echo "<script>alert('You do not have permission to add a note.');</script>";
+        echo "<script>window.location.href='horseprofile.php?horseID=".$_POST['horseID']."';</script>";
+        return false;
+    } else {
         if(isset($_POST['addNoteSubmit'])){
-            $submissionSet = array();
-            //yes this is weird, because this isn't what I think of when I think of an array, but this makes the right variable type for PHP.
-            $submissionSet['noteID'] = get_next_note_id(); 
-            $submissionSet['horseID'] = $_POST['horseID'];
-            $submissionSet['noteDate'] = $_POST['noteDate'];
-            $submissionSet['noteTimestamp'] = $_POST['noteTimestamp'];
-            $submissionSet['note'] = $_POST['note'];
-            $submissionSet['username'] = $_POST['username'];
-            $submissionSet['archive'] = 0;
-            $submissionSet['archiveDate'] = NULL;
+            $submissionSet = array(
+                'noteID' => get_next_note_id(),
+                'horseID' => $_POST['horseID'],
+                'noteDate' => $_POST['noteDate'],
+                'noteTimestamp' => $_POST['noteTimestamp'],
+                'note' => $_POST['note'],
+                'username' => $_POST['username'],
+                'archive' => 0,
+                'archiveDate' => null
+            );
             $theNote = construct_next_note($submissionSet);
             $status = add_note($theNote);
-            echo("note addition status: ". (boolean)$status."<br>");
+            echo "note addition status: " . (boolean)$status . "<br>";
         }
-
     }
+}
+
 
 ?>
 
@@ -168,33 +179,30 @@ $username=$TLRrow['username'];
             <?PHP include('header.php'); ?>
             <div id="content">
                 <div id="content-inner">
-                    <?PHP
-                    include_once('domain/Horse.php');
-                    include_once('database/dbinfo.php');
-                    include_once('database/horsedb.php');
-                    date_default_timezone_set('America/New_York');
-                    ?>
-                    <h1>Welcome to the</br>Central Virginia Horse Rescue</br>Database</h1>
-                    <p>
-                        This is the CVHR Horse Training Management System, designed to help manage horses, trainers, and training activities at the Central Virginia Horse Rescue organization. Use the navigation menu to explore the system and manage records for horses, trainers, and training sessions. If you are not a registered user, recruit, trainer, or head admin, please visit the primary Central Virginia Horse Rescue website at <a href="https://centralvahorserescue.org/" target="_blank">https://centralvahorserescue.org/</a>.
-                    </p>
+                <?PHP
+                include_once('domain/Horse.php');
+                include_once('database/dbinfo.php');
+                include_once('database/horsedb.php');
+                date_default_timezone_set('America/New_York');
 
-                <?php
-                //print_r($_POST);
-                ?>
-                <?php
+                echo("<h1>Add a note</br></h1>");
+                echo("<br><p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
+                echo("<p>After you have updated your note with additional information, please select 'Edit Note'.<br>Your page will refresh and then return to the horse profile.</p>");
+                echo("</br>");
+                
                 handleNoteSubmission();
                 addNoteForm($theHorse,$username);
                 ?>
 
                 <form method="GET" action = "horseprofile.php">
-                <input type="hidden" name="horseID" value="<?php echo $horseID; ?>"></input>
-                <input type="submit" name="return" value="return">Return to horse profile</input>
+                    <input type="hidden" name="horseID" value="<?php echo $horseID; ?>">
+                    <input type="submit" name="return" value="Return to horse profile">
                 </form>
 
                 </div>
             </div>
             <?PHP include('footer.php'); ?>
         </div>
+
     </body>
 </html>

@@ -85,7 +85,10 @@
 
         
 
-        if (isset($_POST["archive"])) {
+        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+            echo '<script>alert("You do not have permission to archive or activate a  trainer.");</script>';
+        }
+        else if (isset($_POST["archive"])) {
             // Fetch userType for the specific user
             $sql = "SELECT userType FROM persondb WHERE username = '$pp_username'";
             $result = mysqli_query($conn, $sql);
@@ -372,12 +375,12 @@
         
         <div style="display: flex; justify-content: center; align-items: center;">
                 <div id="content-inner" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <h2 style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Notes
+                    <h2 style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Archived Notes
                     </h2>
                     <br>
 
                 <?php if (mysqli_num_rows($result3) == 0): ?>
-                    <p style="text-align: center;">No notes available by user</p>
+                    <p style="text-align: center;">No archived notes available by user</p>
                 <?php else: ?>
                     <table class="notes-table">
                         <thead>
@@ -456,19 +459,26 @@
         });
 
         document.getElementById("add-remove-button").addEventListener("click", function() {
-            const horseDropdown = document.getElementById("horse-dropdown");
-            const selectedHorse = horseDropdown.value;
-            const username = "<?php echo $pp_username; ?>";
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to add a horse to the trainer.");
+            }
+            else
+            {
+                const horseDropdown = document.getElementById("horse-dropdown");
+                const selectedHorse = horseDropdown.value;
+                const username = "<?php echo $pp_username; ?>";
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "add_remove_horse.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    location.reload(); // Reload the page to update the horse list
-                }
-            };
-            xhr.send("username=" + username + "&horseID=" + selectedHorse);
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "add_remove_horse.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        location.reload(); // Reload the page to update the horse list
+                    }
+                };
+                xhr.send("username=" + username + "&horseID=" + selectedHorse);
+            }
         });
     </script>
 

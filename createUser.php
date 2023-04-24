@@ -1,11 +1,12 @@
 <?php
     include('session.php');
 
-    // Check if the user has the necessary permissions (permissions level 3)
-    if ($_SESSION['permissions'] < 3) {
-        header("Location: index.php");
-        exit;
+        
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+        die("You do not have permission to access this page.");
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -122,6 +123,12 @@
                 include_once('database/dbinfo.php');
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+                    if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+                        header("Location: createUser.php");
+                        exit();
+                    }
+
                     $username = $_POST["username"];
                     
                     $hash = $_POST["pass"];
@@ -201,7 +208,12 @@
         </div>
         <?php include('footer.php'); ?>
     </div>
-
+    <script>
+        // Check user permissions and show popup if necessary
+        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+            alert("You do not have permission to create a user.");
+        }
+    </script>
     </body>
 </html>
  

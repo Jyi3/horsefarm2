@@ -4,44 +4,50 @@
     include_once('database/persondb.php');
     include_once('domain/Person.php');
 
-    // Check if the user has the necessary permissions (permissions level 2)
-    if ($_SESSION['permissions'] < 3) {
-        header("Location: index.php");
-        exit;
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+        die("You do not have permission to access this page.");
     }
 
     $trainers = getall_persondb();
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_trainer"])) {
-        $username = $_POST["username"];
-        $firstName = htmlspecialchars(trim($_POST["firstName"]));
-        $lastName = htmlspecialchars(trim($_POST["lastName"]));
-        $email = htmlspecialchars(trim($_POST["email"]));
-        $phoneNumber = htmlspecialchars(trim($_POST["phone"]));
-        $username = htmlspecialchars(trim($_POST["username"]));
-        $oldUsername = $_POST['oldUsername'];
-        $userType = $_POST['userType'];
-    
-        // update Trainer data in the database
-        $conn = connect();
-    
-        if ($pass != '') { // check if pass is not null
-            $pass = htmlspecialchars(trim($_POST["pass"]));
-            $pass = password_hash($pass, PASSWORD_BCRYPT);
-            $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', pass='$pass', userType='$userType' WHERE username='$oldUsername'";
-        } else {
-            $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', userType='$userType' WHERE username='$oldUsername'";
+    if ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_trainer"])) {
+            // Check user permissions
+            if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+                header("Location: editTrainer.php");
+                exit();
+            }
+            $username = $_POST["username"];
+            $firstName = htmlspecialchars(trim($_POST["firstName"]));
+            $lastName = htmlspecialchars(trim($_POST["lastName"]));
+            $email = htmlspecialchars(trim($_POST["email"]));
+            $phoneNumber = htmlspecialchars(trim($_POST["phone"]));
+            $username = htmlspecialchars(trim($_POST["username"]));
+            $oldUsername = $_POST['oldUsername'];
+            $userType = $_POST['userType'];
+        
+            // update Trainer data in the database
+            $conn = connect();
+        
+            if ($pass != '') { // check if pass is not null
+                $pass = htmlspecialchars(trim($_POST["pass"]));
+                $pass = password_hash($pass, PASSWORD_BCRYPT);
+                $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', pass='$pass', userType='$userType' WHERE username='$oldUsername'";
+            } else {
+                $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', userType='$userType' WHERE username='$oldUsername'";
+            }
+        
+            // execute SQL query
+            if (mysqli_query($conn, $sql)) {
+                header("Location: editTrainer.php");
+            } else {
+                echo "<p>Error updating trainer: " . mysqli_error($conn) . "</p>";
+            }
+        
+            // close database connection
+            mysqli_close($conn);
         }
-    
-        // execute SQL query
-        if (mysqli_query($conn, $sql)) {
-            header("Location: editTrainer.php");
-        } else {
-            echo "<p>Error updating trainer: " . mysqli_error($conn) . "</p>";
-        }
-    
-        // close database connection
-        mysqli_close($conn);
     }
     
 ?>
@@ -237,6 +243,12 @@
             </div>
             <?php include('footer.php'); ?>
         </div>
+        <script>
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to edit a trainer.");
+            }
+        </script>
     </body>
 
 </html>
