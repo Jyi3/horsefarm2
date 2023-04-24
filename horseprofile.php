@@ -104,8 +104,6 @@
     }
     mysqli_close($conn);
 ?>
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -337,39 +335,37 @@
                        // Your code for retrieving behaviors here
            
                        //start session to store checked behaviors so they dont fucking disapper after being checked...
-                       session_start();
+                       #session_start();
            
                        //Array that stores all behaviors that have been checked
                        $checkedBehaviors=array();
            
-                       //Makes sure the POST form has been submitted to check behavior checkboxes
-                       if($Server['REQUEST_METHOD'] == 'POST'){
-           
+                        if($_Server['REQUEST_METHOD'] == 'POST'){
                             //Loop through all behaviors and add all checked ones to the $checkedBehaviors array
-                           foreach($behave as $be){
+                            foreach($behave as $be){
                                 //Behavior has been checked as complete
-                               if(isset($_POST[$be['title']])){
+                                if(isset($_POST[$be['title']])){
                                     //Add to checkedBehaviors array 
-                                   array_push($checkedBehaviors, $be['title']);
-                                   //Call complete behavior function to update the completion column to 0 (in horsetobehaviordb)
-                                   complete_behavior($be['title'],$hp_horseID);
-                               }
-                               //Behaviors is unchecked
-                               else{
+                                    array_push($checkedBehaviors, $be['title']);
+                                    //Call complete behavior function to update the completion column to 0 (in horsetobehaviordb)
+                                    complete_behavior($be['title'],$hp_horseID);
+                                }
+                                //Behaviors is unchecked
+                                else{
                                     //Call incomplete behavior function to set completion column to 1 
-                                   incomplete_behavior($be['title'], $hp_horseID);
-                               }
-                           }
-                           //Store all the checked behaviors in current session so they dont just disappear when the page is refreshed
-                           $_SESSION['checkedBehaviors'] = $checkedBehaviors;
-                       }
-                       else {
-                        //Checks to see if theres any checked behaviors in the current session
-                        if(isset($_SESSION['checkedBehaviors'])){
-                            //Get checked behaviors from session to be used in below loop
-                            $checkedBehaviors = $_SESSION['checkedBehaviors'];
+                                    incomplete_behavior($be['title'], $hp_horseID);
+                                }
+                            }
+                            //Store all the checked behaviors in current session so they dont just disappear when the page is refreshed
+                            $_SESSION['checkedBehaviors'] = $checkedBehaviors;
                         }
-                       }
+                        else{
+                            //Checks to see if theres any checked behaviors in the current session
+                            if(isset($_SESSION['checkedBehaviors'])){
+                                //Get checked behaviors from session to be used in below loop
+                                $checkedBehaviors = $_SESSION['checkedBehaviors'];
+                            }
+                        }
 
                        //Prints each beavhior assigned to a horse with a checkmark following it to tell if the behaviors complete (checked) or incomplete (unchecked)
                         foreach ($behave as $be) {
