@@ -191,7 +191,7 @@
                 </div>
                 <div class="form-group">
                     <label for="pass">Password:</label>
-                    <input type="password" name="pass" class="form-control">
+                    <input type="password" name="pass" class="form-control" minlength="8">
                 </div>
                 <div class="form-group">
                     <label for="userType">User Type:</label>

@@ -215,7 +215,7 @@
                         </div>
                         <div class="form-group">
                             <label for="pass">Password:</label>
-                            <input type="password" name="pass" class="form-control">
+                            <input type="password" name="pass" class="form-control" minlength="8">
                         </div>
                         <input type="hidden" name="oldUsername" value="<?php echo $username; ?>">
                         <button type="submit" name="update_profile" class="btn btn-default">Update Profile</button>

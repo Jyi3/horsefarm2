@@ -200,7 +200,7 @@
                         </div>
                         <div class="form-group">
                             <label for="pass">Password:</label>
-                            <input type="password" name="pass" class="form-control">
+                            <input type="password" name="pass" class="form-control" minlength="8">
                         </div>
                         <input type="submit" value="Create User" class="btn btn-primary">
                     </form>
