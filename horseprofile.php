@@ -54,12 +54,18 @@
     $colorRank = $row["colorRank"];
     $archive = $row["archive"];
     $archiveDate = $row["archiveDate"];
-    $behaviorsql = "SELECT b.title 
-        FROM behaviordb b 
-        JOIN horsetobehaviordb hb ON b.title = hb.title 
-        WHERE hb.horseID = '$hp_horseID'";
-    $behave = mysqli_query($conn, $behaviorsql);
+    $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID FROM behaviordb b LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID'
+    ORDER BY 
+        CASE b.behaviorLevel
+            WHEN 'Green' THEN 1
+            WHEN 'Yellow' THEN 2
+            WHEN 'Red' THEN 3
+            ELSE 4
+        END ASC,
+        b.behaviorLevel ASC";
+    $behave = mysqli_query($conn, $behaviorSql);
     $behaviorlist = mysqli_fetch_array($behave);
+
 
 
     // Query for associated horses
@@ -74,7 +80,46 @@
         die("Error: Invalid username");
     }
     
-
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['Edit_Behaviors'])) {
+        $hp_horseID = $_POST['horseID'];
+        $submitted_behaviors = isset($_POST['behaviors']) ? $_POST['behaviors'] : array();
+    
+        // Connecting to the database
+        include_once('database/dbinfo.php');
+        $conn = connect();
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+    
+        // Get all behaviors from behaviordb
+        $all_behaviors_sql = "SELECT title FROM behaviordb";
+        $all_behaviors_result = mysqli_query($conn, $all_behaviors_sql);
+        $all_behaviors = array();
+        while ($behavior = mysqli_fetch_assoc($all_behaviors_result)) {
+            $all_behaviors[] = $behavior['title'];
+        }
+    
+        // Loop through all behaviors
+        foreach ($all_behaviors as $behavior) {
+            // Check if the behavior is in the submitted behaviors
+            if (in_array($behavior, $submitted_behaviors)) {
+                // Check if the behavior is already in horsetobehaviordb
+                $query = "SELECT * FROM horsetobehaviordb WHERE title = '$behavior' AND horseID = '$hp_horseID'";
+                $result = mysqli_query($conn, $query);
+                if (mysqli_num_rows($result) == 0) {
+                    // If not in horsetobehaviordb, insert it
+                    $insert_query = "INSERT INTO horsetobehaviordb (title, horseID) VALUES ('$behavior', '$hp_horseID')";
+                    mysqli_query($conn, $insert_query);
+                }
+            } else {
+                // If the behavior is not in the submitted behaviors and exists in horsetobehaviordb, delete it
+                $delete_query = "DELETE FROM horsetobehaviordb WHERE title = '$behavior' AND horseID = '$hp_horseID'";
+                mysqli_query($conn, $delete_query);
+            }
+        }
+    
+        mysqli_close($conn);
+    }
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -107,6 +152,9 @@
         echo "<script>window.location.href = '" . $_SERVER["PHP_SELF"] . "?horseID=$hp_horseID';</script>";
         exit();
     }
+
+    
+    
     mysqli_close($conn);
 ?>
 <!DOCTYPE html>
@@ -189,12 +237,14 @@
         }
 
         .profile-name {
+            vertical-align: top;
             text-align: center;
             margin-top: 3vh;
             align-items: center;
         }
 
         .profile-details {
+            margin-top: 5%;
             display: left;
             flex-direction: column;
             align-items: left;
@@ -278,25 +328,83 @@
             font-size: 14px;
             color: #6c757d;
         }
-        .behavior-column {
-            display: inline-block;
-            width: 30%;
-            vertical-align: top;
-            padding-right: 20px;
-            box-sizing: border-box;
+        
+        .columns-container {
+            display: flex;
         }
+
+        .profile-details,
+        .profile-name,
+        .add-behaviors-container {
+            width: 33.33%;
+            box-sizing: border-box;
+            padding: 0 10px;
+        }
+
+        .add-behaviors-container {
+            margin-top: 5%;
+            align-items: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            max-width: 600px; /* You can adjust this value to fit your needs */
+            
+        }
+
+        .behavior-list {
+            margin-left: auto;
+            text-align: right;
+        }
+        .behavior-column {
+            text-align: right;
+            align-items: right;
+            display: inline-block;
+            box-sizing: border-box;
+            margin: 0 auto; /* Center the container */
+        }
+                
+        .behavior-list h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .behavior-list h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
         .behavior-list ul {
+            text-align: right;
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: flex-end;
         }
+        
         .behavior-column li {
+            text-align: right;
             display: block;
-            margin-bottom: 10px;
+            margin-left: 5px; 
         }
         .behavior-column li:nth-child(3n+1) {
             clear: left;
+            text-align: right;
         }
+        .behavior-submit-button {
+            background-color: #4b6c9e;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            float: right; /* Aligns the button to the right */
+        }
+
+        .behavior-submit-button:hover {
+            background-color: #fff;
+            color: #4b6c9e;
+            border: 2px solid #4b6c9e;
+        }
+
 
         @media (max-width: 768px) {
             #container {
@@ -343,91 +451,94 @@
 
         <div id="content">
             <div class="profile-container">
-                <div class="profile-details">
-                    <p>Horse Name : <?php echo $horseName; ?></p>
-                    <p>Difficulty : <?php echo $colorRank; ?> </p>
-                    <p>Diet: <?php echo $diet; ?></p>
-                    <p>Pasture : <?php echo $pastureNum; ?></p>
-                    <p>Breed : <?php echo $breed; ?></p>
-                    <p>Color : <?php echo $color; ?></p>
-                    <div style="display: flex; align-items: center;">
-                        <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
-                        <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
-                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>" />
-                            <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
-                            <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                <div class="columns-container">
+                    <div class="profile-details">
+                        <p>Horse Name : <?php echo $horseName; ?></p>
+                        <p>Difficulty : <?php echo $colorRank; ?> </p>
+                        <p>Diet: <?php echo $diet; ?></p>
+                        <p>Pasture : <?php echo $pastureNum; ?></p>
+                        <p>Breed : <?php echo $breed; ?></p>
+                        <p>Color : <?php echo $color; ?></p>
+                        <div style="display: flex; align-items: center;">
+                            <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
+                            <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
+                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>" />
+                                <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                                <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                            </form>
+                        </div>
+
+
+                        <?php
+                        if ($archive == NULL || $archive == 0) 
+                        {
+                            $buttonLabel = "Archive";
+                        }
+                        if ($archive == 1) 
+                        {
+                            $buttonLabel = "Activate";
+                        }
+                        ?>
+                        
+
+                                            
+                    </div>
+
+
+                    <div class="profile-name">
+                        <h1><?php echo $horseName; ?></h1>
+                        <form method="POST" action="editHorse.php">
+                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                            <button type="submit" class="archive-form-button">Edit <?php echo $horseName?>'s Profile</button>
                         </form>
                     </div>
 
+                    <div class="add-behaviors-container">
+                        <form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?horseID=' . $hp_horseID; ?>">
+                            <div class="behavior-list">
+                                <h2>Add Behaviors</h2>
+                                <?php
+                                include_once('database/dbinfo.php');
+                                $conn = connect();
 
-                    <?php
-                    if ($archive == NULL || $archive == 0) 
-                    {
-                        $buttonLabel = "Archive";
-                    }
-                    if ($archive == 1) 
-                    {
-                        $buttonLabel = "Activate";
-                    }
-                    ?>
-                    
-
-                                        
-                </div>
-
-
-                <div class="profile-name">
-                <h1><?php echo $horseName; ?>'s Profile</h1>
-                <form method="POST" action="editHorse.php">
-                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                    <button type="submit" class="archive-form-button">Edit Horse Profile</button>
-                </form>
-                </div>
-
-                <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-                    <div class="behavior-list">
-                        <h2>Add Behaviors</h2>
-                        <?php
-                        include_once('database/dbinfo.php');
-                        $conn = connect();
-
-                        if (!$conn) {
-                            die("Connection failed: " . mysqli_connect_error());
-                        }
-
-                        // Use $_GET to get the horseid parameter
-                        $hp_horseID = $_GET["horseID"];
-
-                        $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID FROM behaviordb b LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID' ORDER BY b.behaviorLevel ASC";
-
-                        $behaviorResult = mysqli_query($conn, $behaviorSql);
-
-                        $current_behaviorLevel = "";
-                        while ($behaviorRow = mysqli_fetch_assoc($behaviorResult)) {
-                            if ($current_behaviorLevel != $behaviorRow['behaviorLevel']) {
-                                if ($current_behaviorLevel != "") {
-                                    echo "</div>"; // close previous behavior-column div
+                                if (!$conn) {
+                                    die("Connection failed: " . mysqli_connect_error());
                                 }
-                                $current_behaviorLevel = $behaviorRow['behaviorLevel'];
-                                echo "<h3>" . ucfirst($current_behaviorLevel) . "</h3>";
-                                echo '<div class="behavior-column">'; // open new behavior-column div
-                                echo "<ul>"; // add ul tag
-                            }
-                            $color = isset($behaviorRow['horseID']) ? 'green' : 'red';
-                            echo '<li style="color:'.$color.';"><input type="checkbox" name="behaviors[]" value="' . $behaviorRow['title'] . '"> ' . $behaviorRow['title'] . '</li>';
-                        }
-                        if ($current_behaviorLevel != "") {
-                            echo "</ul>"; // close ul tag
-                            echo "</div>"; // close last behavior-column div
-                        }
 
-                        mysqli_close($conn);
-                        ?>
+                                // Use $_GET to get the horseid parameter
+                                $hp_horseID = $_GET["horseID"];
+
+                                $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID FROM behaviordb b LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID' ORDER BY b.behaviorLevel ASC";
+
+                                $behaviorResult = mysqli_query($conn, $behaviorSql);
+
+                                $current_behaviorLevel = "";
+                                while ($behaviorRow = mysqli_fetch_assoc($behaviorResult)) {
+                                    if ($current_behaviorLevel != $behaviorRow['behaviorLevel']) {
+                                        if ($current_behaviorLevel != "") {
+                                            echo "</div>"; // close previous behavior-column div
+                                        }
+                                        $current_behaviorLevel = $behaviorRow['behaviorLevel'];
+                                        echo "<h3>" . ucfirst($current_behaviorLevel) . "</h3>";
+                                        echo '<div class="behavior-column">'; // open new behavior-column div
+                                        echo "<ul>"; // add ul tag
+                                    }
+                                    $color = isset($behaviorRow['horseID']) ? 'green' : 'red';
+                                    echo '<li style="color:'.$color.';"><input type="checkbox" name="behaviors[]" value="' . $behaviorRow['title'] . '"' . ($color == 'green' ? ' checked' : '') . '> ' . $behaviorRow['title'] . '</li>';
+                                }
+                                if ($current_behaviorLevel != "") {
+                                    echo "</ul>"; // close ul tag
+                                    echo "</div>"; // close last behavior-column div
+                                }
+
+                                mysqli_close($conn);
+                                ?>
+                            </div>
+                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                            <input type="submit" name="Edit_Behaviors" value="Edit_Behaviors" class="behavior-submit-button">
+                        </form>
                     </div>
-                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                    <input type="submit" value="Add Behaviors">
-                </form>
-
+                </div>
             </div>
             
             <!-- Add the new Trainer List form container -->
