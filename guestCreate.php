@@ -7,8 +7,7 @@
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
 
-            
-body {
+            body {
                 font-family: Arial, sans-serif;
                 background-color: #f3f3f3;
                 color: #333;
@@ -99,25 +98,38 @@ body {
                 color: #ff0000;
                 font-weight: bold;
             }
-
-            @media (max-width: 768px) {
+            @media screen and (max-width: 767px) {
+                #container {
+                    padding: 10px;
+                    min-height: auto;
+                }
+                form {
+                    max-width: 100%;
+                }
                 h1 {
                     font-size: 28px;
                 }
-
                 p {
                     font-size: 16px;
                     max-width: 90%;
                 }
-
-                #container {
-                    padding: 10px;
+                input[type="text"],
+                input[type="email"],
+                input[type="password"] {
+                    width: 100%;
+                    padding: 8px;
+                    border-radius: 5px;
+                    border: 1px solid #cccccc;
+                    margin-bottom: 10px;
+                    box-sizing: border-box;
+                    font-size: 16px;
                 }
-
-                form {
-                    max-width: 100%;
+                input[type="submit"] {
+                    padding: 8px 16px;
+                    font-size: 16px;
                 }
             }
+
             </style> 
             <?php
                 include_once('domain/Person.php');
@@ -127,7 +139,7 @@ body {
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // create new Person object
                     $username = str_replace("-", "", $_POST["phone"]); // remove dashes from phone number
-                    $username = $_POST["firstName"] . $_POST["lastName"] . $username; // combine name and phone number
+                    $username = $_POST["username"]; // combine name and phone number
                     
                     $hash = $_POST["pass"];
                     $hash = password_hash($hash, PASSWORD_BCRYPT); // use bcrypt algorithm
@@ -181,6 +193,10 @@ body {
                         <div class="form-group">
                             <label for="email">Email:</label>
                             <input type="email" name="email" class="form-control" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="username" name="username" class="form-control" value="<?php echo isset($_POST["username"]) ? htmlspecialchars($_POST["username"]) : ''; ?>">
                         </div>
                         <div class="form-group">
                             <label for="pass">Password:</label>

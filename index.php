@@ -55,33 +55,26 @@
                 margin: 0 auto;
             }
 
-            @media (max-width: 768px) {
-                h1 {
-                    font-size: 28px;
+            @media (max-width: 480px) {
+                #container {
+                    max-width: 100%;
                 }
-
+                h1 {
+                    font-size: 24px;
+                }
                 p {
                     font-size: 16px;
-                    max-width: 90%;
-                }
-
-                #container {
-                    padding: 10px;
+                    line-height: 1.4;
                 }
             }
+
         </style> 
     </head>
     <body>
         <div id="container">
             <?php include('header.php'); ?>
             <div id="content">
-                <div id="content-inner">
-                    <?php
-                    include_once('domain/Horse.php');
-                    include_once('database/dbinfo.php');
-                    include_once('database/horsedb.php');
-                    date_default_timezone_set('America/New_York');
-                    ?>
+                <div id="content-inner"> 
                     <h1>Welcome to the</br>Central Virginia Horse Rescue</br>Database</h1>
                     <p>
                         This is the CVHR Horse Training Management System, designed to help manage horses, trainers, and training activities at the Central Virginia Horse Rescue organization. Use the navigation menu to explore the system and manage records for horses, trainers, and training sessions. If you are not a registered user, recruit, trainer, or head admin, please visit the primary Central Virginia Horse Rescue website at <a href="https://centralvahorserescue.org/" target="_blank">https://centralvahorserescue.org/</a>.

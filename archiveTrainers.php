@@ -3,10 +3,12 @@
     include_once('database/persondb.php');
     include_once('domain/Person.php');
     // Check if the user has the necessary permissions (permissions level 3)
-    if ($_SESSION['permissions'] < 3) {
-        header("Location: index.php");
-        exit;
+    
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+        die("You do not have permission to access this page.");
     }
+
 ?>
 
 <?php
@@ -112,21 +114,6 @@
                 background-color: #f2f2f2;
             }
 
-            @media (max-width: 768px) {
-                h1 {
-                    font-size: 28px;
-                }
-
-                p {
-                    font-size: 16px;
-                    max-width: 90%;
-                }
-
-                #container {
-                    padding: 10px;
-                }
-            }
-
             /* Footer */
             .footer {
                 background-color: #f8f9fa;
@@ -140,6 +127,34 @@
                 font-size: 14px;
                 color: #6c757d;
             }
+
+            @media (max-width: 480px) {
+                #container {
+                    max-width: 100%;
+                    padding: 10px;
+                }
+                #content-inner {
+                    max-width: 90%;
+                    min-height: auto;
+                }
+                h1 {
+                    font-size: 24px;
+                }
+                p {
+                    font-size: 16px;
+                    line-height: 1.4;
+                }
+                table {
+                    font-size: 14px;
+                }
+                th, td {
+                    padding: 4px;
+                }
+                .footer p {
+                    font-size: 12px;
+                }
+            }
+
         </style> 
         
     </head>
@@ -229,13 +244,43 @@
     </div>
     <script>
         
+        // Check user permissions and show popup if necessary
+        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+            alert("You do not have permission to archive/activate a trainer.");
+        }
         const activeHeadTrainers = <?php echo $activeHeadTrainers['count']; ?>;
 
         function archivePerson(username, userType) {
             // If the person is a Head Trainer, check the number of active Head Trainers
-            if (userType == 'Head Trainer' && activeHeadTrainers <= 1) {
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to archive a trainer.");
+            }
+            else
+            {
+                if (userType == 'Head Trainer' && activeHeadTrainers <= 1) {
                 alert("There is only one active Head Trainer, please promote another head trainer and remove this head trainer.");
-            } else {
+                } else {
+                    const xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            location.reload(); // Reload the page after updating the person status
+                        }
+                    };
+                    xhttp.open("POST", "update_trainer_status.php", true);
+                    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhttp.send("username=" + username + "&status=1"); // Pass 1 as the status to archive the person
+                }
+            }
+        }
+
+        function activatePerson(username) {
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to activate a trainer.");
+            }
+            else
+            {
                 const xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
@@ -244,20 +289,8 @@
                 };
                 xhttp.open("POST", "update_trainer_status.php", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send("username=" + username + "&status=1"); // Pass 1 as the status to archive the person
+                xhttp.send("username=" + username + "&status=0"); // Pass 1 as the status to archive the person
             }
-        }
-
-        function activatePerson(username) {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    location.reload(); // Reload the page after updating the person status
-                }
-            };
-            xhttp.open("POST", "update_trainer_status.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("username=" + username + "&status=0"); // Pass 1 as the status to archive the person
         }
     </script>
     </body>

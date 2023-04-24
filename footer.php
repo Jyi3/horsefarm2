@@ -42,6 +42,18 @@
             font-size: 14px;
             color: #6c757d;
         }
+        @media (max-width: 768px) {
+            .wrapper {
+                margin-bottom: -100px; /* increase negative margin to account for smaller footer height */
+            }
+            .footer,
+            .push {
+                height: 100px; /* increase height of footer and push elements */
+            }
+            .footer p {
+                font-size: 12px; /* decrease font size of footer text */
+            }
+        }
     </style>
 </head>
 <body>

@@ -37,6 +37,10 @@ if (isset($_POST['submit'])) {
                     $permissions = 2; // Tier 2
                 } elseif ($userType == 'Head Trainer') {
                     $permissions = 3; // Tier 3
+                }elseif ($userType == 'Viewer') {
+                    $permissions = 4; // Tier 3
+                }elseif ($userType == 'Admin') {
+                    $permissions = 5; // Tier 3
                 }
                 $_SESSION['permissions'] = $permissions;
 
@@ -131,13 +135,26 @@ if (isset($_POST['submit'])) {
         .btn:hover {
             background-color: #3a5483;
         }
+        
+        @media only screen and (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
 
-        @media screen and (max-width: 576px) {
             #content {
-                width: 100%;
-                box-sizing: border-box;
+                max-width: 100%;
+                margin: 0;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
             }
         }
+
         </style>
 </head>
 <body>

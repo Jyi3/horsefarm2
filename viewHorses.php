@@ -74,21 +74,6 @@
                 background-color: #f2f2f2;
             }
 
-            @media (max-width: 768px) {
-                h1 {
-                    font-size: 28px;
-                }
-
-                p {
-                    font-size: 16px;
-                    max-width: 90%;
-                }
-
-                #container {
-                    padding: 10px;
-                }
-            }
-
             /* Footer */
             .footer {
                 background-color: #f8f9fa;
@@ -102,6 +87,29 @@
                 font-size: 14px;
                 color: #6c757d;
             }
+
+            @media screen and (max-width: 768px) {
+                #container {
+                    max-width: 100%;
+                    padding: 10px;
+                }
+                #content-inner {
+                    max-width: 100%;
+                }
+                h1 {
+                    font-size: 28px;
+                }
+                p {
+                    font-size: 16px;
+                }
+                th, td {
+                    font-size: 14px;
+                }
+                .footer p {
+                    font-size: 12px;
+                }
+            }
+
         </style> 
     </head>
     <body>

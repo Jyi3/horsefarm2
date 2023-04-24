@@ -2,11 +2,12 @@
 include('session.php');
 include('database\dbinfo.php');
 
-// Check if the user has the necessary permissions (permissions level 3)
-if ($_SESSION['permissions'] < 3) {
-    header("Location: index.php");
-    exit;
+
+// Check if the user has the necessary permissions
+if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+    die("You do not have permission to access this page.");
 }
+
 
 // Get the horse ID and note ID from the POST data
 $horseID = $_POST['horseID'];

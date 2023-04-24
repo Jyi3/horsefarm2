@@ -1,70 +1,57 @@
 
-<?PHP
+<?php
 
-include_once('database/notedb.php');
-include_once('database/dbinfo.php');
-include_once('domain/Note.php');
-include_once('database/horsedb.php');
-include_once('domain/horse.php');
+include_once 'database/notedb.php';
+include_once 'database/dbinfo.php';
+include_once 'domain/Note.php';
+include_once 'database/horsedb.php';
+include_once 'domain/horse.php';
 
+$horseID = $_POST['horseID'] ?? null;
+$noteID = $_POST['noteID'] ?? null;
+$username = $_POST['username'] ?? null;
+$editText = $_POST['editText'] ?? null;
 
+$theHorse = null;
+$theNote = null;
+$theHorseNotes = null;
+$numNotes = null;
+$noteText = null;
 
-$horseID=null;
-$noteID=null;
-$noteText;
-$editText;
-$theHorse;
-$theNote;
-$theHorseNotes;
-$numNotes;
-$username;
-
-if(isset($_POST['horseID'])){$horseID=$_POST['horseID'];}
-if(isset($_POST['noteID'])){
-    $noteID=$_POST['noteID'];
-    $theNote = retrieve_note_by_id($noteID);
-}
-if(isset($_POST['username'])){$username=$_POST['username'];}
-if(isset($_POST['editText'])){$editText=$_POST['editText'];}
-
-
-if($horseID!=null){
-$theHorse = retrieve_horse_by_id($horseID);
-}
-
-if($theHorse!=null){
-$theHorseNotes= retrieve_horse_notes($horseID);
-}
-
-$noteText = $theNote->get_note();
-if($horseID!=null){
+if ($horseID) {
+    $theHorse = retrieve_horse_by_id($horseID);
+    $theHorseNotes = retrieve_horse_notes($horseID);
     $numNotes = get_num_horse_notes($horseID);
 }
 
-$conn = connect();
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+if ($noteID) {
+    $theNote = retrieve_note_by_id($noteID);
+    $noteText = $theNote->get_note();
 }
+
+$conn = connect();
+
+if (!$conn) {
+    die('Connection failed: ' . mysqli_connect_error());
+}
+
 $trainerListSql = "SELECT p.username, p.firstName, p.lastName, p.archive, IF(pt.horseID IS NULL, 0, 1) AS isConnected
-        FROM persondb p
-        LEFT JOIN persontohorsedb pt ON p.username = pt.username AND pt.horseID = '$horseID'
-        WHERE p.archive != 1";
+                    FROM persondb p
+                    LEFT JOIN persontohorsedb pt ON p.username = pt.username AND pt.horseID = '$horseID'
+                    WHERE p.archive != 1";
 $trainerListResult = mysqli_query($conn, $trainerListSql);
 $TLRrow = mysqli_fetch_assoc($trainerListResult);
+$username = $TLRrow['username'];
 
-$username=$TLRrow['username'];
+function editNoteForm($theHorse, $username, $noteText, $noteID) {
+    //auxiliary note related functions here.
+}
 
-    //auxillary note related funcitons here.
-
-    function editNoteForm($theHorse,$username,$noteText,$noteID){
+function handleNoteSubmission($editText, $theNote) {
+    if (isset($_POST['addNoteSubmit'])) {
+        $status = edit_note($editText, $theNote);
     }
-
-    function handleNoteSubmission($editText,$theNote){
-        if(isset($_POST['addNoteSubmit'])){
-            $status = edit_note($editText,$theNote);
-        }
-
-    }
+}
 
 ?>
 
@@ -150,6 +137,22 @@ $username=$TLRrow['username'];
                 color: #4b6c9e;
                 border: 2px solid #4b6c9e;
             }
+            
+            .editNote-form-button {
+                background-color: #4b6c9e;
+                color: #fff;
+                border: none;
+                padding: 8px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+
+            .editNote-form-button:hover {
+                background-color: #fff;
+                color: #4b6c9e;
+                border: 2px solid #4b6c9e;
+            }
 
 
             @media (max-width: 768px) {
@@ -189,18 +192,18 @@ $username=$TLRrow['username'];
                         $noteText = $_POST['editText'];
                     }
                     ?>
-
-                    <form class="editNote-form" action='editNotePage.php' method='POST'>
+                    <form class="editNote-form" action='editNotePage.php' method='POST' onsubmit="return handleNoteSubmission();">
                         <label>Edit <?php echo $horseName ?>'s note:</label><br>
                         <input type='hidden' name='horseID' value='<?php echo $horseID; ?>'>
                         <textarea id='note' name='editText' rows='4' cols='50' value='test' required><?php echo $noteText; ?></textarea><br>
                         <input type='hidden' name='username' value='<?php echo $username; ?>' required readonly><br>
-                        <input type='submit' value='Edit Note'>
+                        <button type='submit' name='submitBtn' class='editNote-form-button'>Edit Note</button>
                         <input type='hidden' name='noteDate' value='<?php echo date('Y-m-d'); ?>'>
                         <input type='hidden' name='noteTimestamp' value='<?php echo time(); ?>'>
                         <input type='hidden' name='noteID' value='<?php echo $noteID; ?>'>
                         <input type='hidden' name='addNoteSubmit' value='1'>
                     </form>
+
                     <br>
                     <form class="editNote-form" method="GET" action="horseprofile.php">
                         <input type="hidden" name="horseID" value="<?php echo $horseID; ?>">
@@ -212,6 +215,17 @@ $username=$TLRrow['username'];
             </div>
             <?php include('footer.php'); ?>
         </div>
+        <script>
+            function handleNoteSubmission() {
+                var permissions = <?php echo isset($_SESSION['permissions']) ? $_SESSION['permissions'] : 'null'; ?>;
+                if (permissions !== 3 && permissions !== 5) {
+                    alert('You do not have permission to edit this note.');
+                    return false;
+                }
+                return true;
+            }
+        </script>
+
     </body>
 
 </html>

@@ -50,21 +50,6 @@
             margin: 0 auto;
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 28px;
-            }
-
-            p {
-                font-size: 16px;
-                max-width: 90%;
-            }
-
-            #container {
-                padding: 10px;
-            }
-        }
-
         /* Popup styles */
         .overlay {
             position: fixed;
@@ -96,6 +81,40 @@
             font-size: 16px;
             cursor: pointer;
         }
+        @media screen and (max-width: 768px) {
+            /* Reduce font sizes */
+            h1 {
+                font-size: 24px;
+            }
+            p {
+                font-size: 16px;
+            }
+
+            /* Adjust container width and padding */
+            #container {
+                max-width: 90%;
+                padding: 10px;
+            }
+
+            /* Change layout of profile-container */
+            .profile-container {
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            /* Adjust layout of trainer-list-container */
+            .trainer-list-container {
+                margin: 0;
+            }
+            
+            /* Adjust the layout of the popup */
+            .popup {
+                max-width: 90%;
+            }
+        }
+
     </style>
 </head>
 <body>

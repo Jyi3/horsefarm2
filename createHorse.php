@@ -1,10 +1,10 @@
 <?php
     include('session.php');
 
-    // Check if the user has the necessary permissions (permissions level 2)
-    if ($_SESSION['permissions'] < 2) {
-        header("Location: index.php");
-        exit;
+    
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+        die("You do not have permission to access this page.");
     }
 ?>
 
@@ -114,34 +114,38 @@
                 h1 {
                     font-size: 28px;
                 }
-
                 p {
                     font-size: 16px;
                     max-width: 90%;
                 }
-
                 #container {
                     padding: 10px;
                 }
-
                 form {
                     max-width: 100%;
                 }
             }
+
         </style> 
             <?php
                 include_once('database/horsedb.php');
                 include_once('database/dbinfo.php');
                 include_once('./addBehavior.php');
-
+                
+                
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // create new Horse object
-
+            
+                    // Check user permissions
+                    if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+                        header("Location: createHorse.php");
+                        exit();
+                    }
                     $conn = connect();
                     $sql = "SELECT username FROM persondb WHERE username='$username'";
                     // insert new Horse data into the database
                     $sql = "INSERT INTO horseDB (horseName, color, breed, pastureNum, colorRank, archive, archiveDate) VALUES ('" . $_POST["horseName"] . "', '" . $_POST["color"] . "', '" . $_POST["breed"] . "', '" . $_POST["pastureNum"] . "', '" . $_POST["colorRank"] . "', false, null)";
-
+                
                     // execute SQL query
                     if (mysqli_query($conn, $sql)) {
                         $searchID = "SELECT horseID FROM horsedb WHERE horseName='". $_POST["horseName"] . "' AND color='" . $_POST["color"] . "' AND breed='" . $_POST["breed"] . "' AND pastureNum=" . $_POST["pastureNum"] . " AND colorRank='" . $_POST["colorRank"] . "';" ;
@@ -153,11 +157,11 @@
                     } else {
                         echo "<p>Error adding new horse: " . mysqli_error($conn) . "</p>";
                     }
-
+                
                     // close database connection
                     mysqli_close($conn);
-
                 }
+                
             ?>
     </head>
     <body>
@@ -204,7 +208,12 @@
         </div>
         <?php include('footer.php'); ?>
     </div>
-
+    <script>
+        // Check user permissions and show popup if necessary
+        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+            alert("You do not have permission to create a horse.");
+        }
+    </script>
     </body>
 </html>
  

@@ -5,7 +5,6 @@
     include_once('domain/Person.php');
 
 
-    
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
         $firstName = htmlspecialchars(trim($_POST["firstName"]));
         $lastName = htmlspecialchars(trim($_POST["lastName"]));
@@ -165,6 +164,10 @@
             }
 
             @media (max-width: 768px) {
+                #container {
+                    padding: 10px;
+                }
+
                 h1 {
                     font-size: 28px;
                 }
@@ -173,15 +176,8 @@
                     font-size: 16px;
                     max-width: 90%;
                 }
-
-                #container {
-                    padding: 10px;
-                }
-
-                form {
-                    max-width: 100%;
-                }
             }
+
         </style>
 
     </head>

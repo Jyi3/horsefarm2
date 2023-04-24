@@ -1,11 +1,11 @@
 <?php
     include('session.php');
 
-    // Check if the user has the necessary permissions (permissions level 2)
-    if ($_SESSION['permissions'] < 2) {
-        header("Location: index.php");
-        exit;
+    // Check if the user has the necessary permissions
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+        die("You do not have permission to access this page.");
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +114,7 @@
                 h1 {
                     font-size: 28px;
                 }
-
+                
                 p {
                     font-size: 16px;
                     max-width: 90%;
@@ -124,16 +124,22 @@
                     padding: 10px;
                 }
 
-                form {
+                .my-form {
                     max-width: 100%;
                 }
             }
+
         </style> 
             <?php
                 include_once('database/behaviordb.php');
                 include_once('database/dbinfo.php');
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    // Check user permissions
+                    if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+                        header("Location: createBehavior.php");
+                        exit();
+                    }
                     // create new Behavior 
 						  if("" == trim($_POST['BehaviorName'])){
     					      echo "<p>Error adding new behavior:</p>";
@@ -187,7 +193,12 @@
         </div>
         <?php include('footer.php'); ?>
     </div>
-
+    <script>
+        // Check user permissions and show popup if necessary
+        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+            alert("You do not have permission to create a behavior.");
+        }
+    </script>
     </body>
 </html>
  
