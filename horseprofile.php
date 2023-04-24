@@ -54,17 +54,20 @@
     $colorRank = $row["colorRank"];
     $archive = $row["archive"];
     $archiveDate = $row["archiveDate"];
-    $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID FROM behaviordb b LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID'
+    $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID 
+    FROM behaviordb b 
+    LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID'
     ORDER BY 
         CASE b.behaviorLevel
             WHEN 'Green' THEN 1
             WHEN 'Yellow' THEN 2
             WHEN 'Red' THEN 3
             ELSE 4
-        END ASC,
-        b.behaviorLevel ASC";
+        END,
+        b.title";
     $behave = mysqli_query($conn, $behaviorSql);
-    $behaviorlist = mysqli_fetch_array($behave);
+    $behaviorlist = mysqli_fetch_all($behave);
+
 
 
 
@@ -508,8 +511,19 @@
                                 // Use $_GET to get the horseid parameter
                                 $hp_horseID = $_GET["horseID"];
 
-                                $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID FROM behaviordb b LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID' ORDER BY b.behaviorLevel ASC";
-
+                                $behaviorSql = "SELECT b.title, b.behaviorLevel, h.horseID 
+                                    FROM behaviordb b 
+                                    LEFT JOIN horsetobehaviordb h ON b.title = h.title AND h.horseID = '$hp_horseID'
+                                    WHERE b.title NOT LIKE '' AND b.title NOT LIKE '% '
+                                    ORDER BY 
+                                        CASE b.behaviorLevel
+                                            WHEN 'Green' THEN 1
+                                            WHEN 'Yellow' THEN 2
+                                            WHEN 'Red' THEN 3
+                                            ELSE 4
+                                        END ASC,
+                                        b.behaviorLevel ASC,
+                                        b.title ASC";
                                 $behaviorResult = mysqli_query($conn, $behaviorSql);
 
                                 $current_behaviorLevel = "";

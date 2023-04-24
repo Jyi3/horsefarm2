@@ -1,12 +1,73 @@
 <?php
-    include('session.php');
+    include 'session.php';
+    include_once 'database/behaviordb.php';
+    include_once 'database/dbinfo.php';
 
     // Check if the user has the necessary permissions
     if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
         die("You do not have permission to access this page.");
     }
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    }
+    
+    
+    
+    
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        
+        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+            header("Location: createBehavior.php");
+            exit();
+        }
 
+        if ($_POST['action'] == 'Create Behavior') 
+        {
+            // create new behavior
+            if (trim($_POST['BehaviorName']) == '') {
+                echo "<p>Error adding new behavior:</p>";
+            } else {
+                $conn = connect();
+
+
+                $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('" . $_POST['BehaviorName'] . "', '" . $_POST['behaviorLevel'] . "')";
+
+                // execute SQL query
+                if (mysqli_query($conn, $sql)) {
+                    header("Location: createBehavior.php");
+                } else {
+                    echo "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
+                }
+                
+                // remove behavior with title containing only whitespace
+                $sql_remove = "DELETE FROM `behaviordb` WHERE 'title' = ''";
+                if (mysqli_query($conn, $sql_remove)) {
+                    // Successfully removed behavior with title containing only whitespace
+                }
+
+                // close database connection
+                mysqli_close($conn);
+            }
+        } 
+        else if ($_POST['action'] == 'Add Rank') 
+        {
+            // create new behavior with whitespace name and posted rank as behavior level
+            $conn = connect();
+            $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('', '" . $_POST['BehaviorName'] . "')";
+
+            // execute SQL query
+            if (mysqli_query($conn, $sql)) {
+                header("Location: createBehavior.php");
+            } else {
+                echo "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
+            }
+
+            // close database connection
+            mysqli_close($conn);
+        }
+
+    }
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -130,75 +191,100 @@
             }
 
         </style> 
-            <?php
-                include_once('database/behaviordb.php');
-                include_once('database/dbinfo.php');
+        <?php
+            include_once('database/behaviordb.php');
+            include_once('database/dbinfo.php');
 
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    // Check user permissions
-                    if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
-                        header("Location: createBehavior.php");
-                        exit();
-                    }
-                    // create new Behavior 
-						  if("" == trim($_POST['BehaviorName'])){
-    					      echo "<p>Error adding new behavior:</p>";
-    					      
-						  }      
-                    $conn = connect();
-                    $sql = "SELECT username FROM persondb WHERE username='$username'";
-                    // insert new Horse data into the database
-                    $sql = "INSERT INTO behaviorDB (title, behaviorLevel) VALUES ('" . $_POST["BehaviorName"] . "', '" . $_POST["behaviorRank"] . "')";
-
-                    // execute SQL query
-                    if (mysqli_query($conn, $sql)) {
-                        header("Location: createBehavior.php");
-                    } else {
-                        echo "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
-                    }
-
-                    // close database connection
-                    mysqli_close($conn);
-
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Check user permissions
+                if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+                    header("Location: createBehavior.php");
+                    exit();
                 }
-            ?>
+                // create new Behavior 
+                    if("" == trim($_POST['BehaviorName'])){
+                        echo "<p>Error adding new behavior:</p>";
+                        
+                    }      
+                $conn = connect();
+                $sql = "INSERT INTO behaviorDB (title, behaviorLevel) VALUES ('" . $_POST["BehaviorName"] . "', '" . $_POST["behaviorLevel"] . "')";
+
+                // execute SQL query
+                if (mysqli_query($conn, $sql)) {
+                    header("Location: createBehavior.php");
+                } else {
+                    echo "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
+                }
+
+                // close database connection
+                mysqli_close($conn);
+
+            }
+        ?>
     </head>
     <body>
-    <div id="container">
-    <?php include('header.php'); ?>
-    <div id="content">
-        <div id="content-inner">
-
-            <h1>Create Behavior</h1>
-            <br>
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
-                <div class="form-group">
-                    <label for="BehaviorName">Behavior Name:</label>
-                    <input type="text" name="BehaviorName" class="form-control" value="<?php echo isset($_POST["horseName"]) ? htmlspecialchars($_POST["horseName"]) : ''; ?>">
+        <div id="container">
+            <?php include('header.php'); ?>
+            <div id="content">
+                <div id="content-inner">
+                    <h1>Create Behavior</h1>
+                    <div style="display: flex;">
+                        <ol style="margin-right: 20px;">
+                            <p>To create a new behavior:</p>
+                            <li>Select the behavior rank from the drop-down menu.</li>
+                            <li>Type in the name of the new behavior.</li>
+                            <li>Click the "Create Behavior" button to add the behavior to the database.</li>
+                        </ol>
+                        <ol>
+                            <p>To create a new rank:</p>
+                            <li>Type in the name of the new behavior rank.</li>
+                            <li>Click the "Create Rank" button to add a new rank to the database.</li>
+                        </ol>
+                    </div>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
+                        <div class="form-group">
+                            <label for="BehaviorName">Behavior Name/Rank:</label>
+                            <input type="text" name="BehaviorName" class="form-control" value="<?php echo isset($_POST["BehaviorName"]) ? htmlspecialchars($_POST["BehaviorName"]) : ''; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="behaviorLevel">Behavior Rank:</label>
+                            <select name="behaviorLevel" class="form-control">
+                                <?php
+                                $conn = connect();
+                                $behaviorLevelSql = "SELECT DISTINCT behaviorLevel FROM behaviordb ORDER BY 
+                                    CASE behaviorLevel
+                                        WHEN 'Green' THEN 1
+                                        WHEN 'Yellow' THEN 2
+                                        WHEN 'Red' THEN 3
+                                        ELSE 4
+                                    END, 
+                                    behaviorLevel ASC";
+                                $behaviorLevelResult = mysqli_query($conn, $behaviorLevelSql);
+                                while($row = mysqli_fetch_array($behaviorLevelResult)) {
+                                    echo "<option value='" . $row['behaviorLevel'] . "' ";
+                                    if(isset($_POST['behaviorLevel']) && $_POST['behaviorLevel'] == $row['behaviorLevel']) {
+                                        echo 'selected';
+                                    }
+                                    echo ">" . $row['behaviorLevel'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <input type="submit" name="action" value="Add Behavior" class="btn btn-primary">
+                        <input type="submit" name="action" value="Add Rank" class="btn btn-secondary" style="margin-left: 20%;">
+                    </form>
+                <br>    
                 </div>
-                
-                <div class="form-group">
-                    <label for="behaviorRank">behavior Rank:</label>
-                    <select name="behaviorRank" class="form-control">
-                        <option value="Green" <?php if(isset($_POST['behaviorRank']) && $_POST['behaviorRank'] == 'Green') echo 'selected'; ?>>Green</option>
-                        <option value="Yellow" <?php if(isset($_POST['behaviorRank']) && $_POST['behaviorRank'] == 'Yellow') echo 'selected'; ?>>Yellow</option>
-                        <option value="Red" <?php if(isset($_POST['behaviorRank']) && $_POST['behaviorRank'] == 'Red') echo 'selected'; ?>>Red</option>
-                        <option value="Misc" <?php if(isset($_POST['behaviorRank']) && $_POST['behaviorRank'] == 'Misc') echo 'selected'; ?>>Misc</option>
-                    </select>
-                </div>
-                <input type="submit" value="Create Behavior" class="btn btn-primary">
-            </form>
-            <br>
             </div>
+            <?php include('footer.php'); ?>
         </div>
-        <?php include('footer.php'); ?>
-    </div>
-    <script>
-        // Check user permissions and show popup if necessary
-        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
-            alert("You do not have permission to create a behavior.");
-        }
-    </script>
+        <script>
+            // Check user permissions and show popup if necessary
+            if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
+                alert("You do not have permission to create a behavior.");
+            }
+        </script>
     </body>
+
 </html>
  
