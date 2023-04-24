@@ -76,7 +76,6 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hp_horseID = $_POST["horseID"];
-        $username = $_POST["username"];
 
         include_once('database/dbinfo.php');
 
@@ -84,7 +83,11 @@
         if (!$conn) {
             die("Connection failed: " . mysqli_connect_error());
         }
-        if (isset($_POST["archive"])) {
+        
+        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+            echo '<script>alert("You do not have permission to archive or activate a  horse.");</script>';
+        }
+        else if (isset($_POST["archive"])) {
             $sql = "UPDATE horsedb SET archive = 1, archiveDate = CURRENT_DATE() WHERE horseID = '$hp_horseID'";
             $action_success = mysqli_query($conn, $sql);
             if (!$action_success) {
@@ -516,10 +519,6 @@
     </div>
     
     <script>
-        // Check user permissions and show popup if necessary
-        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
-            alert("You do not have permission to edit a horse.");
-        }
         document.addEventListener('DOMContentLoaded', function() {
             const trainerDropdown = document.getElementById('trainer-dropdown');
             const selectedTrainerInput = document.getElementById('selected_trainer');
@@ -538,7 +537,7 @@
             
             // Check user permissions and show popup if necessary
             if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
-                alert("You do not have permission to add a horse to the trainer.");
+                alert("You do not have permission to add a trainer to the horse.");
             }
             else
             {
