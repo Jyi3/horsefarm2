@@ -135,13 +135,26 @@ if (isset($_POST['submit'])) {
         .btn:hover {
             background-color: #3a5483;
         }
+        
+        @media only screen and (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
 
-        @media screen and (max-width: 576px) {
             #content {
-                width: 100%;
-                box-sizing: border-box;
+                max-width: 100%;
+                margin: 0;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
             }
         }
+
         </style>
 </head>
 <body>

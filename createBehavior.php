@@ -114,7 +114,7 @@
                 h1 {
                     font-size: 28px;
                 }
-
+                
                 p {
                     font-size: 16px;
                     max-width: 90%;
@@ -124,10 +124,11 @@
                     padding: 10px;
                 }
 
-                form {
+                .my-form {
                     max-width: 100%;
                 }
             }
+
         </style> 
             <?php
                 include_once('database/behaviordb.php');

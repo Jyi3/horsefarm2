@@ -264,6 +264,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 margin: 0 auto;
             }
 
+            @media (max-width: 768px) {
+                #container {
+                    max-width: 100%;
+                    padding: 10px;
+                }
+
+                label {
+                    text-align: left;
+                    margin-bottom: 5px;
+                }
+
+                input[type="text"], select {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+
+                .checkboxes-container {
+                    flex-direction: column;
+                }
+
+                input[type="checkbox"] {
+                    margin-right: 0;
+                    margin-bottom: 5px;
+                }
+
+                #content-search {
+                    width: 100%;
+                    max-width: 100%;
+                    height: auto;
+                    bottom: unset;
+                    right: unset;
+                    top: 0;
+                    left: 0;
+                    border-radius: 0;
+                    transform: none;
+                }
+            }
+
         </style>
 
     </head>

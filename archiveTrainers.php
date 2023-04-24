@@ -114,21 +114,6 @@
                 background-color: #f2f2f2;
             }
 
-            @media (max-width: 768px) {
-                h1 {
-                    font-size: 28px;
-                }
-
-                p {
-                    font-size: 16px;
-                    max-width: 90%;
-                }
-
-                #container {
-                    padding: 10px;
-                }
-            }
-
             /* Footer */
             .footer {
                 background-color: #f8f9fa;
@@ -142,6 +127,34 @@
                 font-size: 14px;
                 color: #6c757d;
             }
+
+            @media (max-width: 480px) {
+                #container {
+                    max-width: 100%;
+                    padding: 10px;
+                }
+                #content-inner {
+                    max-width: 90%;
+                    min-height: auto;
+                }
+                h1 {
+                    font-size: 24px;
+                }
+                p {
+                    font-size: 16px;
+                    line-height: 1.4;
+                }
+                table {
+                    font-size: 14px;
+                }
+                th, td {
+                    padding: 4px;
+                }
+                .footer p {
+                    font-size: 12px;
+                }
+            }
+
         </style> 
         
     </head>

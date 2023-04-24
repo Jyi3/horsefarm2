@@ -114,20 +114,18 @@
                 h1 {
                     font-size: 28px;
                 }
-
                 p {
                     font-size: 16px;
                     max-width: 90%;
                 }
-
                 #container {
                     padding: 10px;
                 }
-
                 form {
                     max-width: 100%;
                 }
             }
+
         </style> 
             <?php
                 include_once('database/horsedb.php');

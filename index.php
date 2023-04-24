@@ -55,20 +55,19 @@
                 margin: 0 auto;
             }
 
-            @media (max-width: 768px) {
-                h1 {
-                    font-size: 28px;
+            @media (max-width: 480px) {
+                #container {
+                    max-width: 100%;
                 }
-
+                h1 {
+                    font-size: 24px;
+                }
                 p {
                     font-size: 16px;
-                    max-width: 90%;
-                }
-
-                #container {
-                    padding: 10px;
+                    line-height: 1.4;
                 }
             }
+
         </style> 
     </head>
     <body>

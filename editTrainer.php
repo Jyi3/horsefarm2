@@ -150,23 +150,21 @@
             }
 
             @media (max-width: 768px) {
+                #container {
+                    max-width: 100%;
+                    padding: 10px;
+                }
+                #content-inner {
+                    max-width: 90%;
+                }
                 h1 {
                     font-size: 28px;
                 }
-
                 p {
                     font-size: 16px;
-                    max-width: 90%;
-                }
-
-                #container {
-                    padding: 10px;
-                }
-
-                form {
-                    max-width: 100%;
                 }
             }
+
         </style>
 
     </head>

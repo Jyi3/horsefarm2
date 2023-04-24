@@ -9,7 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        /* Custom styles */
         .intro {
             text-align: center;
             margin-bottom: 20px;
@@ -30,25 +29,28 @@
             display: inline;
             font-size: 24px;
         }
-        /* added menu border */
+
         .navbar {
             border: 1px solid #e5e5e5;
         }
         
-        /* media queries */
-        @media (max-width: 576px) {
-        .navbar-brand {
-            font-size: 18px;
+        @media (max-width: 768px) {
+            .intro h1 {
+                font-size: 20px; 
+            }
+            .intro img {
+                display: block; 
+                margin: 0 auto 10px; 
+            }
+            .intro2 {
+                position: static;
+                padding: 10px 0; 
+            }
+            .navbar {
+                border: none;
+            }
         }
-        
-        .navbar-nav .nav-link {
-            font-size: 14px;
-        }
-        
-        .intro h1 {
-            font-size: 20px;
-        }
-        }
+
     </style>
 
 </head>

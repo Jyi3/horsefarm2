@@ -270,6 +270,26 @@
             margin-right: auto;
         }
         
+        @media only screen and (max-width: 768px) {
+            /* adjust styles for screens narrower than 768px */
+            #container {
+                max-width: 100%;
+                padding: 10px;
+            }
+            .profile-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-details {
+                margin-top: 10px;
+                text-align: center;
+            }
+            .horse-list-form input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
     </style>
 </head>
 <body>

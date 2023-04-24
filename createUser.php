@@ -102,17 +102,17 @@
                 h1 {
                     font-size: 28px;
                 }
-
+            
                 p {
                     font-size: 16px;
                     max-width: 90%;
                 }
-
+            
                 #container {
                     padding: 10px;
                 }
-
-                form {
+            
+                .my-form {
                     max-width: 100%;
                 }
             }

@@ -32,7 +32,6 @@
     <link rel="stylesheet" type="text/css" href="buttonStyle.css">
 
     <style>
-        /* customStyles.css */
 
         .intro {
             text-align: center;
@@ -97,6 +96,19 @@
             align-items: center;
             justify-content: center;
             transform: scale(2) translateY(10%);
+        }
+        @media (max-width: 768px) {
+            .intro h1 {
+                font-size: 20px;
+            }
+
+            .horse-number {
+                font-size: 1.5em;
+            }
+
+            .horse-count {
+                transform: scale(1) translateY(0);
+            }
         }
 
 

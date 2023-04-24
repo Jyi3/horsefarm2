@@ -276,6 +276,33 @@
             color: #6c757d;
         }
         
+        @media (max-width: 768px) {
+            #container {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            p {
+                font-size: 16px;
+            }
+            table {
+                font-size: 14px;
+            }
+            .profile-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-details {
+                padding-top: 0;
+                text-align: center;
+            }
+            .trainer-list-container {
+                align-items: center;
+                text-align: center;
+            }
+        }
+
     </style>
 
 </head>

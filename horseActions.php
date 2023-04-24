@@ -186,21 +186,22 @@ function process_form($name, $horse, $action) {
             }
 
             @media (max-width: 768px) {
+                #container {
+                    padding: 20px;
+                    margin-bottom: 50px;
+                }
+
                 h1 {
                     font-size: 28px;
+                    margin-bottom: 10px;
                 }
 
                 p {
                     font-size: 16px;
-                    max-width: 90%;
+                    line-height: 1.4;
                 }
-
-                #container {
-                    padding: 10px;
-                }
-            }
-
-        </style>
+            }        
+    </style>
         <link rel="stylesheet" href="lib/jquery-ui.css" />
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <script src="lib/jquery-1.9.1.js"></script>
