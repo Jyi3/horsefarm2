@@ -93,6 +93,21 @@
                 text-align: center;
                 margin: 0 auto;
             }
+            .archive-form-button {
+                background-color: #4b6c9e;
+                color: #fff;
+                border: none;
+                padding: 8px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+
+            .archive-form-button:hover {
+                background-color: #fff;
+                color: #4b6c9e;
+                border: 2px solid #4b6c9e;
+            }
             p {
                 font-size: 18px;
                 line-height: 1.6;
@@ -230,7 +245,7 @@
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
                                 <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
-                                <td style='border-left: 1px solid black'> <button class='archive-form-button' onclick=\"activatePerson('" . $allPersons[$x]->get_username() . "')\">Activate</button> </td>
+                                <td style='border-left: 1px solid black'><button class='archive-form-button' onclick=\"archivePerson('" . $allPersons[$x]->get_username() . "', '" . $allPersons[$x]->get_userType() . "')\">Activate</button></td>
 
                             </tr>";
                     }

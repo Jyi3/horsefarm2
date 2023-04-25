@@ -44,6 +44,22 @@
                 width: 100%;
                 min-height: 500px;
             }
+            .remove-behavior-button {
+                background-color: #4b6c9e;
+                color: #fff;
+                border: none;
+                padding: 8px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+
+            .remove-behavior-button:hover {
+                background-color: #fff;
+                color: #4b6c9e;
+                border: 2px solid #4b6c9e;
+            }
+
             h1 {
                 color: #4b6c9e;
                 font-size: 36px;
