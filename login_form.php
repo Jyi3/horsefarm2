@@ -168,7 +168,7 @@ if (isset($_POST['submit'])) {
                 <li>If you are a volunteer logging in for the first time, your Username is your first name followed by your ten digit phone number. After you have logged in, you can change your password.</li>
                 <li>If you are having difficulty logging in or have forgotten your Password, please contact either the
                     <a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
-                    or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a>.</li>
+                    or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a> or contact your administrator/head-trainer. </li>
         </ul>
         <form method="POST" action="">
             <div class="mb-3">

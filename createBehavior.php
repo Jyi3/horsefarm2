@@ -243,11 +243,11 @@
                     </div>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
                         <div class="form-group">
-                            <label for="BehaviorName">Behavior Name/Rank:</label>
+                            <label for="BehaviorName"><span style="color: red">*  </span>Behavior Name/Rank:</label>
                             <input type="text" name="BehaviorName" class="form-control" value="<?php echo isset($_POST["BehaviorName"]) ? htmlspecialchars($_POST["BehaviorName"]) : ''; ?>">
                         </div>
                         <div class="form-group">
-                            <label for="behaviorLevel">Behavior Rank:</label>
+                            <label for="behaviorLevel"><span style="color: red">*  </span>Behavior Rank: </label>
                             <select name="behaviorLevel" class="form-control">
                                 <?php
                                 $conn = connect();

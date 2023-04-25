@@ -174,7 +174,7 @@
             <br>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
                 <div class="form-group">
-                    <label for="horseName">Horse Name:</label>
+                    <label for="horseName"><span style="color: red">*  </span>Horse Name:</label>
                     <input type="text" name="horseName" class="form-control" value="<?php echo isset($_POST["horseName"]) ? htmlspecialchars($_POST["horseName"]) : ''; ?>">
                 </div>
                 <div class="form-group">

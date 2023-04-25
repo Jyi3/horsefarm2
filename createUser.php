@@ -170,15 +170,15 @@
             <br>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;">
                 <div class="form-group">
-                    <label for="firstName">First Name:</label>
+                    <label for="firstName"><span style="color: red">*  </span>First Name: </label>
                     <input type="text" name="firstName" class="form-control" value="<?php echo isset($_POST["firstName"]) ? htmlspecialchars($_POST["firstName"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="lastName">Last Name:</label>
+                    <label for="lastName"><span style="color: red">*  </span>Last Name:  </label>
                     <input type="text" name="lastName" class="form-control" value="<?php echo isset($_POST["lastName"]) ? htmlspecialchars($_POST["lastName"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="phone">Phone:</label>
+                    <label for="phone"><span style="color: red">*  </span> Phone: <span style="color: grey"><br> (xxx-xxx-xxxx) </br> </span> </label>
                     <input type="tel" name="phone" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value="<?php echo isset($phone) ? htmlspecialchars($phone) : ''; ?>">
                 </div>
                 <div class="form-group">
@@ -186,15 +186,15 @@
                     <input type="email" name="email" class="form-control" value="<?php echo isset($_POST["email"]) ? htmlspecialchars($_POST["email"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="username">Username:</label>
+                    <label for="username"><span style="color: red">*  </span>Username:</label>
                     <input type="text" name="username" class="form-control" value="<?php echo isset($_POST["username"]) ? htmlspecialchars($_POST["username"]) : ''; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="pass">Password:</label>
+                    <label for="pass"><span style="color: red">*  </span>Password:</label>
                     <input type="password" name="pass" class="form-control" minlength="8">
                 </div>
                 <div class="form-group">
-                    <label for="userType">User Type:</label>
+                    <label for="userType"><span style="color: red">*  </span>User Type:</label>
                     <select name="userType" class="form-control">
                         <option value="Recruit">Recruit</option>
                         <option value="Trainer">Trainer</option>
