@@ -118,7 +118,7 @@
                 width: 100%;
             }
             th, td {
-                text-align: left;
+                text-align: center;
                 padding: 8px;
             }
             th {
@@ -193,12 +193,12 @@
                 {
                     echo "<table style='float: left; margin-right: 20px;'>
                             <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Archive</th>
+                                <th style='text-align: center'>First Name</th>
+                                <th style='text-align: center'>Last Name</th>
+                                <th style='text-align: center'>Phone</th>
+                                <th style='text-align: center'>Email</th>
+                                <th style='text-align: center'>Role</th>
+                                <th style='text-align: center'>Archive</th>
                             </tr>";
                     
                     for ($x = 0; $x < count($allPersons); $x++) {
@@ -229,12 +229,12 @@
                 {
                     echo "<table style='float: right;'>
                             <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Activate</th>
+                                <th style='text-align: center'>First Name</th>
+                                <th style='text-align: center'>Last Name</th>
+                                <th style='text-align: center'>Phone</th>
+                                <th style='text-align: center'>Email</th>
+                                <th style='text-align: center'>Role</th>
+                                <th style='text-align: center'>Activate</th>
                             </tr>";
                     
                     for ($x = 0; $x < count($allPersons); $x++) {

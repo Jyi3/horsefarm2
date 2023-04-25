@@ -131,6 +131,20 @@
                 margin: 0 auto;
             }
 
+            .view-behavior-button {
+                background-color: #4b6c9e;
+                color: #ffffff;
+                padding: 8px 16px;
+                border: none;
+                border-radius: 5px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .view-behavior-button:hover {
+                background-color: #374c6f;
+            }
+
             p {
                 font-size: 18px;
                 line-height: 1.6;
@@ -272,9 +286,13 @@
                         </div>
                         <input type="submit" name="action" value="Add Behavior" class="btn btn-primary">
                         <input type="submit" name="action" value="Add Rank" class="btn btn-secondary" style="margin-left: 20%;">
+                        <div style="margin-top: 20px;">
+                            <input type="button" class="view-behavior-button" onclick="window.location.href = 'viewBehavior.php'" value="View Behaviors">
+                        </div>
                     </form>
                 <br>    
                 </div>
+                
             </div>
             <?php include('footer.php'); ?>
         </div>

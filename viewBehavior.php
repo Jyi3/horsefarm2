@@ -48,13 +48,29 @@
                 background-color: #4b6c9e;
                 color: #fff;
                 border: none;
-                padding: 8px 20px;
+                padding: 6px 14px;
                 font-size: 16px;
                 cursor: pointer;
                 margin-left: 20px;
             }
 
             .remove-behavior-button:hover {
+                background-color: #fff;
+                color: #4b6c9e;
+                border: 2px solid #4b6c9e;
+            }
+
+            .create-behavior-button {
+                background-color: #4b6c9e;
+                color: #fff;
+                border: none;
+                padding: 10px 26px;
+                font-size: 20px;
+                cursor: pointer;
+                margin-left: 20px;
+            }
+
+            .create-behavior-button:hover {
                 background-color: #fff;
                 color: #4b6c9e;
                 border: 2px solid #4b6c9e;
@@ -151,9 +167,9 @@
                 } else {
                 echo "<table>";
                 echo "<tr>
-                        <th>Name</th>
-                        <th>Behavior Rank</th>
-                        <th> Remove </th>
+                        <th style='text-align: center'>Name</th>
+                        <th style='text-align: center'>Behavior Rank</th>
+                        <th style='text-align: center'> Remove </th>
                         
                         </tr>";
                 foreach ($allBehaviors as $behavior) {
@@ -167,16 +183,13 @@
                 }
                 echo "</table>";
                 }
-
+                echo"<br> </br>";
+                echo '<input type="button" class="create-behavior-button" onclick="window.location.href = \'createBehavior.php\'" value="Create New Behavior">';
                 
                 echo "<hr style='clear:both;'>";
                 echo "<hr style='clear:both;'>";
 
-                // Retrieve all horses from the database
-                
-                
-                echo "<hr style='clear:both;'>";
-                echo "<hr style='clear:both;'>";
+
                 ?>
             </div>
             </div>
