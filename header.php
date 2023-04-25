@@ -146,6 +146,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="viewHorses.php">View All Horses</a>
                     <a class="dropdown-item" href="viewTrainers.php">View All Trainers</a>
+						  <a class="dropdown-item" href="viewBehavior.php">View All Behaviors</a>
                     <a class="dropdown-item" href="search.php">Search</a>
                     </div>
                 </li>
