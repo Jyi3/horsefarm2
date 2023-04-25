@@ -122,21 +122,22 @@
                 include_once('domain/Behavior.php');
                 include_once('database/behaviordb.php');
 
-                // Retrieve all horses from the database
+                // Retrieve all behaviors from the database
                 $allBehaviors = getall_behaviordb();
 
-                // Display all horses in a table
+                // Display all behaviors in a table
                 echo "<br>";
                 echo "<br>";
                 echo "<h2><strong>List of Behaviors</strong></h2>";
                 echo "<br>";
                 if (empty($allBehaviors)) {
-                    echo "<tr><td colspan='5' style='text-align:center'>There are no horses in this category.</td></tr>";
+                    echo "<tr><td colspan='5' style='text-align:center'>There are no behaviors to display.</td></tr>";
                 } else {
                 echo "<table>";
                 echo "<tr>
                         <th>Name</th>
                         <th>Behavior Rank</th>
+                        <th> Remove </th>
                         
                         </tr>";
                 foreach ($allBehaviors as $behavior) {
@@ -144,6 +145,7 @@
                             
                             <td style='border-left: 1px solid black'>  " . $behavior->get_title() . " </td>
                             <td style='border-left: 1px solid black'>  " . $behavior->get_behaviorLevel() . " </td>
+                            <td style='border-left: 1px solid black'><button class='remove-behavior-button' onclick=\"removeBehavior('" . $behavior->get_title() . "')\"> Remove </button></td>
                             
                         </tr>";
                 }
@@ -164,5 +166,20 @@
             </div>
             <?php include('footer.php'); ?>
         </div>
+        <script>
+            function removeBehavior(title) {
+
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        location.reload(); // Reload the page after updating the person status
+                    }
+                };
+                xhttp.open("POST", "update_behavior_status.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("title=" + title); // Pass 1 as the status to archive the person
+
+            }
+        </script>
     </body>
 </html>
