@@ -84,10 +84,25 @@ function edit_behavior($title, $behavior) {
  * Return Values:
  *      true, the existing behavior was removed.
  */
+/*
 function remove_behavior($title) {
 
-    //Create a connection to the database and remove the behavior.
-    $con=connect();
+
+
+    #Checks to make sure the title inputed is a string
+    if (is_string($title) == FALSE ){
+        return false;
+    }
+
+    #Check and make sure that the behavior exists
+    $con = connect();
+    $checkQuery = "SELECT * FROM behaviordb WHERE title='" . $title . "';";
+    $check = mysqli_query($con, $checkQuery);
+    if($check == null  || mysqli_num_rows($check) == 0){
+        return false;
+    }
+
+    #Delete behavior from the database
     $query = 'DELETE FROM behaviordb WHERE title = "' . $title . '"';
     $result = mysqli_query($con,$query);
 
@@ -95,7 +110,7 @@ function remove_behavior($title) {
     mysqli_close($con);
     return true;
 }
-
+*/
 
 /*
  * Function name: retrieve_behavior($behaviorTitle)
@@ -411,6 +426,7 @@ function get_all_red_behaviors(){
 }
 
 //Will add a function in addBehaviors.php  that takes in a horseID, and depending on their rank automatically add the right behaviors of the same color rank and below
+
 
 
 ?>

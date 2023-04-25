@@ -146,7 +146,6 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="viewHorses.php">View All Horses</a>
                     <a class="dropdown-item" href="viewTrainers.php">View All Trainers</a>
-						  <a class="dropdown-item" href="viewBehavior.php">View All Behaviors</a>
                     <a class="dropdown-item" href="search.php">Search</a>
                     </div>
                 </li>
@@ -159,7 +158,6 @@
                         <a class="dropdown-item" href="createHorse.php">Create Horse</a>
                         <a class="dropdown-item" href="editHorse.php">Edit Horses</a>
                         <a class="dropdown-item" href="archiveHorses.php">Archive Horse</a>
-                        <a class="dropdown-item" href="createBehavior.php">Create Behavior</a>
                     </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -170,6 +168,15 @@
                         <a class="dropdown-item" href="createUser.php">Create Trainer</a>
                         <a class="dropdown-item" href="editTrainer.php">Edit Trainers</a>
                         <a class="dropdown-item" href="archiveTrainers.php">Archive Trainers</a>
+                    </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="header-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Behavior Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="createBehavior.php">Create Behavior</a>
+                        <a class="dropdown-item" href="viewBehavior.php">View All Behaviors</a>
                     </div>
                     </li>
                 <?php } ?>
