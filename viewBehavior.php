@@ -9,7 +9,8 @@
             CVHR Horse Training Management System
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
-        <style>
+   
+    <style>
             
             body {
                 font-family: Arial, sans-serif;
@@ -149,62 +150,58 @@
         <?php include('header.php'); ?>
             <div id="content">
             <div id="content-inner">
-                <?php
+            <?php
                 include_once('database/dbinfo.php');
                 include_once('domain/Behavior.php');
                 include_once('database/behaviordb.php');
 
                 // Retrieve all behaviors from the database
                 $allBehaviors = getall_behaviordb();
+            ?>
 
-                // Display all behaviors in a table
-                echo "<br>";
-                echo "<br>";
-                echo "<h2><strong>List of Behaviors</strong></h2>";
-                echo "<br>";
-                if (empty($allBehaviors)) {
-                    echo "<tr><td colspan='5' style='text-align:center'>There are no behaviors to display.</td></tr>";
-                } else {
-                echo "<table>";
-                echo "<tr>
+            <br>
+            <br>
+            <h2><strong>List of Behaviors</strong></h2>
+            <br>
+            <?php if (empty($allBehaviors)): ?>
+                <tr><td colspan='5' style='text-align:center'>There are no behaviors to display.</td></tr>
+            <?php else: ?>
+                <table>
+                    <tr>
                         <th style='text-align: center'>Name</th>
                         <th style='text-align: center'>Behavior Rank</th>
                         <th style='text-align: center'> Remove </th>
-                        
-                        </tr>";
-                foreach ($allBehaviors as $behavior) {
-                    echo "<tr>
-                            
-                            <td style='border-left: 1px solid black'>  " . $behavior->get_title() . " </td>
-                            <td style='border-left: 1px solid black'>  " . $behavior->get_behaviorLevel() . " </td>
-                            <td style='border-left: 1px solid black'><button class='remove-behavior-button' onclick=\"removeBehavior('" . $behavior->get_title() . "')\"> Remove </button></td>
-                            
-                        </tr>";
-                }
-                echo "</table>";
-                }
-                echo"<br> </br>";
-                echo '<input type="button" class="create-behavior-button" onclick="window.location.href = \'createBehavior.php\'" value="Create New Behavior">';
-                
-                echo "<hr style='clear:both;'>";
-                echo "<hr style='clear:both;'>";
+                    </tr>
+                    <?php foreach ($allBehaviors as $behavior): ?>
+                        <tr>
+                            <td style='border-left: 1px solid black'><?php echo $behavior->get_title(); ?></td>
+                            <td style='border-left: 1px solid black'><?php echo $behavior->get_behaviorLevel(); ?></td>
+                            <td style='border-left: 1px solid black'>
+                                <button class='remove-behavior-button' onclick="removeBehavior('<?php echo $behavior->get_title(); ?>')">Remove</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            <?php endif; ?>
 
-
-                ?>
+            <br><br>
+            <input type="button" class="create-behavior-button" onclick="window.location.href = 'createBehavior.php'" value="Create New Behavior">
+            <hr style='clear:both;'>
+            <hr style='clear:both;'>
             </div>
             </div>
             <?php include('footer.php'); ?>
         </div>
         <script>
             function removeBehavior(title) {
-
+                console.log("removeBehavior called with title: " + title);
                 const xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         location.reload(); // Reload the page after updating the person status
                     }
                 };
-                xhttp.open("POST", "update_behavior_status.php", true);
+                xhttp.open("POST", "update_behavior_status.php");
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send("title=" + title); // Pass 1 as the status to archive the person
 
