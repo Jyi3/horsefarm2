@@ -234,20 +234,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 z-index: 1;
             }
 
+            h1 {
+                color: #4b6c9e;
+                font-size: 36px;
+                margin-bottom: 20px;
+                text-align: center;
+                margin: 0 auto;
+            }
+            p {
+                font-size: 18px;
+                line-height: 1.6;
+                margin: 0 auto;
+            }
             table {
                 border-collapse: collapse;
                 width: 100%;
             }
-
             th, td {
-                border: 1px solid black;
+                text-align: center;
                 padding: 8px;
-                text-align: left;
-            }
 
+            }
             th {
+                background-color: #4b6c9e;
+                color: white;
+                text-align: center;
+            }
+            tr:nth-child(even) {
                 background-color: #f2f2f2;
             }
+
 
             #content {
                 display: flex;
