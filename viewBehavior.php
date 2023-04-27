@@ -9,7 +9,8 @@
             CVHR Horse Training Management System
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
-        <style>
+   
+    <style>
             
             body {
                 font-family: Arial, sans-serif;
@@ -197,14 +198,14 @@
         </div>
         <script>
             function removeBehavior(title) {
-
+                console.log("removeBehavior called with title: " + title);
                 const xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         location.reload(); // Reload the page after updating the person status
                     }
                 };
-                xhttp.open("POST", "update_behavior_status.php", true);
+                xhttp.open("POST", "viewBehavior.php");
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send("title=" + title); // Pass 1 as the status to archive the person
 
