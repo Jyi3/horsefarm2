@@ -61,7 +61,7 @@ function add_horse($horse) {
     $con=connect();
     
     //Add the new horse to the database.
-    $query = "INSERT INTO horseDB (horseName, color, breed, pastureNum, colorRank) VALUES ('" .
+    $query = "INSERT INTO horsedb (horseName, color, breed, pastureNum, colorRank) VALUES ('" .
             $horse->get_horseName() . "','" .
             $horse->get_color() . "','" .
             $horse->get_breed() . "','" .
@@ -111,7 +111,7 @@ function edit_horse($horseID, $horse) {
 
     //Create a database connection and update the existing horse.
     $con=connect();
-    $query = "UPDATE horseDB SET horseName='" . $horse->get_horseName() . "', color='" . $horse->get_color() . "', breed='" . $horse->get_breed() . "', pastureNum='" . $horse->get_pastureNum() . "', colorRank='" . $horse->get_colorRank() . "' WHERE horseID='" . $horseID . "';";
+    $query = "UPDATE horsedb SET horseName='" . $horse->get_horseName() . "', color='" . $horse->get_color() . "', breed='" . $horse->get_breed() . "', pastureNum='" . $horse->get_pastureNum() . "', colorRank='" . $horse->get_colorRank() . "' WHERE horseID='" . $horseID . "';";
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
@@ -153,7 +153,7 @@ function retrieve_horse($horseID) {
     
     //Create a database connection and retrieve the horse from the database.    
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE horseID='" . $horseID . "';";
+    $query = "SELECT * FROM horsedb WHERE horseID='" . $horseID . "';";
     $result = mysqli_query($con,$query);
 
     //If the horse does NOT exist in the database,
@@ -210,7 +210,7 @@ function remove_horse($horseID) {
     $archived = retrieve_horse_by_id($horseID);
     
     // Sets the archive boolean and archive date for the horse being removed
-    $query = 'UPDATE horseDB SET archive=true, archiveDate=CURDATE() WHERE horseID = "' . $horseID . '"';
+    $query = 'UPDATE horsedb SET archive=true, archiveDate=CURDATE() WHERE horseID = "' . $horseID . '"';
     $result = mysqli_query($con,$query);
     
     //Close the connection and return true.
@@ -260,7 +260,7 @@ function getall_horseDB()
 
     //Create a database connection and retrieve all non-archived horses from the database.
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
+    $query = "SELECT * FROM horsedb WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
     $result = mysqli_query($con,$query);
 
     //If there are no non-archived horses in the database,
@@ -289,7 +289,7 @@ function get_archived_horses() {
 
     //Create a database connection and retrieve all archived horses from the database.
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive=true ORDER BY horseName ASC";
+    $query = "SELECT * FROM horsedb WHERE archive=true ORDER BY horseName ASC";
     $result = mysqli_query($con,$query);
 
     //If there are no archived horses in the database,
@@ -325,7 +325,7 @@ function getall_horse_names() {
 
     //Create a database connection and retrieve all of the horse names.
     $con=connect();
-    $query = "SELECT * FROM horseDB WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
+    $query = "SELECT * FROM horsedb WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 
     $result = mysqli_query($con,$query);
 
     //If the horse table is empty,
@@ -377,7 +377,7 @@ function get_numHorses() {
 
     //Create a database connection and retrieve the count of non-archived horses from the database.
     $con=connect();
-    $query = "SELECT COUNT(*) as num_horses FROM horseDB WHERE archive IS NULL OR archive=0";
+    $query = "SELECT COUNT(*) as num_horses FROM horsedb WHERE archive IS NULL OR archive=0";
     $result = mysqli_query($con,$query);
 
     //If the query returns no rows, close the connection and return 0.
@@ -399,7 +399,7 @@ function get_num_archiveHorses() {
 
     //Create a database connection and retrieve the count of non-archived horses from the database.
     $con=connect();
-    $query = "SELECT COUNT(*) as num_horses FROM horseDB WHERE archive=true";
+    $query = "SELECT COUNT(*) as num_horses FROM horsedb WHERE archive=true";
     $result = mysqli_query($con,$query);
 
     //If the query returns no rows, close the connection and return 0.

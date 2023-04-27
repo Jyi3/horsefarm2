@@ -68,7 +68,7 @@ function archive_horse($horse){
 function getall_arcHorseDB(){
 
     $con=connect();
-    $query = "SELECT * FROM archiveHorseDB ORDER BY horseName";
+    $query = "SELECT * FROM archiveHorsedb ORDER BY horseName";
     $result = mysqli_query($con,$query);
 
     if($result == null || mysqli_num_rows($result) == 0){
@@ -96,7 +96,7 @@ function getall_arcHorseDB(){
 function getall_arcHorseDB_byTime(){
 
     $con=connect();
-    $query = "SELECT * FROM archiveHorseDB ORDER BY arcTime";
+    $query = "SELECT * FROM archiveHorsedb ORDER BY arcTime";
     $result = mysqli_query($con,$query);
 
     if($result == null || mysqli_num_rows($result) == 0){
@@ -119,7 +119,7 @@ function getall_arcHorseDB_byTime(){
 
 function getall_archived_horse_names(){
     $con = connect();
-    $query = "SELECT horseName from horseDB ORDER BY horseName";
+    $query = "SELECT horseName from horsedb ORDER BY horseName";
     $result = my_sqli_query($con,$query);
 
     //If archive is empty.
