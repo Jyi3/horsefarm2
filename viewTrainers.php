@@ -139,11 +139,11 @@
                     for ($x = 0; $x < count($allPersons); $x++) {
                         $username = $allPersons[$x]->get_username();
                         echo "<tr>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
-                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
-                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
-                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                                <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_phone() . " </td>
+                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_email() . " </td>
+                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_userType() . " </td>
                             </tr>";
                     }
                     echo "</table>";
@@ -171,11 +171,11 @@
                     for ($x = 0; $x < count($allPersons); $x++) {
                         $username = $allPersons[$x]->get_username();
                         echo "<tr>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
-                                <td style='border-left: 1px solid black'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
-                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_phone() . " </td>
-                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_email() . " </td>
-                                <td style='border-left: 1px solid black'> " . $allPersons[$x]->get_userType() . " </td>
+                                <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_phone() . " </td>
+                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_email() . " </td>
+                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_userType() . " </td>
                             </tr>";
                     }
                     echo "</table>";
