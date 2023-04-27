@@ -9,7 +9,7 @@
         die("You do not have permission to access this page.");
     }
 
-    $horses = getAll_horseDB();
+    $horses = getAll_horsedb();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_horse"])) {
             // Check user permissions
@@ -30,7 +30,7 @@
 
         // update Horse data in the database
         $conn = connect();
-        $sql = "UPDATE horseDB SET horseName='$horseName', diet='$diet', color='$color', breed='$breed', pastureNum='$pastureNum', colorRank='$colorRank', archive='$status' WHERE horseID='$horseID'";
+        $sql = "UPDATE horsedb SET horseName='$horseName', diet='$diet', color='$color', breed='$breed', pastureNum='$pastureNum', colorRank='$colorRank', archive='$status' WHERE horseID='$horseID'";
 
         // execute SQL query
         if (mysqli_query($conn, $sql)) {
@@ -56,7 +56,7 @@
 
         // update Horse data in the database
         $conn = connect();
-        $sql = "UPDATE horseDB SET horseName='$horseName', diet='$diet', color='$color', breed='$breed', pastureNum='$pastureNum', colorRank='$colorRank', archive='$status' WHERE horseID='$horseID'";
+        $sql = "UPDATE horsedb SET horseName='$horseName', diet='$diet', color='$color', breed='$breed', pastureNum='$pastureNum', colorRank='$colorRank', archive='$status' WHERE horseID='$horseID'";
 
         // execute SQL query
         if (mysqli_query($conn, $sql)) {

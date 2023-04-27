@@ -19,7 +19,7 @@ $(function() {
 <div>
 	<p>
 	<form method="post">
-		<p> <b>Example Datepicker and Timepicker Elements</b>
+		<p> <b>Example db and Timepicker Elements</b>
 		<br> Today's date and time: <?php date_default_timezone_set ("America/New_York"); echo Date("F d, Y g:ia");?></p>
 	<table>	<tr>
 		<td valign="top"> Select Date and Time: 

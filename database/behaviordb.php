@@ -260,7 +260,7 @@ function make_a_behavior($result_row) {
 
 /*
  * Function name: get_all_green_behaviors()
- * Description: Gets all green behaviors from behaviorDB and adds it to the $behaviors array. 
+ * Description: Gets all green behaviors from behaviordb and adds it to the $behaviors array. 
  *              In the behaviors array the key is the title of the behavior and the value is the color rank of said behavior
  * Parameters: 
  *      None
@@ -286,7 +286,7 @@ function get_all_green_behaviors(){
     $numTitles = mysqli_num_rows($titles);
     //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
     $rank = 'Green';
-    //Checks to make sure theres green behaviors in the DB. If there isnt, function returns an empty arrays and a warning is printed
+    //Checks to make sure theres green behaviors in the db. If there isnt, function returns an empty arrays and a warning is printed
     if($numTitles == 0){
         $error = "Warning: No Green behaviors to add!";
         echo("<li><strong><font color=\"orange\">" . $error . "</font></string></li>\n");
@@ -317,7 +317,7 @@ function get_all_green_behaviors(){
 
 /*
  * Function name: get_all_yellow_behaviors()
- * Description: Gets all green behaviors from behaviorDB and adds it to the $behaviors array. 
+ * Description: Gets all green behaviors from behaviordb and adds it to the $behaviors array. 
  *              In the behaviors array the key is the title of the behavior and the value is the color rank of said behavior.
  * Parameters: 
  *      None
@@ -345,7 +345,7 @@ function get_all_yellow_behaviors(){
     $numTitles = mysqli_num_rows($titles);
     //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
     $rank = 'Yellow';
-    //Checks to make sure theres yellow behaviors in the DB. If there isnt, we just return behaviors since it has all green behaviors
+    //Checks to make sure theres yellow behaviors in the db. If there isnt, we just return behaviors since it has all green behaviors
     if($numTitles == 0){
         mysqli_close($con);
         return $behaviors;
@@ -371,7 +371,7 @@ function get_all_yellow_behaviors(){
 
 /*
  * Function name: get_all_red_behaviors()
- * Description: Gets all red behaviors from behaviorDB and adds it to the $behaviors array. 
+ * Description: Gets all red behaviors from behaviordb and adds it to the $behaviors array. 
  *              In the behaviors array the key is the title of the behavior and the value is the color rank of said behavior.
  * Parameters: 
  *      None
@@ -403,7 +403,7 @@ function get_all_red_behaviors(){
     $numTitles = mysqli_num_rows($titles);
     //Color rank of the behaviors grabbed (to be assigned as the value in the behavior array)
     $rank = 'Red';
-    //Checks to make sure theres red behaviors in the DB. If there isnt, we just return behaviors since it has all green and yellow behaviors
+    //Checks to make sure theres red behaviors in the db. If there isnt, we just return behaviors since it has all green and yellow behaviors
     if($numTitles == 0){
         mysqli_close($con);
         return $behaviors;

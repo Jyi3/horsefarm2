@@ -183,7 +183,7 @@
                 <?php
 
                 // Retrieve all horses from the database
-                $allHorses = getall_horseDB();
+                $allHorses = getall_horsedb();
 
                 // Display all horses in a table with an Archive button for each
                 echo "<br>";

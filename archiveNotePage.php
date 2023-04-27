@@ -24,7 +24,7 @@ if (mysqli_connect_errno()) {
 }
 
 // Prepare and execute a query to update the note's archive status
-$query = "UPDATE notesDB SET archive = 1, archiveDate = '$archiveDate' WHERE noteID = '$noteID'";
+$query = "UPDATE notesdb SET archive = 1, archiveDate = '$archiveDate' WHERE noteID = '$noteID'";
 $result = mysqli_query($conn, $query);
 
 // Check for errors updating the note

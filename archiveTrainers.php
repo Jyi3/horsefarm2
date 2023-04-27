@@ -16,7 +16,7 @@
     include_once('database/dbinfo.php');
 
     $conn = connect();
-    $query = "SELECT COUNT(*) as count FROM personDB WHERE userType = 'Head Trainer' AND (archive = 0 OR archive IS NULL)";
+    $query = "SELECT COUNT(*) as count FROM persondb WHERE userType = 'Head Trainer' AND (archive = 0 OR archive IS NULL)";
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
@@ -34,7 +34,7 @@
         $status = $_POST['status'];
         $archive_date = ($status == 1) ? date('Y-m-d') : NULL;
 
-        $query = "UPDATE personDB SET archive = :status, archiveDate = :archive_date WHERE username = :username";
+        $query = "UPDATE persondb SET archive = :status, archiveDate = :archive_date WHERE username = :username";
         $statement = $db->prepare($query);
         $statement->bindValue(':status', $status);
         $statement->bindValue(':archive_date', $archive_date);

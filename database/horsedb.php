@@ -7,7 +7,7 @@
 //Include the MySQL connection and Horse class.
 include_once('dbinfo.php');
 include_once(dirname(__FILE__).'/../domain/Horse.php');
-include_once('behaviorDB.php');
+include_once('behaviordb.php');
 include_once(dirname(__FILE__).'/../addBehavior.php');
 
 //include_once(dirname(__FILE__).'/../database/archiveHorseDb.php');
@@ -108,7 +108,7 @@ function archive_horse($horseID) {
     $con = connect();
     
     // Update the archive and archiveDate fields for the specified horse
-    $query = 'UPDATE horseDB SET archive=1, archiveDate=CURDATE() WHERE horseID = "' . $horseID . '"';
+    $query = 'UPDATE horsedb SET archive=1, archiveDate=CURDATE() WHERE horseID = "' . $horseID . '"';
 
     $result = mysqli_query($con, $query);
 
@@ -131,7 +131,7 @@ function activate_horse($horseID) {
 }
 
 
-function getall_horseDB() {
+function getall_horsedb() {
     //Create a database connection and retrieve all non-archived horses from the database.
     $con=connect();
     $query = "SELECT * FROM horsedb WHERE archive IS NULL OR archive=0 ORDER BY horseName ASC"; 

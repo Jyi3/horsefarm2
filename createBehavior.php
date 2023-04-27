@@ -221,7 +221,7 @@
                         
                     }      
                 $conn = connect();
-                $sql = "INSERT INTO behaviorDB (title, behaviorLevel) VALUES ('" . $_POST["BehaviorName"] . "', '" . $_POST["behaviorLevel"] . "')";
+                $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('" . $_POST["BehaviorName"] . "', '" . $_POST["behaviorLevel"] . "')";
 
                 // execute SQL query
                 if (mysqli_query($conn, $sql)) {

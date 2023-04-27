@@ -14,7 +14,7 @@ if (isset($_POST['submit'])) {
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $stmt = $conn->prepare("SELECT username, pass, userType FROM personDB WHERE username = ?");
+        $stmt = $conn->prepare("SELECT username, pass, userType FROM persondb WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();

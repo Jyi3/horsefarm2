@@ -10,7 +10,7 @@
         $status = $_POST['status'];
         $archive_date = ($status == 1) ? date('Y-m-d') : NULL;
 
-        $query = "UPDATE horseDB SET archive = $status, archiveDate = '$archive_date' WHERE horseID = $horseID";
+        $query = "UPDATE horsedb SET archive = $status, archiveDate = '$archive_date' WHERE horseID = $horseID";
         $result = mysqli_query($conn, $query);
 
         if (!$result) {

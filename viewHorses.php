@@ -123,7 +123,7 @@
                 include_once('database/horsedb.php');
 
                 // Retrieve all horses from the database
-                $allHorses = getall_horseDB();
+                $allHorses = getall_horsedb();
 
                 // Display all horses in a table
                 echo "<br>";

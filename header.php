@@ -9,15 +9,14 @@
 ?>
 
 <?php
-    include_once('database\dbinfo.php');
+    include_once('database/dbinfo.php');
     
     $conn = connect();
-    $greenCount = mysqli_query($conn, "SELECT COUNT(*) FROM horseDB WHERE colorRank = 'green' AND (archive IS NULL OR archive = 0)")->fetch_row()[0];
-    $yellowCount = mysqli_query($conn, "SELECT COUNT(*) FROM horseDB WHERE colorRank = 'yellow' AND (archive IS NULL OR archive = 0)")->fetch_row()[0];
-    $redCount = mysqli_query($conn, "SELECT COUNT(*) FROM horseDB WHERE colorRank = 'red' AND (archive IS NULL OR archive = 0)")->fetch_row()[0];
+    $greenCount = mysqli_query($conn, "SELECT COUNT(*) FROM horsedb WHERE colorRank = 'green' AND (archive IS NULL OR archive = 0)")->fetch_row()[0] ?? 0;
+    $yellowCount = mysqli_query($conn, "SELECT COUNT(*) FROM horsedb WHERE colorRank = 'yellow' AND (archive IS NULL OR archive = 0)")->fetch_row()[0] ?? 0;
+    $redCount = mysqli_query($conn, "SELECT COUNT(*) FROM horsedb WHERE colorRank = 'red' AND (archive IS NULL OR archive = 0)")->fetch_row()[0] ?? 0;
     $totalCount = $greenCount+$yellowCount+$redCount;
     mysqli_close($conn);
-
 ?>
 
 <!DOCTYPE html>
