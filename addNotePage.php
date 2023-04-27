@@ -11,12 +11,12 @@ include_once('domain/horse.php');
 
 $horseID=null;
 $noteID=null;
-$noteText;
+$noteText = '';
 $theHorse;
 $theNote;
 $theHorseNotes;
 $numNotes;
-$username;
+$username = null;
 
 if(isset($_POST['horseID'])){$horseID=$_POST['horseID'];}
 if(isset($_POST['noteID'])){$noteID=$_POST['noteID'];}
@@ -46,10 +46,14 @@ $trainerListSql = "SELECT p.username, p.firstName, p.lastName, p.archive, IF(pt.
         FROM persondb p
         LEFT JOIN persontohorsedb pt ON p.username = pt.username AND pt.horseID = '$horseID'
         WHERE p.archive != 1";
-$trainerListResult = mysqli_query($conn, $trainerListSql);
-$TLRrow = mysqli_fetch_assoc($trainerListResult);
+    $trainerListResult = mysqli_query($conn, $trainerListSql);
+    while ($row = mysqli_fetch_assoc($trainerListResult)) {
+        if ($row['isConnected'] == 1) {
+            $username = $row['username'];
+            break; // Stop looping once you find a connected trainer
+        }
+    }
 
-$username=$TLRrow['username'];
 
     //auxillary note related funcitons here.
 
@@ -64,7 +68,7 @@ $username=$TLRrow['username'];
         echo("
         <form action='/horse/horsefarm2/addNotePage.php' method='POST'>
         <label>Add a new note for $horseName:</label><br>
-        <input type='hidden' name='horseID' value='<?php echo $horseID; ?>'>
+        <input type='hidden' name='horseID' value='$horseID'>
         <textarea id='note' name='note' rows='4' cols='50' value='test' required></textarea><br>
         <label for='username'>Username:</label>
         <input type='hidden' name='username' value='<?php echo $username; ?>' required readonly><br>
@@ -72,21 +76,13 @@ $username=$TLRrow['username'];
         <input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
         <input type='hidden' name='noteTimestamp' value='" . time() . "'>
         <input type='hidden' name='addNoteSubmit' value='1'>
-        </form>
-        </body>"
+        </form>"
         
         );
         
 }
 
 function handleNoteSubmission(){
-    $permissions = isset($_SESSION['permissions']) ? $_SESSION['permissions'] : null;
-
-    if ($permissions !== 3 && $permissions !== 5) {
-        echo "<script>alert('You do not have permission to add a note.');</script>";
-        echo "<script>window.location.href='horseprofile.php?horseID=".$_POST['horseID']."';</script>";
-        return false;
-    } else {
         if(isset($_POST['addNoteSubmit'])){
             $submissionSet = array(
                 'noteID' => get_next_note_id(),
@@ -101,7 +97,6 @@ function handleNoteSubmission(){
             $theNote = construct_next_note($submissionSet);
             $status = add_note($theNote);
             echo "note addition status: " . (boolean)$status . "<br>";
-        }
     }
 }
 
@@ -193,13 +188,15 @@ function handleNoteSubmission(){
                 echo("</br>");
                 
                 handleNoteSubmission();
-                addNoteForm($theHorse,$username);
+                addNoteForm($theHorse, $username);
                 ?>
 
-                <form method="GET" action = "horseprofile.php">
+                <form method="GET" action="horseprofile.php">
                     <input type="hidden" name="horseID" value="<?php echo $horseID; ?>">
+                    <input type="hidden" name="username" value="<?php echo $username; ?>">
                     <input type="submit" name="return" value="Return to horse profile">
                 </form>
+
 
                 </div>
             </div>

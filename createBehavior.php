@@ -52,7 +52,7 @@
         {
             // create new behavior with whitespace name and posted rank as behavior level
             $conn = connect();
-            $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('', '" . $_POST['BehaviorName'] . "')";
+            $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES (' ', '" . $_POST['BehaviorName'] . "')";
 
             // execute SQL query
             if (mysqli_query($conn, $sql)) {

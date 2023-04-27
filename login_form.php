@@ -164,11 +164,15 @@ if (isset($_POST['submit'])) {
         <p style="text-align: center;">Access to CVHR System requires a<br>Username and a Password.</p>
         <ul>
                 <li>If you accidentally came to this site instead of the Central Virginia Horse Rescue website, please <a href="https://centralvahorserescue.org/" target="_blank">click here</a> to visit their site.</li>
+<<<<<<< Updated upstream
                 <li>If you are applying for a volunteer position, create an account.</li>
                 <li>If you are a volunteer logging in for the first time, your Username is your first name followed by your ten digit phone number. After you have logged in, you can change your password.</li>
                 <li>If you are having difficulty logging in or have forgotten your Password, please contact either the
                     <a href="mailto:allen@npfi.org"><i>Portland House Manager</i></a>
                     or the <a href="mailto:allen@npfi.org"><i>Bangor House Manager</i></a> or contact your administrator/head-trainer. </li>
+=======
+                <li>If you are applying for a volunteer position, create an account down below.</li>
+>>>>>>> Stashed changes
         </ul>
         <form method="POST" action="">
             <div class="mb-3">
