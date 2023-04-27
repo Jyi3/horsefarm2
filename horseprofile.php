@@ -74,8 +74,8 @@
     // Query for associated horses
     $sql_associated_trainer = 
         "SELECT p.username, p.firstName, p.lastName, p.archive
-        FROM personDB p
-        INNER JOIN personToHorseDB ph ON ph.username = p.username
+        FROM persondb p
+        INNER JOIN personToHorsedb ph ON ph.username = p.username
         WHERE ph.horseID = '$hp_horseID' AND p.archive != 1";
     $associatedTrainerResult = mysqli_query($conn, $sql_associated_trainer);
 
@@ -456,12 +456,12 @@
             <div class="profile-container">
                 <div class="columns-container">
                     <div class="profile-details">
-                        <p>Horse Name : <?php echo $horseName; ?></p>
-                        <p>Difficulty : <?php echo $colorRank; ?> </p>
-                        <p>Diet: <?php echo $diet; ?></p>
-                        <p>Pasture : <?php echo $pastureNum; ?></p>
-                        <p>Breed : <?php echo $breed; ?></p>
-                        <p>Color : <?php echo $color; ?></p>
+                        <p><span style="font-size:105%;">  Horse Name : </span>  <span style="color:Grey"> <?php echo $horseName; ?></span></p>
+                        <p><span style="font-size:105%;">  Difficulty : </span> <span style="color:Grey"> <?php echo $colorRank; ?></span>  </p>
+                        <p><span style="font-size:105%;">  Diet: </span><span style="color:Grey"> <?php echo $diet; ?></span></p>
+                        <p><span style="font-size:105%;">Pasture : </span><span style="color:Grey"> <?php echo $pastureNum; ?></span></p>
+                        <p><span style="font-size:105%;">Breed : </span><span style="color:Grey"><?php echo $breed; ?></span></p>
+                        <p><span style="font-size:105%;">Color : </span><span style="color:Grey"><?php echo $color; ?></span></p>
                         <div style="display: flex; align-items: center;">
                             <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
                             <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
@@ -495,7 +495,7 @@
                             <button type="submit" class="archive-form-button">Edit <?php echo $horseName?>'s Profile</button>
                         </form>
                     </div>
-
+                    
                     <div class="add-behaviors-container">
                         <form method="post" action="<?php echo $_SERVER['PHP_SELF'] . '?horseID=' . $hp_horseID; ?>">
                             <div class="behavior-list">
@@ -538,7 +538,7 @@
                                         echo "<ul>"; // add ul tag
                                     }
                                     $color = isset($behaviorRow['horseID']) ? 'green' : 'red';
-                                    echo '<li style="color:'.$color.';"><input type="checkbox" name="behaviors[]" value="' . $behaviorRow['title'] . '"' . ($color == 'green' ? ' checked' : '') . '> ' . $behaviorRow['title'] . '</li>';
+                                    echo '<li style="color: black;"><input type="checkbox" name="behaviors[]" value="' . $behaviorRow['title'] . '"' . ($color == 'green' ? ' checked' : '') . '> ' . $behaviorRow['title'] . '</li>';
                                 }
                                 if ($current_behaviorLevel != "") {
                                     echo "</ul>"; // close ul tag
@@ -549,7 +549,7 @@
                                 ?>
                             </div>
                             <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                            <input type="submit" name="Edit_Behaviors" value="Edit_Behaviors" class="behavior-submit-button">
+                            <input type="submit" name="Edit_Behaviors" value="Edit Behaviors" class="behavior-submit-button">
                         </form>
                     </div>
                 </div>
