@@ -302,17 +302,23 @@
                     </h1>
                 <div class="profile-container">
                     <div class="profile-details">
-                        <p>Username : <?php echo $pp_username; ?></p>
+                        <?php if ($_SESSION['permissions'] >= 2): ?>
+                            <p>Username : <?php echo $pp_username; ?></p>
+                        <?php endif; ?>
                         <p>Fullname : <?php echo $firstName . " " . $lastName; ?> </p>
-                        <p>Email : <?php echo $email; ?></p>
-                        <p>Phone : <?php echo $phone; ?></p>
+                        <?php if ($_SESSION['permissions'] >= 2): ?>
+                            <p>Email: <?php echo $email; ?></p>
+                            <p>Phone: <?php echo $phone; ?></p>
+                        <?php endif; ?>
                         <p>User Type : <?php echo $userType; ?></p>
                         <div style="display: flex; align-items: center;">
                         <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
                         <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;" onsubmit="return validateForm(<?php echo $activeHeadTrainers; ?>, '<?php echo $userType; ?>');">
                             <input type="hidden" name="username" value="<?php echo $username; ?>" />
-                            <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
-                            <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                            <?php if ($_SESSION['permissions'] > 3 || $_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5): ?>
+                                <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                                <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                            <?php endif; ?>
                         </form>
                     </div>
                       
@@ -334,19 +340,22 @@
         <div class="horse-list-container">
             <h2 style="text-align: left;">Horse List</h2>
             <div class="horse-list-container">
-                <select id="horse-dropdown">
-                    <option value="" selected disabled hidden>Select a horse</option>
-                    <?php while ($row = mysqli_fetch_assoc($horseListResult)): ?>
-                        <?php
-                            $horseColor = ($row['isConnected'] == 1) ? 'green' : 'red';
-                        ?>
-                        <option value="<?php echo $row['horseID']; ?>" style="color: <?php echo $horseColor; ?>;">
-                            <strong><?php echo $row['horseName']; ?></strong>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-                <input type="hidden" id="selected_horse" name="horseID" value="" />
-                <input type="submit" id="add-remove-button" name="add_remove_horse" value="Add/Remove" class="archive-form-button" />
+                <?php if ($_SESSION['permissions'] > 3): ?>
+                    <select id="horse-dropdown">
+                        <option value="" selected disabled hidden>Select a horse</option>
+                        <?php while ($row = mysqli_fetch_assoc($horseListResult)): ?>
+                            <?php
+                                $horseColor = ($row['isConnected'] == 1) ? 'green' : 'red';
+                            ?>
+                            <option value="<?php echo $row['horseID']; ?>" style="color: <?php echo $horseColor; ?>;">
+                                <strong><?php echo $row['horseName']; ?></strong>
+                            </option>
+                        <?php endwhile; ?>
+                    </select>
+                    <input type="hidden" id="selected_horse" name="horseID" value="" />
+                    <input type="submit" id="add-remove-button" name="add_remove_horse" value="Add/Remove" class="archive-form-button" />
+                <?php endif; ?>
+
             </div>
             <?php if (mysqli_num_rows($associatedHorsesResult) == 0): ?>
                 <br>

@@ -464,11 +464,13 @@
                         <p><span style="font-size:105%;">Color : </span><span style="color:Grey"><?php echo $color; ?></span></p>
                         <div style="display: flex; align-items: center;">
                             <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
-                            <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
-                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>" />
-                                <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
-                                <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
-                            </form>
+                            <?php if ($_SESSION['permissions'] > 3): ?>
+                                <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
+                                    <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>" />
+                                    <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                                    <input type="submit" name="activate" value="Activate" <?php if ($archive == 0 || $archive == NULL) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
+                                </form>
+                            <?php endif; ?>
                         </div>
 
 
@@ -490,10 +492,12 @@
 
                     <div class="profile-name">
                         <h1><?php echo $horseName; ?></h1>
-                        <form method="POST" action="editHorse.php">
-                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                            <button type="submit" class="archive-form-button">Edit <?php echo $horseName?>'s Profile</button>
-                        </form>
+                        <?php if ($_SESSION['permissions'] >= 2): ?>
+                            <form method="POST" action="editHorse.php">
+                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                <button type="submit" class="archive-form-button">Edit <?php echo $horseName?>'s Profile</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
                     
                     <div class="add-behaviors-container">
@@ -549,7 +553,9 @@
                                 ?>
                             </div>
                             <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                            <input type="submit" name="Edit_Behaviors" value="Edit Behaviors" class="behavior-submit-button">
+                            <?php if ($_SESSION['permissions'] >= 2): ?>
+                                <input type="submit" name="Edit_Behaviors" value="Edit Behaviors" class="behavior-submit-button">
+                            <?php endif; ?>
                         </form>
                     </div>
                 </div>
@@ -559,6 +565,7 @@
             <div class="trainer-list-container;">
                 <h2 style="text-align: left;">Trainer List</h2>
                 <div class="trainer-list-container">
+                    <?php if ($_SESSION['permissions'] >= 3): ?>
                     <select id="trainer-dropdown">
                         <option value="" selected disabled hidden>Select a trainer</option>
                         <?php while ($row = mysqli_fetch_assoc($trainerListResult)): ?>
@@ -572,7 +579,8 @@
                         <?php endwhile; ?>
                     </select>
                     <input type="hidden" id="selected_trainer" name="username" value="" />
-                    <input type="submit" id="add-remove-button" name="add_remove_trainer" value="Add/Remove" class="archive-form-button" />
+                        <input type="submit" id="add-remove-button" name="add_remove_trainer" value="Add/Remove" class="archive-form-button" />
+                    <?php endif; ?>
                 </div>
                 <?php if (mysqli_num_rows($associatedTrainerResult) == 0): ?>
                     <br>
@@ -589,10 +597,12 @@
             <div style="display: flex; justify-content: center; align-items: center;">
                 <div id="content-inner" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
                     <h2 style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">Notes
-                        <form method="POST" class="archive-form" action="addNotePage.php">
-                            <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                            <input type="submit" name="add_note" value="Add Note" class="archive-form-button" />
-                        </form>
+                        <?php if ($_SESSION['permissions'] >= 2): ?>
+                            <form method="POST" class="archive-form" action="addNotePage.php">
+                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                <input type="submit" name="add_note" value="Add Note" class="archive-form-button" />
+                            </form>
+                        <?php endif; ?>
                     </h2>
 
                     <?php if (mysqli_num_rows($activeNotes) == 0): ?>
@@ -615,16 +625,26 @@
                                             continue;
                                         }
                                         ?>
-                                        <td class="person-name">
-                                            <a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a>
-                                        </td>
-                                        <td class="note-cell"><?php echo nl2br($row['note']); ?></td>
                                         <td>
-                                            <form method="POST" class="archive-form" action="editNotePage.php">
-                                                <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
-                                                <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
-                                                <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
-                                            </form>
+                                            <div style="text-align: center;">
+                                                <a href='trainerprofile.php?username=<?php echo $row['username']; ?>' style='color: blue;'><?php echo $row['firstName'] . ' ' . $row['lastName']; ?></a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="text-align: center;"><?php echo nl2br($row['note']); ?></div>
+                                        </td>
+                                        <td>
+                                            <div style="text-align: center;">
+                                                <?php if ($_SESSION['permissions'] >= 3): ?>
+                                                    <form class="archive-form" method="POST" action="editNotePage.php">
+                                                        <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                                        <input type="hidden" name="noteID" value="<?php echo $row['noteID']; ?>">
+                                                        <input type="submit" name="editNote" value="<?php echo $row['noteDate']; ?>">
+                                                    </form>
+                                                <?php elseif ($_SESSION['permissions'] <= 2): ?>
+                                                    <p><?php echo $row['noteDate']; ?></p>
+                                                <?php endif; ?>
+                                            </div>
                                         </td>
                                         <?php if ($row['archive'] == 1): ?>
                                             <td class="note-cell">Archived</td>

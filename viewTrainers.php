@@ -151,37 +151,41 @@
                 echo "<hr style='clear:both;'>";
                 echo "<hr style='clear:both;'>";
         
+                ?>
+                <?php if ($_SESSION['permissions'] >= 2): ?>
+                    <?php
+                        // Second table
+                        $allPersons = getinactive_persondb();
+                        echo "<h2><strong>List of Inactived People</strong></h2>";
+                        echo "<br>";
+                        if (empty($allPersons)) {
+                            echo "<tr><td colspan='5' style='text-align:center'>There are no trainers in this category.</td></tr>";
+                        } else {
+                            echo "<table style='float: right;'>
+                                    <tr>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>";
                 
-                // Second table
-                $allPersons = getinactive_persondb();
-                echo "<h2><strong>List of Inactived People</strong></h2>";
-                echo "<br>";
-                if (empty($allPersons)) {
-                    echo "<tr><td colspan='5' style='text-align:center'>There are no trainers in this category.</td></tr>";
-                } else {
-                    echo "<table style='float: right;'>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                            </tr>";
-                    
-                    for ($x = 0; $x < count($allPersons); $x++) {
-                        $username = $allPersons[$x]->get_username();
-                        echo "<tr>
-                                <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
-                                <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
-                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_phone() . " </td>
-                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_email() . " </td>
-                                <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_userType() . " </td>
-                            </tr>";
-                    }
-                    echo "</table>";
+                            for ($x = 0; $x < count($allPersons); $x++) {
+                                $username = $allPersons[$x]->get_username();
+                                echo "<tr>
+                                        <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_firstName() . "</a></td>
+                                        <td style='border-left: 1px solid black; text-align: center'><a href='trainerprofile.php?username=$username' style='color: blue;'>" . $allPersons[$x]->get_lastName() . "</a></td>
+                                        <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_phone() . " </td>
+                                        <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_email() . " </td>
+                                        <td style='border-left: 1px solid black; text-align: center'> " . $allPersons[$x]->get_userType() . " </td>
+                                    </tr>";
+                            }
+                            echo "</table>";
+                        }
+                    ?>
+                <?php endif; ?>
                 
-                }
-                
+                <?php 
                 echo "<hr style='clear:both;'>";
                 echo "<hr style='clear:both;'>";
         
