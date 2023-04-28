@@ -184,7 +184,7 @@
             <?php include('header.php'); ?>
             <div id="content">
                 <div id="content-inner">
-                    <h1>Add Behavior</h1>
+                    <h1>Delete Behavior Rank</h1>
                     <p>To delete a rank:</p>
                     <p>Select the rank to delete</p>
                     <p>Click the "Remove Rank" button.</p>

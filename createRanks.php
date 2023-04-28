@@ -43,7 +43,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Create Behavior | CVHR Horse Training Management System</title>
+        <title>Create Rank | CVHR Horse Training Management System</title>
         <script src="script.js"></script>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
