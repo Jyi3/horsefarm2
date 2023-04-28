@@ -122,7 +122,7 @@ function remove_person($username) {
 function retrieve_person_by_username($username) {
     
     $con=connect();
-    $query = "SELECT * FROM persondb WHERE username = '$username' AND userType NOT IN ('Viewer', 'Admin', 'Administrator')";
+    $query = "SELECT * FROM persondb WHERE username = '$username'";
     $result = mysqli_query($con,$query);
 
     //If the person does NOT exist in the database or is a Viewer or Admin or Administrator,

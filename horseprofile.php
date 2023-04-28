@@ -421,9 +421,12 @@
             }
             h1 {
                 font-size: 24px;
+                margin-top: 30px;
             }
             p {
                 font-size: 16px;
+                margin-top: 20px;
+                line-height: 1.5;
             }
             table {
                 font-size: 14px;
@@ -432,18 +435,49 @@
                 flex-direction: column;
                 align-items: center;
             }
+            .profile-name {
+                margin-top: 20px;
+            }
             .profile-details {
-                padding-top: 0;
+                margin-top: 20px;
                 text-align: center;
+                padding-top: 0;
             }
             .trainer-list-container {
                 align-items: center;
                 text-align: center;
+                margin-top: 20px;
+            }
+            .trainer-list-form input[type="text"] {
+                width: 80%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .archive-form input[type="submit"],
+            .archive-form-button {
+                margin-top: 20px;
+                margin-left: 0;
+                width: 80%;
+            }
+            .notes-container {
+                min-height: 400px;
             }
             .behavior-column {
                 display: block;
                 width: 100%;
                 padding-right: 0;
+            }
+            .add-behaviors-container {
+                width: 100%;
+                align-items: center;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+            .behavior-submit-button {
+                width: 80%;
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-left: 0;
             }
         }
 

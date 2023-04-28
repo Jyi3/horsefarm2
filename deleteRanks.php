@@ -226,7 +226,7 @@
         <script>
             // Check user permissions and show popup if necessary
             if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
-                alert("You do not have permission to create a behavior.");
+                alert("You do not have permission to delete a behavior rank.");
             }
         </script>
     </body>

@@ -44,16 +44,19 @@
     // Use $_GET to get the username parameter
     $pp_username = $_GET["username"];
     $sql = "SELECT * FROM persondb WHERE username = '$pp_username'";
-    $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate, n.archive 
+    $notes = "SELECT n.horseID, h.horseName, n.note, n.noteDate, n.noteTimestamp, n.archive 
           FROM notesdb n
           INNER JOIN horsedb h ON n.horseID = h.horseID 
-          WHERE n.username = '$pp_username' AND (n.archive = 0 OR n.archive IS NULL)";
+          WHERE n.username = '$pp_username' AND (n.archive = 0 OR n.archive IS NULL)
+          ORDER BY n.noteDate DESC, n.noteTimestamp DESC";
 
-    $archiveNotes = "SELECT n.horseID, h.horseName, n.note, n.noteDate, n.archive, n.archiveDate, p.firstName, p.lastName, p.username 
-                    FROM notesdb n 
-                    INNER JOIN horsedb h ON n.horseID = h.horseID 
-                    INNER JOIN persondb p ON n.username = p.username 
-                    WHERE n.username = '$pp_username' AND n.archive = 1";
+    $archiveNotes = "SELECT n.horseID, h.horseName, n.note, n.noteDate, n.noteTimestamp, n.archive, n.archiveDate, p.firstName, p.lastName, p.username 
+        FROM notesdb n 
+        INNER JOIN horsedb h ON n.horseID = h.horseID 
+        INNER JOIN persondb p ON n.username = p.username 
+        WHERE n.username = '$pp_username' AND n.archive = 1
+        ORDER BY n.noteDate DESC, n.noteTimestamp DESC";
+
     $result = mysqli_query($conn, $sql);
     $result2 = mysqli_query($conn, $notes);
     $result3 = mysqli_query($conn, $archiveNotes);
@@ -270,25 +273,44 @@
             margin-right: auto;
         }
         
-        @media only screen and (max-width: 768px) {
-            /* adjust styles for screens narrower than 768px */
-            #container {
-                max-width: 100%;
-                padding: 10px;
+        @media (max-width: 480px) {
+
+            h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
             }
+
+            p {
+            font-size: 12px;
+            }
+
             .profile-container {
-                flex-direction: column;
-                align-items: center;
+            margin-bottom: 10px;
             }
-            .profile-details {
-                margin-top: 10px;
-                text-align: center;
+
+            .profile-name {
+            margin-top: 5px;
+            margin-bottom: 5px;
             }
+
+            .archive-form input[type="submit"],
+            .archive-form-button {
+            font-size: 14px;
+            padding: 6px 12px;
+            margin-top: 5px;
+            }
+
+            .notes-container {
+            min-height: 200px;
+            }
+
             .horse-list-form input[type="text"] {
-                width: 100%;
-                margin-bottom: 10px;
+            font-size: 14px;
+            padding: 6px 12px;
             }
-        }
+
+            }
+
 
     </style>
 </head>
@@ -340,7 +362,7 @@
         <div class="horse-list-container">
             <h2 style="text-align: left;">Horse List</h2>
             <div class="horse-list-container">
-                <?php if ($_SESSION['permissions'] > 3): ?>
+                <?php if ($_SESSION['permissions'] >= 3): ?>
                     <select id="horse-dropdown">
                         <option value="" selected disabled hidden>Select a horse</option>
                         <?php while ($row = mysqli_fetch_assoc($horseListResult)): ?>

@@ -198,16 +198,20 @@
     </div>
     <script>
         function removeBehavior(title) {
+            const userPermissions = <?php echo $_SESSION['permissions']; ?>;
+            if (userPermissions !== 3 && userPermissions !== 5) {
+                alert("You do not have permission to remove a behavior.");
+                return;
+            }
             const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    location.reload(); // Reload the page after updating the person status
+                    location.reload(); // Reload the page after updating the behavior status
                 }
             };
             xhttp.open("POST", "update_behavior_status.php");
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("title=" + title); // Pass 1 as the status to archive the person
-
+            xhttp.send("title=" + title); // Pass the behavior title to remove
         }
     </script>
 </body>

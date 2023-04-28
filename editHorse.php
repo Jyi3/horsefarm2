@@ -273,7 +273,7 @@
         <script>
             // Check user permissions and show popup if necessary
             <?php if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 2 && $_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)): ?>
-                alert("You do not have the necessary permissions to access this page.");
+                alert("You do not have the necessary permissions edit horses.");
             <?php endif; ?>
         </script>
     </body>

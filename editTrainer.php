@@ -24,33 +24,39 @@
             $email = htmlspecialchars(trim($_POST["email"]));
             $phoneNumber = htmlspecialchars(trim($_POST["phone"]));
             $username = htmlspecialchars(trim($_POST["username"]));
-            $oldUsername = $_POST['oldUsername'];
             $userType = $_POST['userType'];
-        
+            $pass = $_POST["pass"];
+
             // update Trainer data in the database
             $conn = connect();
-        
-            if ($pass != '') { // check if pass is not null
-                $pass = htmlspecialchars(trim($_POST["pass"]));
-                $pass = password_hash($pass, PASSWORD_BCRYPT);
-                $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', pass='$pass', userType='$userType' WHERE username='$oldUsername'";
+
+            if ($pass != '') {
+                $hash = password_hash($_POST["pass"], PASSWORD_BCRYPT);
             } else {
-                $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', username='$username', userType='$userType' WHERE username='$oldUsername'";
+                // get password hash from persondb
+                $result = mysqli_query($conn, "SELECT pass FROM persondb WHERE username='$username'");
+                $row = mysqli_fetch_assoc($result);
+                $hash = $row['pass'];
             }
-        
+
+            $sql = "UPDATE persondb SET firstName='$firstName', lastName='$lastName', email='$email', phone='$phoneNumber', pass='$hash', userType='$userType' WHERE username='$username'";
+
+
             // execute SQL query
-            if (mysqli_query($conn, $sql)) {
+            if (mysqli_multi_query($conn, $sql)) {
                 header("Location: editTrainer.php");
             } else {
                 echo "<p>Error updating trainer: " . mysqli_error($conn) . "</p>";
             }
-        
+
             // close database connection
             mysqli_close($conn);
+
+
         }
     }
-    
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -193,10 +199,14 @@
                 <?php
                     if (isset($_POST["username"]) && $_POST["username"] != "") {
                         $trainer = retrieve_person_by_username($_POST["username"]);
-                        $oldUsername = $trainer->get_username();
                     ?>
 
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style="max-width: 500px; width: 90%; padding: 20px; background-color: #ffffff; border: 1px solid #cccccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin: 0 auto;">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="hidden" name="username" value="<?php echo $trainer->get_username(); ?>">
+                            <span class="form-control-plaintext" readonly><?php echo $trainer->get_username(); ?></span>
+                        </div>
                         <div class="form-group">
                             <label for="firstName">First Name:</label>
                             <input type="text" name="firstName" class="form-control" value="<?php echo $trainer->get_firstName(); ?>">
@@ -214,10 +224,6 @@
                             <input type="text" name="phone" class="form-control" value="<?php echo $trainer->get_phone(); ?>">
                         </div>
                         <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" name="username" class="form-control" value="<?php echo $trainer->get_username(); ?>">
-                        </div>
-                        <div class="form-group">
                             <label for="pass">Password:</label>
                             <input type="password" name="pass" class="form-control">
                         </div>
@@ -229,7 +235,6 @@
                                 <option value="Head Trainer" <?php if ($trainer->get_userType() == 'Head Trainer') echo 'selected'; ?>>Head Trainer</option>
                             </select>
                         </div>
-                        <input type="hidden" name="oldUsername" value="<?php echo $oldUsername; ?>">
                         <button type="submit" name="update_trainer" class="btn btn-default">Update Trainer</button>
                     </form>
 
