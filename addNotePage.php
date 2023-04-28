@@ -8,15 +8,13 @@ include_once('database/horsedb.php');
 include_once('domain/horse.php');
 
 
+$horseID = $_POST['horseID'] ?? null;
+$noteID = $_POST['noteID'] ?? null;
+$username = $_POST['username'] ?? null;
 
-$horseID=null;
-$noteID=null;
-$noteText = '';
-$theHorse;
-$theNote;
-$theHorseNotes;
-$numNotes;
-$username = null;
+$theHorse = $theNote = null;
+$theHorseNotes = [];
+$numNotes = 0;
 
 if(isset($_POST['horseID'])){$horseID=$_POST['horseID'];}
 if(isset($_POST['noteID'])){$noteID=$_POST['noteID'];}

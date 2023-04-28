@@ -5,15 +5,19 @@
     include_once('domain/Horse.php');
     
     // Check if the user has the necessary permissions
-    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
-        die("You do not have permission to access this page.");
+    if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 2) {
+        echo "<script>alert('You do not have permission to access this page.');</script>";
+        header("Location: index.php");
+        exit();
     }
+    
 
     $horses = getAll_horsedb();
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_horse"])) {
-            // Check user permissions
-        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+        // Check user permissions
+        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 2 && $_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+            $_SESSION['message'] = "You do not have permission to access this page.";
             header("Location: editHorse.php");
             exit();
         }
@@ -246,7 +250,7 @@
                                 <option value="Red" <?php if ($horse->get_colorRank() == "Red") echo "selected"; ?>>Red</option>
                             </select>
                         </div>
-                        <?php if ($_SESSION['permissions'] >= 3) { ?>
+                        <?php if ($_SESSION['permissions'] >= 2) { ?>
                             <div class="form-group">
                                 <label for="status">Status:</label>
                                 <select name="status" class="form-control">
@@ -266,12 +270,12 @@
             </div>
             <?PHP include('footer.php'); ?>
         </div>
-    <script>
-        // Check user permissions and show popup if necessary
-        if (!<?php echo isset($_SESSION['permissions']) && ($_SESSION['permissions'] == 3 || $_SESSION['permissions'] == 5) ? 'true' : 'false'; ?>) {
-            alert("You do not have permission to edit a horse.");
-        }
-    </script>
+        <script>
+            // Check user permissions and show popup if necessary
+            <?php if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 2 && $_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)): ?>
+                alert("You do not have the necessary permissions to access this page.");
+            <?php endif; ?>
+        </script>
     </body>
 
 </html>
