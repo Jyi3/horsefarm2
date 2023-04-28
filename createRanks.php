@@ -11,38 +11,30 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
-            header("Location: createBehavior.php");
+            header("Location: createRanks.php");
             exit();
         }
-
-        if ($_POST['action'] == 'Add Behavior') 
+        
+        if ($_POST['action'] == 'Add Rank') 
         {
-            // create new behavior
-            if (trim($_POST['BehaviorName']) == '') {
-                echo "<script>alert('There is no behavior to add to " . $_POST['behaviorLevel'] . " Rank')</script>";
+            // create new behavior with whitespace name and posted rank as behavior level
+            $conn = connect();
+            $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('PLACEHOLDERTAGFORTITLES', '" . $_POST['BehaviorName'] . "')";
+
+            // execute SQL query
+            if (mysqli_query($conn, $sql)) {
+                $result = "<p>New rank added successfully.</p>";
+                $confirm = "<script>    
+                    alert('New rank added: " . $_POST['BehaviorName'] . "');
+                    window.location.href = 'createRanks.php';
+                </script>";
             } else {
-                $conn = connect();
-
-
-                $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('" . $_POST['BehaviorName'] . "', '" . $_POST['behaviorLevel'] . "')";
-
-                // execute SQL query
-                if (mysqli_query($conn, $sql)) {
-                    header("Location: createBehavior.php");
-                } else {
-                    echo "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
-                }
-                
-                // remove behavior with title containing only whitespace
-                $sql_remove = "DELETE FROM behaviordb WHERE title = 'PLACEHOLDERTAGFORTITLES' AND behaviorLevel = '" . $_POST['behaviorLevel'] . "'";
-                if (mysqli_query($conn, $sql_remove)) {
-                    // Successfully removed behaviors with title PLACEHOLDERTAGFORTITLES and behaviorLevel equal to $_POST['behaviorLevel']
-                }
-
-                // close database connection
-                mysqli_close($conn);
+                $result = "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
             }
-        } 
+
+            // close database connection
+            mysqli_close($conn);
+        }
 
     }
 ?>
@@ -51,7 +43,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Add Behavior | CVHR Horse Training Management System</title>
+        <title>Create Behavior | CVHR Horse Training Management System</title>
         <script src="script.js"></script>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
@@ -190,48 +182,24 @@
             <?php include('header.php'); ?>
             <div id="content">
                 <div id="content-inner">
-                    <h1>Add Behavior</h1>
-                    <p>To create a new behavior:</p>
-                    <p>Select the behavior rank from the drop-down menu.</p>
-                    <p>Type in the name of the new behavior.</p>
-                    <p>Click the "Add Behavior" button to add the behavior to the database.</p>
+                    <h1>Create Rank</h1>
+                    <p>To create a new rank:</p>
+                    <p>Type in the name of the new behavior rank.</p>
+                    <p>Click the "Create Rank" button to add a new rank to the database.</p>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
                         <div class="form-group">
-                            <label for="BehaviorName"><span style="color: red">*  </span>Behavior Name:</label>
+                            <label for="BehaviorName"><span style="color: red">*  </span>Behavior Rank Name:</label>
                             <input type="text" name="BehaviorName" class="form-control" value="<?php echo isset($_POST["BehaviorName"]) ? htmlspecialchars($_POST["BehaviorName"]) : ''; ?>">
                         </div>
                         <div class="form-group">
-                            <label for="behaviorLevel"><span style="color: red">*  </span>Behavior Rank: </label>
-                            <select name="behaviorLevel" class="form-control">
-                                <?php
-                                $conn = connect();
-                                $behaviorLevelSql = "SELECT DISTINCT behaviorLevel FROM behaviordb ORDER BY 
-                                    CASE behaviorLevel
-                                        WHEN 'Green' THEN 1
-                                        WHEN 'Yellow' THEN 2
-                                        WHEN 'Red' THEN 3
-                                        ELSE 4
-                                    END, 
-                                    behaviorLevel ASC";
-                                $behaviorLevelResult = mysqli_query($conn, $behaviorLevelSql);
-                                while($row = mysqli_fetch_array($behaviorLevelResult)) {
-                                    echo "<option value='" . $row['behaviorLevel'] . "' ";
-                                    if(isset($_POST['behaviorLevel']) && $_POST['behaviorLevel'] == $row['behaviorLevel']) {
-                                        echo 'selected';
-                                    }
-                                    echo ">" . $row['behaviorLevel'] . "</option>";
-                                }
-                                ?>
-                            </select>
                         </div>
-                        <input type="submit" name="action" value="Add Behavior" class="btn btn-primary">
+                        <input type="submit" name="action" value="Add Rank" class="btn btn-secondary ">
                         <div style="margin-top: 20px;">
-                            <input type="button" class="view-behavior-button" onclick="window.location.href = 'viewBehavior.php'" value="View Behaviors">
+                            <input type="button" class="view-behavior-button" onclick="window.location.href = 'viewBehavior.php'" value="View Behaviors" >
                         </div>
                     </form>
-                <br>    
+                    <br>
                 </div>
-                
             </div>
             <?php include('footer.php'); ?>
         </div>
@@ -242,6 +210,7 @@
             }
         </script>
     </body>
+
 
 </html>
  

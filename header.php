@@ -31,85 +31,77 @@
     <link rel="stylesheet" type="text/css" href="buttonStyle.css">
 
     <style>
-
         .intro {
-            text-align: center;
-            margin-bottom: 20px;
+        text-align: center;
+        margin-bottom: 20px;
         }
-        
+
         .intro2 {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            padding: 10px;
-            z-index: 1000;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        padding: 10px;
+        z-index: 1000;
         }
+
         .intro img {
-            margin-right: 10px;
-            vertical-align: middle;
+        margin-right: 10px;
+        vertical-align: middle;
         }
+
         .intro h1 {
-            display: inline;
-            font-size: 24px;
+        display: inline;
+        font-size: 24px;
         }
+
         .header-button {
-            color: #4b6c9e;
-            text-decoration: none;
+        color: #4b6c9e;
+        text-decoration: none;
         }
+
         .horse-number {
-            display: inline;
-            font-size: 2em;
-            margin-right: 10px; /* add margin between horse-number elements */
-            border: none;
-            background: none;
-            background-color: none;
+        display: inline;
+        font-size: 2em;
+        margin-right: 10px;
+        border: none;
         }
+
 
         .green-horse-form, .yellow-horse-form, .red-horse-form, .total-horse-form {
-            font-weight: bold;
-            display: flex;
-            border: none;
-            background: none;
-            background-color: none;
+        font-weight: bold;
+        display: flex;
+        border: none;
         }
 
         .horse-number button {
-            align-items: center;
-            border: none;
-            background: none;
-            background-color: none;
-            border: none;
-            font-size: 1em;
-            color: inherit;
-            cursor: pointer;
+        align-items: center;
+        border: none;
+        font-size: 1em;
+        color: inherit;
+        cursor: pointer;
         }
 
         .header-button {
-            border: none;
-            background: none;
-            background-color: none;
+        border: none;
         }
+
         .horse-count {
-            display: flex;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            transform: scale(2) translateY(10%);
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
         }
+
         @media (max-width: 768px) {
-            .intro h1 {
-                font-size: 20px;
-            }
-
-            .horse-number {
-                font-size: 1.5em;
-            }
-
-            .horse-count {
-                transform: scale(1) translateY(0);
-            }
+        .intro h1 {
+            font-size: 20px;
         }
 
+        .horse-number {
+            font-size: 1.5em;
+        }
+        }
 
     </style>
 </head>
@@ -151,6 +143,17 @@
                 <?php if (isset($_SESSION['permissions']) && $_SESSION['permissions'] >= 3) { ?>
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="header-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Behavior Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="createBehavior.php">Add Behaviors</a>
+                        <a class="dropdown-item" href="createRanks.php">Create Ranks</a>
+                        <a class="dropdown-item" href="deleteRanks.php">Delete Ranks</a>
+                        <a class="dropdown-item" href="viewBehavior.php">View All Behaviors</a>
+                    </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="header-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Horse Admin
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -167,15 +170,6 @@
                         <a class="dropdown-item" href="createUser.php">Create Trainer</a>
                         <a class="dropdown-item" href="editTrainer.php">Edit Trainers</a>
                         <a class="dropdown-item" href="archiveTrainers.php">Archive Trainers</a>
-                    </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="header-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Behavior Admin
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="createBehavior.php">Create Behavior</a>
-                        <a class="dropdown-item" href="viewBehavior.php">View All Behaviors</a>
                     </div>
                     </li>
                 <?php } ?>
