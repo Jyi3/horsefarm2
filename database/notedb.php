@@ -199,31 +199,26 @@ function edit_note($noteText, $Note){
 *returns an array containing all the notes that we encountered.
 *horseID is an integer that matches an existing horse in the horsedb.
 */
-function retrieve_horse_notes($horseID){
+function retrieve_horse_notes($horseID) {
+    // Create a database connection and retrieve all of the note ID numbers.
+    $con = connect();
+    $query = "SELECT * FROM notesdb WHERE horseID = '" . $horseID . "' ORDER BY noteDate DESC, noteTimestamp DESC";
+    $result = mysqli_query($con, $query);
 
-    //Create a database connection and retrieve all of the note ID numbers.
-    $con=connect();
-    $query = "SELECT * FROM notesdb WHERE horseID = '" . $horseID . "'ORDER BY noteDate DESC";
-    $result = mysqli_query($con,$query);
-
-    //If the note table is empty,
+    // If the note table is empty,
     if ($result == null || mysqli_num_rows($result) == 0) {
-
-        //close the connection and return false.
+        // Close the connection and return false.
         mysqli_close($con);
         return false;
     }
 
-
-    $result = mysqli_query($con,$query); //This line might be redundant.
-
-    //Otherwise, create an array and add each note
+    // Otherwise, create an array and add each note
     $notes = array();
-    while ($result_row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+    while ($result_row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $notes[] = $result_row;
     }
 
-    //Close the connection and return the array.
+    // Close the connection and return the array.
     mysqli_close($con);
     return $notes;
 }
@@ -231,7 +226,6 @@ function retrieve_horse_notes($horseID){
 function get_num_horse_notes($horseID){
     $con=connect();
     $query = "SELECT COUNT(*) as num_notes FROM notesdb WHERE archive IS NULL OR archive=0";    $result = mysqli_query($con,$query);
-    $result = mysqli_query($con,$query);
 
     if ($result == null || mysqli_num_rows($result) == 0) {
         mysqli_close($con);

@@ -18,7 +18,7 @@
             if (isset($_SESSION['permissions'])) {
                 $permission_level = $_SESSION['permissions'];
                 $username = $_SESSION['username'];
-                //echo "You are logged in as $username with permission level $permission_level";
+                echo "You are logged in as $username with permission level $permission_level";
             } else {
                 echo "Error: Permission level not found in session";
                 exit;

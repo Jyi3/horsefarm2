@@ -1,5 +1,11 @@
-
 <?php
+session_start();
+if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
+    echo "<script>
+            alert('You do not have permission to access this page.');
+            window.location.href = 'index.php';
+          </script>";
+}
 
 include_once 'database/notedb.php';
 include_once 'database/dbinfo.php';
@@ -29,6 +35,39 @@ if ($noteID) {
     $noteText = $theNote->get_note();
 }
 
+if (isset($_POST['addNoteSubmit'])) {
+    // Connect to the database
+    $conn = connect();
+
+    // Prepare the SQL query
+    $query = "UPDATE notesdb SET note=? WHERE noteID=?";
+
+    // Prepare the statement
+    $stmt = $conn->prepare($query);
+
+    // Check if the statement preparation was successful
+    if (!$stmt) {
+        die('Error preparing statement: ' . $conn->error);
+    }
+
+    // Bind parameters
+    $stmt->bind_param("si", $editText, $noteID);
+
+    // Execute the statement
+    if (!$stmt->execute()) {
+        die('Error executing statement: ' . $stmt->error);
+    }
+
+    // Close the statement
+    $stmt->close();
+
+    // Close the database connection
+    mysqli_close($conn);
+
+    // Redirect to the horseprofile.php page with the given horseID
+    header("Location: horseprofile.php?horseID=$horseID");
+}
+
 $conn = connect();
 
 if (!$conn) {
@@ -46,13 +85,6 @@ $username = $TLRrow['username'];
 function editNoteForm($theHorse, $username, $noteText, $noteID) {
     //auxiliary note related functions here.
 }
-
-function handleNoteSubmission($editText, $theNote) {
-    if (isset($_POST['addNoteSubmit'])) {
-        $status = edit_note($editText, $theNote);
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +94,7 @@ function handleNoteSubmission($editText, $theNote) {
             CVHR Horse Training Management System
         </title>
         <link rel="stylesheet" href="styles.css" type="text/css" />
+        
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -182,20 +215,22 @@ function handleNoteSubmission($editText, $theNote) {
                     include_once('database/horsedb.php');
                     date_default_timezone_set('America/New_York');
 
-                    
-                    echo("<br><p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
-                    echo("<p>After you have updated your note with additional information, please select 'Edit Note'.<br>Your page will refresh and then return to the horse profile.</p>");
-                    echo("</br>");
                     $horseID = $theHorse->get_horseID();
                     $horseName = $theHorse->get_horseName();
-                    if(isset($_POST['editText'])) {
-                        $noteText = $_POST['editText'];
-                    }
                     ?>
-                    <form class="editNote-form" action='editNotePage.php' method='POST' onsubmit="return handleNoteSubmission();">
+                <br>
+                    <p>
+                        Please enter information that will be associated with <?php echo $theHorse->get_horseName(); ?>
+                    </p>
+                    <p>
+                        After you have updated your note with additional information, please select 'Edit Note'.<br>
+                        Your page will refresh and then return to the horse profile.
+                    </p>
+                    <br>
+                    <form class="editNote-form" action='editNotePage.php' method='POST' onsubmit="prependEdited()">
                         <label>Edit <?php echo $horseName ?>'s note:</label><br>
                         <input type='hidden' name='horseID' value='<?php echo $horseID; ?>'>
-                        <textarea id='note' name='editText' rows='4' cols='50' value='test' required><?php echo $noteText; ?></textarea><br>
+                        <textarea id='note' name='editText' rows='4' cols='50' required><?php echo $noteText; ?></textarea><br>
                         <input type='hidden' name='username' value='<?php echo $username; ?>' required readonly><br>
                         <button type='submit' name='submitBtn' class='editNote-form-button'>Edit Note</button>
                         <input type='hidden' name='noteDate' value='<?php echo date('Y-m-d'); ?>'>
@@ -203,29 +238,26 @@ function handleNoteSubmission($editText, $theNote) {
                         <input type='hidden' name='noteID' value='<?php echo $noteID; ?>'>
                         <input type='hidden' name='addNoteSubmit' value='1'>
                     </form>
-
                     <br>
                     <form class="editNote-form" method="GET" action="horseprofile.php">
                         <input type="hidden" name="horseID" value="<?php echo $horseID; ?>">
                         <input type="submit" name="return" value="Return to horse profile">
                     </form>
                     <br>
-
                 </div>
             </div>
             <?php include('footer.php'); ?>
         </div>
         <script>
-            function handleNoteSubmission() {
-                var permissions = <?php echo isset($_SESSION['permissions']) ? $_SESSION['permissions'] : 'null'; ?>;
-                if (permissions !== 3 && permissions !== 5) {
-                    alert('You do not have permission to edit this note.');
-                    return false;
+            function prependEdited() {
+                const noteTextarea = document.getElementById('note');
+                if (!noteTextarea.value.startsWith("(edited)")) {
+                    noteTextarea.value = "(edited) " + noteTextarea.value;
                 }
-                return true;
             }
         </script>
 
     </body>
+
 
 </html>

@@ -2,11 +2,12 @@
     include('session.php');
     include_once('database/persondb.php');
     include_once('domain/Person.php');
-    // Check if the user has the necessary permissions (permissions level 3)
-    
     // Check if the user has the necessary permissions
     if (!isset($_SESSION['permissions']) || $_SESSION['permissions'] < 3) {
-        die("You do not have permission to access this page.");
+        echo "<script>
+                alert('You do not have permission to access this page.');
+                window.location.href = 'index.php';
+            </script>";
     }
 
 ?>
