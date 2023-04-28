@@ -1,4 +1,41 @@
+<?php
+    include_once('domain/Person.php');
+    include_once('database/persondb.php');
+    include_once('database/dbinfo.php');
 
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // create new Person object
+        $username = str_replace("-", "", $_POST["phone"]); // remove dashes from phone number
+        $username = $_POST["username"]; // combine name and phone number
+        
+        $hash = $_POST["pass"];
+        $hash = password_hash($hash, PASSWORD_BCRYPT); // use bcrypt algorithm
+
+        $conn = connect();
+        // check if username already exists
+        echo $username;
+        $sql = "SELECT username FROM persondb WHERE username='$username'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            echo "DUPLICATE FOUND";
+            echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
+        } else {
+            // insert new Person data into the database
+            $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $hash . "', 'Recruit', false, null)";
+
+            // execute SQL query
+            if (mysqli_query($conn, $sql)) {
+                echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
+                header("Location: login_form.php");
+            } else {
+                echo "<p>Error adding new user: " . mysqli_error($conn) . "</p>";
+            }
+        }
+
+        // close database connection
+        mysqli_close($conn);
+    }
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -131,44 +168,7 @@
             }
 
             </style> 
-            <?php
-                include_once('domain/Person.php');
-                include_once('database/persondb.php');
-                include_once('database/dbinfo.php');
-
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    // create new Person object
-                    $username = str_replace("-", "", $_POST["phone"]); // remove dashes from phone number
-                    $username = $_POST["username"]; // combine name and phone number
-                    
-                    $hash = $_POST["pass"];
-                    $hash = password_hash($hash, PASSWORD_BCRYPT); // use bcrypt algorithm
-
-                    $conn = connect();
-                    // check if username already exists
-                    echo $username;
-                    $sql = "SELECT username FROM persondb WHERE username='$username'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-                        echo "DUPLICATE FOUND";
-                        echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
-                    } else {
-                        // insert new Person data into the database
-                        $sql = "INSERT INTO persondb (firstName, lastName, fullName, phone, email, username, pass, userType, archive, archiveDate) VALUES ('" . $_POST["firstName"] . "', '" . $_POST["lastName"] . "', '" . $_POST["firstName"] . " " . $_POST["lastName"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $username . "', '" . $hash . "', 'Recruit', false, null)";
-
-                        // execute SQL query
-                        if (mysqli_query($conn, $sql)) {
-                            echo "<script>alert('Your username is: ".$username."\nPlease contact the head trainer to update your permissions.')</script>";
-                            header("Location: login_form.php");
-                        } else {
-                            echo "<p>Error adding new user: " . mysqli_error($conn) . "</p>";
-                        }
-                    }
-
-                    // close database connection
-                    mysqli_close($conn);
-                }
-            ?>
+            
     </head>
     <body>
         <div id="container">
