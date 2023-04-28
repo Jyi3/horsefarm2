@@ -155,7 +155,7 @@ function getall_behaviordb() {
 
     //Create a database connection and retrieve all entries in the behavior table.
     $con=connect();
-    $query = "SELECT * FROM behaviordb ORDER BY title";
+    $query = "SELECT * FROM behaviordb WHERE title NOT LIKE '%PLACEHOLDERTAGFORTITLES%' ORDER BY title";
     $result = mysqli_query($con,$query);
 
     //If the query result is empty,
@@ -166,8 +166,7 @@ function getall_behaviordb() {
         return false;
     }
     
-    //Otherwise, create an array and convert each MySQL row into a Behavior object.s
-    $result = mysqli_query($con,$query); //This line might be redundant
+    //Otherwise, create an array and convert each MySQL row into a Behavior object.
     $theBehaviors = array();
     while ($result_row = mysqli_fetch_assoc($result)) {
         $theBehavior = make_a_behavior($result_row);
@@ -178,7 +177,6 @@ function getall_behaviordb() {
     mysqli_close($con);
     return $theBehaviors;
 }
-
 
 /*
  * Function name: getall_behavior_titles()
@@ -192,7 +190,7 @@ function getall_behavior_titles() {
 
     //Create a database connection and retrieve all the titles from the database.
     $con=connect();
-    $query = "SELECT title FROM behaviordb ORDER BY title";
+    $query = "SELECT title FROM behaviordb WHERE title NOT LIKE '%PLACEHOLDERTAGFORTITLES%' ORDER BY title";
     $result = mysqli_query($con,$query);
 
     //If the query result was empty,
@@ -204,9 +202,7 @@ function getall_behavior_titles() {
     }
 
     //Otherwise, create an array and add each behavior title to it.
-    $result = mysqli_query($con,$query); //This line might be redundant.
     $titles = array();
-
     while ($result_row = mysqli_fetch_assoc($result)) {
         $titles[] = $result_row['title'];
     }
@@ -278,8 +274,8 @@ function get_all_green_behaviors(){
     //Creates an array (which in php is kinda like a python dictionary) which will hold the behaviors title as its key, and that behaviors color rank as its value
     $behaviors = array();
     $con = connect();
-    //Quey that gets the title of every green behavior from behaviordb
-    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Green'";
+    //Query that gets the title of every green behavior from behaviordb, ignoring behaviors with the placeholder tag
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Green' AND title NOT LIKE '%PLACEHOLDERTAGFORTITLES%'";
     $titles = mysqli_query($con,$titleQuery);
 
     //Gets the number of green behaviors in the db
@@ -296,14 +292,10 @@ function get_all_green_behaviors(){
 
     //If there are green behaviors then we add them all to the behaviors array
     else{
-        #$i = 0;
-        //Loops through all of the green behaviors
         while($row = mysqli_fetch_assoc($titles)){
-            #$i += 1;
-            #echo("<p> i = " . $i . "</p>");
             //Gets the title of whatever behavior we are currently on and stores it (to be added as a key in the behaviors array)
             $curTitle = $row['title'];
-            //Adds the current (ith) behavior to the behaviors array
+            //Adds the current behavior to the behaviors array
             //Key: title of behavior
             //Value: Color rank of behavior
             $behaviors[$curTitle] = $rank;
@@ -312,8 +304,6 @@ function get_all_green_behaviors(){
         return $behaviors;
     }
 }
-
-
 
 /*
  * Function name: get_all_yellow_behaviors()
@@ -339,7 +329,7 @@ function get_all_yellow_behaviors(){
     $behaviors = get_all_green_behaviors();
     $con = connect();
     //Quey that gets the title of every yellow behavior from behaviordb
-    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Yellow'";
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Yellow' AND title NOT LIKE '%PLACEHOLDERTAGFORTITLES%'";
     $titles = mysqli_query($con,$titleQuery);
     //Gets the number of yellow behaviors in the db
     $numTitles = mysqli_num_rows($titles);
@@ -397,7 +387,7 @@ function get_all_red_behaviors(){
     $behaviors = array_merge($greens, $yellows);
     $con = connect();
     //Quey that gets the title of every red behavior from behaviordb
-    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Red'";
+    $titleQuery = "SELECT title FROM behaviordb WHERE behaviorLevel='Red' AND title NOT LIKE '%PLACEHOLDERTAGFORTITLES%'";
     $titles = mysqli_query($con,$titleQuery);
     //Gets the number of red behaviors in the db
     $numTitles = mysqli_num_rows($titles);
@@ -426,10 +416,6 @@ function get_all_red_behaviors(){
 }
 
 //Will add a function in addBehaviors.php  that takes in a horseID, and depending on their rank automatically add the right behaviors of the same color rank and below
-
-
-
-?>
 
 
 

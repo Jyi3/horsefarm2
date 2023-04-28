@@ -15,43 +15,37 @@
             exit();
         }
 
-        if ($_POST['action'] == 'Add Behavior') 
+        if ($_POST['action'] == 'Delete Behavior') 
         {
-            // create new behavior
-            if (trim($_POST['BehaviorName']) == '') {
-                echo "<script>alert('There is no behavior to add to " . $_POST['behaviorLevel'] . " Rank')</script>";
+            $behaviorLevel = $_POST['behaviorLevel'];
+            // Confirm with the user before deleting the rank and its associated titles and behavior levels
+            echo '<script language="javascript">';
+            echo 'if(confirm("Are you sure you want to delete the rank ' . $behaviorLevel . ' and its associated titles and behavior levels?")){';
+            // Delete the rank and its associated titles and behavior levels
+            $conn = connect();
+            $deleteHorsetoBehaviorSql = "DELETE FROM horsetobehaviordb WHERE title IN (SELECT title FROM behaviordb WHERE behaviorLevel = '$behaviorLevel')";
+            $deleteTitlesSql = "DELETE FROM behaviordb WHERE behaviorLevel = '$behaviorLevel'";
+            if (mysqli_query($conn, $deleteHorsetoBehaviorSql) && mysqli_query($conn, $deleteTitlesSql)) {
+                echo 'alert("Rank and associated titles and behavior levels have been deleted.");';
             } else {
-                $conn = connect();
-
-
-                $sql = "INSERT INTO behaviordb (title, behaviorLevel) VALUES ('" . $_POST['BehaviorName'] . "', '" . $_POST['behaviorLevel'] . "')";
-
-                // execute SQL query
-                if (mysqli_query($conn, $sql)) {
-                    header("Location: createBehavior.php");
-                } else {
-                    echo "<p>Error adding new behavior: " . mysqli_error($conn) . "</p>";
-                }
-                
-                // remove behavior with title containing only whitespace
-                $sql_remove = "DELETE FROM behaviordb WHERE title = 'PLACEHOLDERTAGFORTITLES' AND behaviorLevel = '" . $_POST['behaviorLevel'] . "'";
-                if (mysqli_query($conn, $sql_remove)) {
-                    // Successfully removed behaviors with title PLACEHOLDERTAGFORTITLES and behaviorLevel equal to $_POST['behaviorLevel']
-                }
-
-                // close database connection
-                mysqli_close($conn);
+                echo 'alert("Error deleting rank: ' . mysqli_error($conn) . '");';
             }
+            echo '} else {';
+            echo 'window.location.href = "deleteRanks.php";';
+            echo '}';
+            mysqli_close($conn);
         } 
 
     }
 ?>
 
 
+
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Add Behavior | CVHR Horse Training Management System</title>
+        <title>Remove Rank | CVHR Horse Training Management System</title>
         <script src="script.js"></script>
         <link rel="stylesheet" href="styles.css" type="text/css" />
         <style>
@@ -191,15 +185,11 @@
             <div id="content">
                 <div id="content-inner">
                     <h1>Add Behavior</h1>
-                    <p>To create a new behavior:</p>
-                    <p>Select the behavior rank from the drop-down menu.</p>
-                    <p>Type in the name of the new behavior.</p>
-                    <p>Click the "Add Behavior" button to add the behavior to the database.</p>
+                    <p>To delete a rank:</p>
+                    <p>Select the rank to delete</p>
+                    <p>Click the "Remove Rank" button.</p>
+                    <p>You will receive a confirmation prompt.</p>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="my-form">
-                        <div class="form-group">
-                            <label for="BehaviorName"><span style="color: red">*  </span>Behavior Name:</label>
-                            <input type="text" name="BehaviorName" class="form-control" value="<?php echo isset($_POST["BehaviorName"]) ? htmlspecialchars($_POST["BehaviorName"]) : ''; ?>">
-                        </div>
                         <div class="form-group">
                             <label for="behaviorLevel"><span style="color: red">*  </span>Behavior Rank: </label>
                             <select name="behaviorLevel" class="form-control">
@@ -224,14 +214,12 @@
                                 ?>
                             </select>
                         </div>
-                        <input type="submit" name="action" value="Add Behavior" class="btn btn-primary">
+                        <input type="submit" name="action" value="Delete Behavior" class="btn btn-primary">
                         <div style="margin-top: 20px;">
                             <input type="button" class="view-behavior-button" onclick="window.location.href = 'viewBehavior.php'" value="View Behaviors">
                         </div>
                     </form>
-                <br>    
                 </div>
-                
             </div>
             <?php include('footer.php'); ?>
         </div>
@@ -242,6 +230,5 @@
             }
         </script>
     </body>
-
 </html>
  

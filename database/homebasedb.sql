@@ -49,8 +49,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `behaviordb` (
-  `title` varchar(100) NOT NULL,
-  `behaviorLevel` text DEFAULT NULL
+  `title` varchar(100),
+  `behaviorLevel` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -202,8 +202,9 @@ INSERT INTO `persontohorsedb` (`horseID`, `username`) VALUES
 --
 -- Indexes for table `behaviordb`
 --
-ALTER TABLE `behaviordb`
-  ADD PRIMARY KEY (`title`);
+ALTER TABLE `behaviordb` 
+  ADD PRIMARY KEY (`title`, `behaviorLevel`);
+
 
 --
 -- Indexes for table `horsedb`
