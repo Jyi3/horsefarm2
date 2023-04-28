@@ -1,11 +1,6 @@
 <?php
 include_once("database/dbinfo.php");
 
-// Check if the user has the necessary permissions
-if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
-    die("You do not have permission to access this page.");
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $horseID = $_POST["horseID"];
     $username = $_POST["username"];

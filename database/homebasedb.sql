@@ -170,6 +170,8 @@ CREATE TABLE `persondb` (
 --
 
 INSERT INTO `persondb` (`firstName`, `lastName`, `fullName`, `phone`, `email`, `username`, `pass`, `userType`, `archive`, `archiveDate`) VALUES
+('Admin', 'Admin', 'Admin Admin', '111-111-1111', '', 'Admin', '$2y$10$RgviL.Wom0Cj8mZJUYm9ZuE29aFWZWmT9hwNAsEPOyOOMcqWuKc0K', 'Admin', 0, NULL),
+('Viewer', 'Viewer', 'Viewer Viewer', '111-111-1111', '', 'Viewer', '$2y$10$6stDMx35Sl78wwgTibdhmurfPsCySM5tvFJRXm3hXOM3WflmKwCKS', 'Viewer', 0, NULL),
 ('testHT', 'testHT', 'testHT testHT', '111-111-1234', '', 'testHT', '$2y$10$hB9kyYi0VEBvb8UrG5aGoeWI6XpRZs4sVdy4HTF4QO0U/Jw45rADC', 'Head Trainer', 0, '2023-04-17'),
 ('testR', 'testR', 'testR testR', '111-111-1234', '', 'testR', '$2y$10$VCUfh1QSjSKvxnTr/sfzAuuDpJQctVyEV1Rtoz4W5f/Dpmka/35nW', 'Recruit', 1, '2023-04-18'),
 ('testT', 'testT', 'testT testT', '111-111-1234', '', 'testT', '$2y$10$6fCtYwAnnNh3iuG7wG7fEOkvdRZnOXm6KCQdFlrlX5qocFgTwt4Em', 'Trainer', 0, '');

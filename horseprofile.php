@@ -133,10 +133,10 @@
             die("Connection failed: " . mysqli_connect_error());
         }
         
-        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
-            echo '<script>alert("You do not have permission to archive or activate a  horse.");</script>';
-        }
         else if (isset($_POST["archive"])) {
+            if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+                echo '<script>alert("You do not have permission to archive or activate a horse.");</script>';
+            }
             $sql = "UPDATE horsedb SET archive = 1, archiveDate = CURRENT_DATE() WHERE horseID = '$hp_horseID'";
             $action_success = mysqli_query($conn, $sql);
             if (!$action_success) {
@@ -144,6 +144,9 @@
             }
             mysqli_close($conn);
         } elseif (isset($_POST["activate"])) {  
+            if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+                echo '<script>alert("You do not have permission to archive or activate a horse.");</script>';
+            }
             $sql = "UPDATE horsedb SET archive = 0 WHERE horseID = '$hp_horseID'";
             $action_success = mysqli_query($conn, $sql);
             if (!$action_success) {
