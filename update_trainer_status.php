@@ -10,7 +10,7 @@
         $status = $_POST['status'];
         $archive_date = ($status == 1) ? date('Y-m-d') : NULL;
 
-        $query = "UPDATE persondb SET archive = $status, archiveDate = '$archive_date' WHERE username = '$username'";
+        $query = "UPDATE persondb SET archive = NOT archive, archiveDate = '$archive_date' WHERE username = '$username'";
         $result = mysqli_query($conn, $query);
 
         if (!$result) {
