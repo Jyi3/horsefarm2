@@ -25,13 +25,16 @@
             FROM notesdb n
             INNER JOIN horsedb h ON n.horseID = h.horseID 
             INNER JOIN persondb t ON n.username = t.username
-        WHERE n.horseID = '$hp_horseID' AND (n.archive = 0 OR n.archive IS NULL)";
+        WHERE n.horseID = '$hp_horseID' AND (n.archive = 0 OR n.archive IS NULL)
+        ORDER BY n.noteDate DESC, n.noteTimestamp DESC";
 
     $arNotes = "SELECT n.horseID, n.noteID, t.firstName, t.lastName, n.note, n.noteDate, t.username, n.archive, n.archiveDate, h.diet
         FROM notesdb n
         INNER JOIN horsedb h ON n.horseID = h.horseID 
         INNER JOIN persondb t ON n.username = t.username
-        WHERE n.horseID = '$hp_horseID' AND n.archive = 1";
+        WHERE n.horseID = '$hp_horseID' AND n.archive = 1
+        ORDER BY n.noteDate DESC, n.noteTimestamp DESC";
+
 
 
 
@@ -603,6 +606,7 @@
                         <?php if ($_SESSION['permissions'] >= 2): ?>
                             <form method="POST" class="archive-form" action="addNotePage.php">
                                 <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>">
+                                <input type="hidden" name="username" value="<?php echo $_SESSION['username']; ?>">
                                 <input type="submit" name="add_note" value="Add Note" class="archive-form-button" />
                             </form>
                         <?php endif; ?>

@@ -8,13 +8,15 @@ include_once('database/horsedb.php');
 include_once('domain/horse.php');
 
 
-$horseID = $_POST['horseID'] ?? null;
-$noteID = $_POST['noteID'] ?? null;
-$username = $_POST['username'] ?? null;
 
-$theHorse = $theNote = null;
-$theHorseNotes = [];
-$numNotes = 0;
+$horseID=null;
+$noteID=null;
+$noteText;
+$theHorse;
+$theNote;
+$theHorseNotes;
+$numNotes;
+$username;
 
 if(isset($_POST['horseID'])){$horseID=$_POST['horseID'];}
 if(isset($_POST['noteID'])){$noteID=$_POST['noteID'];}
@@ -44,60 +46,59 @@ $trainerListSql = "SELECT p.username, p.firstName, p.lastName, p.archive, IF(pt.
         FROM persondb p
         LEFT JOIN persontohorsedb pt ON p.username = pt.username AND pt.horseID = '$horseID'
         WHERE p.archive != 1";
-    $trainerListResult = mysqli_query($conn, $trainerListSql);
-    while ($row = mysqli_fetch_assoc($trainerListResult)) {
-        if ($row['isConnected'] == 1) {
-            $username = $row['username'];
-            break; // Stop looping once you find a connected trainer
-        }
-    }
+$trainerListResult = mysqli_query($conn, $trainerListSql);
+$TLRrow = mysqli_fetch_assoc($trainerListResult);
 
+$username=$TLRrow['username'];
 
     //auxillary note related funcitons here.
 
     function addNoteForm($theHorse,$username){
-
-        echo("<p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
-        echo("</br>");
         //echo("<p>YEEEEEEEEEEEEEEHAWWWWWWWWW</p>");
         $horseID = $theHorse->get_horseID();
-        $horseName = $theHorse->get_horseName();
 
         echo("
-        <form action='/horse/horsefarm2/addNotePage.php' method='POST'>
-        <label>Add a new note for $horseName:</label><br>
-        <input type='hidden' name='horseID' value='$horseID'>
-        <textarea id='note' name='note' rows='4' cols='50' value='test' required></textarea><br>
-        <label for='username'>Username:</label>
-        <input type='hidden' name='username' value='<?php echo $username; ?>' required readonly><br>
-        <input type='submit' value='Create Note'>
-        <input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
-        <input type='hidden' name='noteTimestamp' value='" . time() . "'>
-        <input type='hidden' name='addNoteSubmit' value='1'>
-        </form>"
-        
+            <form action='/horse/horsefarm2/addNotePage.php' method='POST'>
+            <input type='hidden' id='horseID' name='horseID' value='" . $horseID . "' required readonly>
+            <label for='note'>Note:</label><br>
+            <textarea id='note' name='note' rows='4' cols='50' value='test' required></textarea><br>
+            <input type='hidden' id='username' name='username' value='". $username ."' required readonly>
+            <br>
+            <input type='submit' value='Create Note' class='addNote-form-button'>
+            <input type='hidden' name='noteDate' value='" . date('Y-m-d') . "'>
+            <input type='hidden' name='noteTimestamp' value='" . time() . "'>
+            <input type='hidden' name='addNoteSubmit' value='1'>
+            
+            </form>"
         );
-        
-}
-
-function handleNoteSubmission(){
-        if(isset($_POST['addNoteSubmit'])){
-            $submissionSet = array(
-                'noteID' => get_next_note_id(),
-                'horseID' => $_POST['horseID'],
-                'noteDate' => $_POST['noteDate'],
-                'noteTimestamp' => $_POST['noteTimestamp'],
-                'note' => $_POST['note'],
-                'username' => $_POST['username'],
-                'archive' => 0,
-                'archiveDate' => null
-            );
-            $theNote = construct_next_note($submissionSet);
-            $status = add_note($theNote);
-            echo "note addition status: " . (boolean)$status . "<br>";
     }
-}
 
+    function handleNoteSubmission(){
+        if(isset($_POST['addNoteSubmit'])){
+            $submissionSet = array();
+            date_default_timezone_set('America/New_York');
+            //yes this is weird, because this isn't what I think of when I think of an array, but this makes the right variable type for PHP.
+            $submissionSet['noteID'] = get_next_note_id(); 
+            $submissionSet['horseID'] = $_POST['horseID'];
+            $submissionSet['noteDate'] = $_POST['noteDate'];
+            $submissionSet['noteTimestamp'] = date('Y-m-d H:i:s', time());
+            $submissionSet['note'] = $_POST['note'];
+            $submissionSet['username'] = $_POST['username'];
+            $submissionSet['archive'] = 0;
+            $submissionSet['archiveDate'] = NULL;
+            $theNote = construct_note($submissionSet);
+            $status = add_note($theNote);
+            // echo("\n\n");
+            // echo("LETS LOOK FOR A SPACE");
+            //print_r($theNote);
+            //echo("\n\n");
+
+            // echo("note addition status: ". (boolean)$status."<br>");
+            //echo "Current timestamp: " . $submissionSet['noteTimestamp'] . "<br>";
+
+        }
+
+    }
 
 ?>
 
@@ -150,56 +151,67 @@ function handleNoteSubmission(){
                 line-height: 1.6;
                 margin: 0 auto;
             }
-            @media (max-width: 480px) {
-                #container {
-                    max-width: 100%;
-                    padding: 10px;
-                }
-                #content-inner {
-                    max-width: 90%;
-                }
-                h1 {
-                    font-size: 24px;
-                }
-                p {
-                    font-size: 16px;
-                    line-height: 1.4;
-                }
+            .addNote-form-button {
+                background-color: #4b6c9e;
+                color: #fff;
+                border: none;
+                padding: 8px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-left: 20px;
             }
 
+            .addNote-form-button:hover {
+                background-color: #fff;
+                color: #4b6c9e;
+                border: 2px solid #4b6c9e;
+            }
+                
+            @media (max-width: 768px) {
+                h1 {
+                    font-size: 28px;
+                }
+
+                p {
+                    font-size: 16px;
+                    max-width: 90%;
+                }
+
+                #container {
+                    padding: 10px;
+                }
+            }
         </style> 
     </head>
     <body>
         <div id="container">
-            <?PHP include('header.php'); ?>
+            <?PHP include_once('header.php'); ?>
             <div id="content">
                 <div id="content-inner">
-                <?PHP
-                include_once('domain/Horse.php');
-                include_once('database/dbinfo.php');
-                include_once('database/horsedb.php');
-                date_default_timezone_set('America/New_York');
-
-                echo("<h1>Add a note</br></h1>");
-                echo("<br><p>Please enter information that will be associated with " . $theHorse->get_horseName() ."</p>");
-                echo("<p>After you have updated your note with additional information, please select 'Edit Note'.<br>Your page will refresh and then return to the horse profile.</p>");
-                echo("</br>");
-                
+                    <?PHP
+                    include_once('domain/Horse.php');
+                    include_once('database/dbinfo.php');
+                    include_once('database/horsedb.php');
+                    date_default_timezone_set('America/New_York');
+                    ?>
+                    
+                    <h1>Add Note for <?php echo $theHorse->get_horseName(); ?></h1>
+                    <p>Please enter the note that will be associated with <?php echo $theHorse->get_horseName(); ?></p>
+                    <p>After you have filled in the note, click the 'Add Note' button below.</p>
+                <?php
                 handleNoteSubmission();
-                addNoteForm($theHorse, $username);
+                addNoteForm($theHorse,$username);
                 ?>
-
+                <br>
                 <form method="GET" action="horseprofile.php">
                     <input type="hidden" name="horseID" value="<?php echo $horseID; ?>">
-                    <input type="hidden" name="username" value="<?php echo $username; ?>">
-                    <input type="submit" name="return" value="Return to horse profile">
+                    <button class='addNote-form-button' type="submit">Return to <?php echo $theHorse->get_horseName(); ?>'s profile</button>
                 </form>
-
+                <br>
 
                 </div>
             </div>
-            <?PHP include('footer.php'); ?>
+            <?PHP include_once('footer.php'); ?>
         </div>
-
     </body>
 </html>

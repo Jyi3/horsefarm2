@@ -225,8 +225,8 @@ ALTER TABLE `horsetobehaviordb`
 -- Indexes for table `notesdb`
 --
 ALTER TABLE `notesdb`
-  ADD PRIMARY KEY (`horseID`,`noteDate`,`noteTimestamp`,`note`(255),`username`),
-  ADD KEY `username` (`username`);
+  ADD PRIMARY KEY (`horseID`, `noteID`, `username`);
+
 
 --
 -- Indexes for table `persondb`
