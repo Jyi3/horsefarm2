@@ -25,3 +25,22 @@ To access the application:
         - Import the "homebasedb.sql" file in the "database" folder here to set up the CVHR database.
 
 If you wish to see the legacy Homebase code for reference, follow all the steps in the two links provided above.
+
+INSTALLATION FOR SITEGROUND
+1. Pull the main branch
+2. Use filezilla to connect to your siteground website
+3. place all files in the public_html folder
+4. Go to the MySQL tab of siteground
+5. Create a new database and a user that can access the database
+6. Go to php my admin
+7. import homebasedb.sql into the database you created
+8. Return to siteground and navigate to the file explorer
+9. Move to the database folder
+10. Navigate to dbinfo.php
+11. Update lines 20-24 to match this, filling in the YOUR_... with the actual values:
+function connect() {
+    $host = "localhost"; 
+    $username = "YOUR_USER_NAME";
+    $password = "YOUR_USER_PASSWORD";
+    $database = "YOUR_DATABASE_NAME";
+12. Log into your site!
