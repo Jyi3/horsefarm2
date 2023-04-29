@@ -1,23 +1,10 @@
-
-DROP TABLE IF EXISTS dbapplicantscreenings;
-DROP TABLE IF EXISTS dbbehavior;
-DROP TABLE IF EXISTS dbdates;
-DROP TABLE IF EXISTS dblog;
-DROP TABLE IF EXISTS dbmasterschedule;
-DROP TABLE IF EXISTS dbpersons;
-DROP TABLE IF EXISTS dbscl;
-DROP TABLE IF EXISTS dbshifts;
-DROP TABLE IF EXISTS dbweeks;
-DROP TABLE IF EXISTS notesdb;
-DROP TABLE IF EXISTS archivePersondb;
-DROP TABLE IF EXISTS archiveHorsedb;
-DROP TABLE IF EXISTS trainerToHorsedb;
-DROP TABLE IF EXISTS horseToBehaviordb;
-DROP TABLE IF EXISTS persontohorsedb;
-DROP TABLE IF EXISTS behaviordb;
-DROP TABLE IF EXISTS horsedb;
-DROP TABLE IF EXISTS trainerdb;
-DROP TABLE IF EXISTS persondb;
+DROP TABLE IF EXISTS `horseToBehaviordb`;
+DROP TABLE IF EXISTS `persontohorsedb`;
+DROP TABLE IF EXISTS `trainerToHorsedb`;
+DROP TABLE IF EXISTS `behaviordb`;
+DROP TABLE IF EXISTS `horsedb`;
+DROP TABLE IF EXISTS `notesdb`;
+DROP TABLE IF EXISTS `persondb`;
 
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
