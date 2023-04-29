@@ -8,16 +8,16 @@ DROP TABLE IF EXISTS dbpersons;
 DROP TABLE IF EXISTS dbscl;
 DROP TABLE IF EXISTS dbshifts;
 DROP TABLE IF EXISTS dbweeks;
-DROP TABLE IF EXISTS notesDB;
-DROP TABLE IF EXISTS archivePersonDB;
-DROP TABLE IF EXISTS archiveHorseDB;
-DROP TABLE IF EXISTS trainerToHorseDB;
-DROP TABLE IF EXISTS horseToBehaviorDB;
+DROP TABLE IF EXISTS notesdb;
+DROP TABLE IF EXISTS archivePersondb;
+DROP TABLE IF EXISTS archiveHorsedb;
+DROP TABLE IF EXISTS trainerToHorsedb;
+DROP TABLE IF EXISTS horseToBehaviordb;
 DROP TABLE IF EXISTS persontohorsedb;
-DROP TABLE IF EXISTS behaviorDB;
-DROP TABLE IF EXISTS horseDB;
-DROP TABLE IF EXISTS trainerDB;
-DROP TABLE IF EXISTS personDB;
+DROP TABLE IF EXISTS behaviordb;
+DROP TABLE IF EXISTS horsedb;
+DROP TABLE IF EXISTS trainerdb;
+DROP TABLE IF EXISTS persondb;
 
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
@@ -31,12 +31,6 @@ DROP TABLE IF EXISTS personDB;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `homebasedb`
@@ -93,19 +87,6 @@ CREATE TABLE `horsedb` (
   `archiveDate` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `horsedb`
---
-
-INSERT INTO `horsedb` (`horseID`, `horseName`, `color`, `breed`, `pastureNum`, `colorRank`, `archive`, `archiveDate`) VALUES
-(1, 'Thunder', 'Brown', 'Quarter Horse', 1, 'Green', 1, '2023-04-18'),
-(2, 'Midnight', 'Black', 'Arabian', 1, 'Yellow', 0, ''),
-(3, 'Silver', 'Gray', 'Andalusian', 2, 'Green', 0, ''),
-(4, 'Blaze', 'Chestnut', 'Thoroughbred', 2, 'Yellow', 0, ''),
-(5, 'Snowflake', 'White', 'Friesian', 3, 'Green', 0, ''),
-(6, 'Cocoa', 'Bay', 'Morgan', 3, 'Yellow', 0, ''),
-(7, 'Sunny', 'Palomino', 'Paint', 4, 'Green', 1, '2023-04-18'),
-(8, 'Stormy', 'Dapple Gray', 'Lipizzaner', 4, 'Red', 0, '');
 
 -- --------------------------------------------------------
 
@@ -135,16 +116,6 @@ CREATE TABLE `notesdb` (
   `archiveDate` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `notesdb`
---
-
-INSERT INTO `notesdb` (`horseID`, `noteID`, `noteDate`, `noteTimestamp`, `note`, `username`, `archive`, `archiveDate`) VALUES
-(1, 2, '2023-04-15', '2023-04-15 13:06:09', 'testasdf', 'testHT', NULL, NULL),
-(1, 1, '2023-04-15', '2023-04-17 21:16:22', 'test 3 5 3 5', 'testHT', 0, '2023-04-17'),
-(1, 3, '2023-04-17', '2023-04-17 06:55:24', 'test', 'testHT', NULL, NULL),
-(1, 4, '2023-04-17', '2023-04-17 06:55:59', 'tester', 'testHT', NULL, NULL),
-(4, 1, '2023-04-17', '2023-04-17 21:16:22', 'test 3 5 3 5', 'testHT', 0, '2023-04-17');
 
 -- --------------------------------------------------------
 
@@ -172,9 +143,7 @@ CREATE TABLE `persondb` (
 INSERT INTO `persondb` (`firstName`, `lastName`, `fullName`, `phone`, `email`, `username`, `pass`, `userType`, `archive`, `archiveDate`) VALUES
 ('Admin', 'Admin', 'Admin Admin', '111-111-1111', '', 'Admin', '$2y$10$RgviL.Wom0Cj8mZJUYm9ZuE29aFWZWmT9hwNAsEPOyOOMcqWuKc0K', 'Admin', 0, NULL),
 ('Viewer', 'Viewer', 'Viewer Viewer', '111-111-1111', '', 'Viewer', '$2y$10$6stDMx35Sl78wwgTibdhmurfPsCySM5tvFJRXm3hXOM3WflmKwCKS', 'Viewer', 0, NULL),
-('testHT', 'testHT', 'testHT testHT', '111-111-1234', '', 'testHT', '$2y$10$hB9kyYi0VEBvb8UrG5aGoeWI6XpRZs4sVdy4HTF4QO0U/Jw45rADC', 'Head Trainer', 0, '2023-04-17'),
-('testR', 'testR', 'testR testR', '111-111-1234', '', 'testR', '$2y$10$VCUfh1QSjSKvxnTr/sfzAuuDpJQctVyEV1Rtoz4W5f/Dpmka/35nW', 'Recruit', 1, '2023-04-18'),
-('testT', 'testT', 'testT testT', '111-111-1234', '', 'testT', '$2y$10$6fCtYwAnnNh3iuG7wG7fEOkvdRZnOXm6KCQdFlrlX5qocFgTwt4Em', 'Trainer', 0, '');
+('Kim', 'Reidmr', 'Kim reidmr', '111-111-1234', '', 'Reidmr', '$2y$10$hB9kyYi0VEBvb8UrG5aGoeWI6XpRZs4sVdy4HTF4QO0U/Jw45rADC', 'Head Trainer', 0, '2023-04-17');
 
 -- --------------------------------------------------------
 
@@ -187,15 +156,6 @@ CREATE TABLE `persontohorsedb` (
   `username` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `persontohorsedb`
---
-
-INSERT INTO `persontohorsedb` (`horseID`, `username`) VALUES
-(4, 'testHT'),
-(6, 'testHT'),
-(8, 'testHT'),
-(8, 'testR');
 
 --
 -- Indexes for dumped tables
@@ -276,9 +236,4 @@ ALTER TABLE `persontohorsedb`
   ADD CONSTRAINT `persontohorsedb_ibfk_1` FOREIGN KEY (`username`) REFERENCES `persondb` (`username`),
   ADD CONSTRAINT `persontohorsedb_ibfk_2` FOREIGN KEY (`horseID`) REFERENCES `horsedb` (`horseID`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
 
