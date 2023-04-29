@@ -6,6 +6,13 @@
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["update_profile"])) {
+        // Check if the user has the necessary permissions
+        if ($_SESSION['permissions'] == 4) {
+            echo '<script>alert("You do not have permission to edit the Viewer profile."); window.location.href = "editProfile.php";</script>';
+            exit;
+        }
+        
+    
         $firstName = htmlspecialchars(trim($_POST["firstName"]));
         $lastName = htmlspecialchars(trim($_POST["lastName"]));
         $email = htmlspecialchars(trim($_POST["email"]));
