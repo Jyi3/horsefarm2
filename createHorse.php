@@ -8,6 +8,37 @@
     }
 ?>
 
+<?php
+    include_once('database/horsedb.php');
+    include_once('database/dbinfo.php');
+    include_once('./addBehavior.php');
+    
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // create new Horse object
+
+        // Check user permissions
+        if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
+            header("Location: createHorse.php");
+            exit();
+        }
+        $conn = connect();
+        // insert new Horse data into the database
+        $sql = "INSERT INTO horseDB (horseName, color, breed, pastureNum, colorRank, archive, archiveDate) VALUES ('" . $_POST["horseName"] . "', '" . $_POST["color"] . "', '" . $_POST["breed"] . "', '" . $_POST["pastureNum"] . "', '" . $_POST["colorRank"] . "', false, null)";
+    
+        // execute SQL query
+        if (mysqli_query($conn, $sql)) {
+            header("Location: createHorse.php");
+        } else {
+            echo "<p>Error adding new horse: " . mysqli_error($conn) . "</p>";
+        }
+    
+        // close database connection
+        mysqli_close($conn);
+    }
+    
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -127,42 +158,7 @@
             }
 
         </style> 
-            <?php
-                include_once('database/horsedb.php');
-                include_once('database/dbinfo.php');
-                include_once('./addBehavior.php');
-                
-                
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    // create new Horse object
-            
-                    // Check user permissions
-                    if (!isset($_SESSION['permissions']) || ($_SESSION['permissions'] != 3 && $_SESSION['permissions'] != 5)) {
-                        header("Location: createHorse.php");
-                        exit();
-                    }
-                    $conn = connect();
-                    $sql = "SELECT username FROM persondb WHERE username='$username'";
-                    // insert new Horse data into the database
-                    $sql = "INSERT INTO horseDB (horseName, color, breed, pastureNum, colorRank, archive, archiveDate) VALUES ('" . $_POST["horseName"] . "', '" . $_POST["color"] . "', '" . $_POST["breed"] . "', '" . $_POST["pastureNum"] . "', '" . $_POST["colorRank"] . "', false, null)";
-                
-                    // execute SQL query
-                    if (mysqli_query($conn, $sql)) {
-                        $searchID = "SELECT horseID FROM horsedb WHERE horseName='". $_POST["horseName"] . "' AND color='" . $_POST["color"] . "' AND breed='" . $_POST["breed"] . "' AND pastureNum=" . $_POST["pastureNum"] . " AND colorRank='" . $_POST["colorRank"] . "';" ;
-                        $horseID = mysqli_query($conn, $searchID);
-                        $horseRow = mysqli_fetch_assoc($horseID);
-                        #echo"<p>HorseID = '" . $horseRow["horseID"] . "'</p>";
-                        autoAssignBehaviors($horseRow['horseID']);
-                        header("Location: createHorse.php");
-                    } else {
-                        echo "<p>Error adding new horse: " . mysqli_error($conn) . "</p>";
-                    }
-                
-                    // close database connection
-                    mysqli_close($conn);
-                }
-                
-            ?>
+
     </head>
     <body>
     <div id="container">

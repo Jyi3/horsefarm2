@@ -504,7 +504,7 @@
                         <p><span style="font-size:105%;">Color : </span><span style="color:Grey"><?php echo $color; ?></span></p>
                         <div style="display: flex; align-items: center;">
                             <p style="margin: 0;">Status : <?php echo ($archive == 0 || $archive == NULL) ? 'Active' : 'Inactive'; ?></p>
-                            <?php if ($_SESSION['permissions'] > 3): ?>
+                            <?php if ($_SESSION['permissions'] >= 3): ?>
                                 <form method="POST" class="archive-form" style="display: flex; align-items: center; margin-left: 10px;">
                                     <input type="hidden" name="horseID" value="<?php echo $hp_horseID; ?>" />
                                     <input type="submit" name="archive" value="Inactivate" <?php if ($archive == 1) echo 'style="display:none"'; ?> style="margin-left: 10px;" />
